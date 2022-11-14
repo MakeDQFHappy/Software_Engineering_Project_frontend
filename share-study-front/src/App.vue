@@ -7,28 +7,27 @@
         <a-breadcrumb-item>List</a-breadcrumb-item>
         <a-breadcrumb-item>App</a-breadcrumb-item>
       </a-breadcrumb>
-      <div :style="{ background: '#fff', padding: '24px', minHeight: '380px' }">
+      <!-- <div :style="{ background: '#fff', padding: '24px', minHeight: '380px' }">
         <router-view></router-view>
-      </div>
+      </div> -->
+      <router-view></router-view>
     </a-layout-content>
-    <a-layout-footer :style="{ textAlign: 'center' }">
+    <!-- <a-layout-footer :style="{ textAlign: 'center' }">
       同济大学学习交流平台
-    </a-layout-footer>
+    </a-layout-footer> -->
   </a-layout>
 </template>
 <script>
-
-import Header from '@/components/Header.vue'
+import Header from "@/components/Header.vue";
 export default {
-  name: 'home-view',
-  data(){
-    return {
-    }
+  name: "home-view",
+  data() {
+    return {};
   },
   components: {
-    Header
-  }
-}
+    Header,
+  },
+};
 </script>
 
 <style>
