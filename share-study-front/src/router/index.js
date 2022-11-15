@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PrivateMessage  from '../views/PrivateMessageView.vue'
-import QAView  from '../views/QAView.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -23,11 +23,6 @@ const routes = [
     path: '/message',
     name: 'message',
     component: PrivateMessage
-  },
-    {
-    path: '/QA',
-    name: 'QA',
-    component: QAView
   },
 ]
 
