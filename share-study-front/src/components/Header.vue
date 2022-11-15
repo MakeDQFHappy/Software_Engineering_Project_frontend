@@ -13,7 +13,7 @@
                     <a-icon type="bulb" />
                 问答互助
                 </a-menu-item>
-                <a-menu-item key="2">
+                <a-menu-item key="2" @click="openStudyNotes">
                     <a-icon type="read" />
                 学习交流
                 </a-menu-item>
@@ -58,6 +58,9 @@ export default {
   methods: {
     openMessage(){
         this.$router.push('/message')
+    },
+    openStudyNotes(){
+        this.$router.replace('/studyNotes')
     },
     showModal(){
       this.visible=true

@@ -5,6 +5,12 @@ import store from './store'
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 
+import Axios from 'axios'
+
+Vue.prototype.$axios = Axios
+Axios.defaults.baseURL = '/api'
+
+
 Vue.config.productionTip = false
 Vue.use(Antd);
 new Vue({
