@@ -10,6 +10,12 @@
     <Button type="primary" shape="round" size="{large}" @click="publishNotes">
       发布
     </Button>
+    <Button type="primary" shape="round" size="{large}" @click="getNotes">
+      get
+    </Button>
+    <div v-for="(item, index) in notesList" :key="index"> 
+      <div v-html=item></div>
+    </div>
   </div>
 </template>
 
@@ -75,6 +81,8 @@ export default {
         resize: false,
       },
       myValue: this.value,
+      noteContent : "",
+      notesList: [],
     };
   },
   mounted() {
@@ -100,6 +108,22 @@ export default {
         console.log("数据：", res);
       });
     },
+
+
+    getNotes(){
+      axios.get('/download', {
+      params: {
+       
+      }
+    }).then((res) => {
+      console.log('数据：', res);
+      this.noteContent = res.data;
+      this.notesList.push(res.data);
+      console.log('数据：', this.notesList);
+
+    })
+
+    }
   },
   watch: {
     value(newValue) {
