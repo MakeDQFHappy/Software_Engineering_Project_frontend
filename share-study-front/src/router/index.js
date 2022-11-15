@@ -5,6 +5,7 @@ import PrivateMessage  from '../views/PrivateMessageView.vue'
 import QA_myAnswerView from '../views/QA_myAnswerView.vue'
 import QA_myCollectionView from '../views/QA_myCollectionView.vue'
 import QA_myQuestionView  from '../views/QA_myQuestionView.vue'
+import StudyNotes  from '../views/StudyNotesView.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -40,6 +41,11 @@ const routes = [
     path: '/QA_myQuestion',
     name: 'QA_myQuestion',
     component: QA_myQuestionView
+  },
+{
+    path: '/studyNotes',
+    name: 'studyNotes',
+    component: StudyNotes
   },
 ]
 

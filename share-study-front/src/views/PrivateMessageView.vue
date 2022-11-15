@@ -50,18 +50,21 @@
           <div class="InputBox">
             <ul class="ToolBar">
                 <li class="ToolBar-item">
-                    <a-button type="link" icon="smile" style="color:black" />
+                    <Emoji ref="getEmoji" @changeText="changeText" ></Emoji>
+                    <!-- <a-button type="link" icon="smile" style="color:black" /> -->
                 </li>
                 <li class="ToolBar-item">
-                    <a-button type="link" icon="file-add" style="color:black" />
+                    <a-upload :file-list="fileList" :before-upload="beforeUpload">
+                        <a-button type="link" icon="file-add" style="color:black" />
+                    </a-upload>
                 </li>
             </ul>
             <label class="InputBox-input">
-              <textarea name="" id="Input" v-model="this.text" class="Input" ></textarea>
+              <textarea name="" id="textarea" v-model="inputText" class="Input" ></textarea>
             </label>
             <div class="InputBox-footer">
               <div class="InputBox-footerDesc css-1zwx8a">按 Enter 键发送</div>
-              <button type="Button" :disabled="this.text=''" class="Button InputBox-sendBtn Button--primary Button--blue" ref="sendBtn" >发送</button>
+              <button type="Button" :disabled="this.inputText==''" class="Button InputBox-sendBtn Button--primary Button--blue" ref="sendBtn" @click="sendMsg">发送</button>
             </div>
           </div>
           
@@ -73,6 +76,7 @@
 
 <script>
 import Message from "@/components/Message.vue";
+import Emoji from "@/components/Emoji.vue"
 export default {
   name: 'message-view',
   onMounted(){
@@ -92,12 +96,24 @@ export default {
             message:"hello",
         }],    
         title:"联系人名称",
-        text:"",
+        inputText:"",
+        uploadFile:null,
     }
   },
   methods: {
     onSearch(){
         console.log("search")
+    },
+    beforeUpload(file) {
+      console.log(file.type)
+      this.uploadFile = file;
+      this.submit();
+      return false;
+    },
+    submit(){
+        if(this.uploadFile!=null){
+            console.log(this.uploadFile);
+        }
     },
     handleChange(value) {
       console.log(`selected ${value}`);
@@ -110,9 +126,33 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
     },
+    changeText() {
+        var textArea = document.getElementById('textarea');
+        function changeSelectedText(obj, str) {
+            if (window.getSelection()) {
+                // 非IE浏览器
+                textArea.setRangeText(str);
+                // 在未选中文本的情况下，重新设置光标位置
+                textArea.selectionStart += str.length;
+                textArea.focus()
+            } else if (document.getSelection()) {
+                // IE浏览器
+                obj.focus();
+                var sel = document.selection.createRange();
+                sel.text = str;
+            }
+        }
+        changeSelectedText(textArea, this.$refs.getEmoji.faceList[this.$refs.getEmoji.emojiItem]);
+        this.inputText.value = textArea.value;// 要同步data中的数据
+        // console.log(this.$refs.getEmoji.faceList[this.$refs.getEmoji.emojiItem]);
+    },
+    sendMsg(){
+        console.log(this.inputText);
+    }
   },
   components: {
-    Message
+    Message,
+    Emoji
   }
 }
 </script>
