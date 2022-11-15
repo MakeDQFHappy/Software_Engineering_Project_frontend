@@ -37,7 +37,7 @@ export default {
       this.$router.push("/message");
     },
     openQA() {
-      this.$router.push("/QA");
+      this.$router.push("/QA_myQuestion");
     },
   },
 };

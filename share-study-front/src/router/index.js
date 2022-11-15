@@ -2,7 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PrivateMessage  from '../views/PrivateMessageView.vue'
-import QAView  from '../views/QAView.vue'
+import QA_myAnswerView from '../views/QA_myAnswerView.vue'
+import QA_myCollectionView from '../views/QA_myCollectionView.vue'
+import QA_myQuestionView  from '../views/QA_myQuestionView.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -24,10 +26,20 @@ const routes = [
     name: 'message',
     component: PrivateMessage
   },
-    {
-    path: '/QA',
-    name: 'QA',
-    component: QAView
+  {
+    path: '/QA_myAnswer',
+    name: 'QA_myAnswer',
+    component: QA_myAnswerView
+  },
+  {
+    path: '/QA_myCollection',
+    name: 'QA_myCollection',
+    component: QA_myCollectionView
+  },
+  {
+    path: '/QA_myQuestion',
+    name: 'QA_myQuestion',
+    component: QA_myQuestionView
   },
 ]
 
