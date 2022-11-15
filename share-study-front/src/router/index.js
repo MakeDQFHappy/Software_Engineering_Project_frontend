@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PrivateMessage  from '../views/PrivateMessageView.vue'
-import StudyNotes  from '../views/StudyNotesView.vue'
+import StudyNotes  from '../views/StudyNotesView2.vueeee'
 
 Vue.use(VueRouter)
 
