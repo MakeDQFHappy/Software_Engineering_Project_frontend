@@ -6,7 +6,7 @@
       </div>
       <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
         <a-menu-item key="1">
-          <a-icon type="bulb" />
+          <a-icon type="bulb" @click="openQA" />
           问答互助
         </a-menu-item>
         <a-menu-item key="2" @click="openStudyNotes">
@@ -75,7 +75,7 @@ export default {
       this.$router.push("/message");
     },
     openQA() {
-      this.$router.push("/QA");
+      this.$router.push("/QA_myQuestion");
     },
     showModal() {
       this.visible = true;
