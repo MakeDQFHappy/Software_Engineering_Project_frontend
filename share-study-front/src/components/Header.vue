@@ -5,8 +5,8 @@
         <img :src="logoImg" style="width: 100%; height: 80%" />
       </div>
       <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
-        <a-menu-item key="1">
-          <a-icon type="bulb" @click="openQA" />
+        <a-menu-item key="1"  @click="openQA" >
+          <a-icon type="bulb"/>
           问答互助
         </a-menu-item>
         <a-menu-item key="2" @click="openStudyNotes">
@@ -76,6 +76,9 @@ export default {
     },
     openQA() {
       this.$router.push("/QA_myQuestion");
+    },
+    openStudyNotes(){
+      this.$router.push("/studyNotes");
     },
     showModal() {
       this.visible = true;

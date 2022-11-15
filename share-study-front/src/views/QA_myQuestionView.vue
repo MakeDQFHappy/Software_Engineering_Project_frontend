@@ -369,6 +369,7 @@
 
 <script>
 export default {
+  
   methods: {
     openQA_myQuestion() {
       this.$router.push("/QA_myQuestion");
