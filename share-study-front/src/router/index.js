@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PrivateMessage  from '../views/PrivateMessageView.vue'
+import StudyNotes  from '../views/StudyNotesView.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,11 @@ const routes = [
     path: '/message',
     name: 'message',
     component: PrivateMessage
+  },
+  {
+    path: '/studyNotes',
+    name: 'studyNotes',
+    component: StudyNotes
   },
 ]
 
