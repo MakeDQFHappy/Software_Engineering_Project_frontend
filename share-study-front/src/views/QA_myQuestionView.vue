@@ -103,7 +103,7 @@
                               content="https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4"
                             /><meta
                               itemprop="name"
-                              content="有什么事是你过了很多年突然明白的？"
+                              content="什么是元宇宙？"
                             /><a
                               target="_blank"
                               href="https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4"
@@ -150,78 +150,49 @@
                             </div></span
                           >
                           <div class="ContentItem-actions">
-                            <span
-                              ><button
-                                aria-label="赞同 5023 "
-                                aria-live="polite"
-                                type="button"
-                                class="Button VoteButton VoteButton--up"
-                              >
-                                <span
-                                  style="
-                                    display: inline-flex;
-                                    align-items: center;
-                                  "
-                                  >&ZeroWidthSpace;<svg
-                                    width="10"
-                                    height="10"
-                                    viewBox="0 0 24 24"
-                                    class="Zi Zi--TriangleUp VoteButton-TriangleUp"
-                                    fill="currentColor"
-                                  >
-                                    <path
-                                      fill-rule="evenodd"
-                                      d="M13.792 3.681c-.781-1.406-2.803-1.406-3.584 0l-7.79 14.023c-.76 1.367.228 3.046 1.791 3.046h15.582c1.563 0 2.55-1.68 1.791-3.046l-7.79-14.023Z"
-                                      clip-rule="evenodd"
-                                    ></path></svg></span
-                                >赞同 5023</button
-                              ><button
-                                aria-label="反对"
-                                aria-live="polite"
-                                type="button"
-                                class="Button VoteButton VoteButton--down"
-                              >
-                                <span
-                                  style="
-                                    display: inline-flex;
-                                    align-items: center;
-                                  "
-                                  >&ZeroWidthSpace;<svg
-                                    width="10"
-                                    height="10"
-                                    viewBox="0 0 24 24"
-                                    class="Zi Zi--TriangleDown"
-                                    fill="currentColor"
-                                  >
-                                    <path
-                                      fill-rule="evenodd"
-                                      d="M13.792 20.319c-.781 1.406-2.803 1.406-3.584 0L2.418 6.296c-.76-1.367.228-3.046 1.791-3.046h15.582c1.563 0 2.55 1.68 1.791 3.046l-7.79 14.023Z"
-                                      clip-rule="evenodd"
-                                    ></path></svg
-                                ></span></button></span
-                            ><button
-                              type="button"
-                              class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel"
+                            <span></span>
+                            <a-button
+                              class="Button VoteButton VoteButton--up"
+                              :style="{ background: '#F0F8FF' }"
                             >
                               <span
                                 style="
                                   display: inline-flex;
                                   align-items: center;
                                 "
-                                >&ZeroWidthSpace;<svg
-                                  width="1.2em"
-                                  height="1.2em"
-                                  viewBox="0 0 24 24"
-                                  class="Zi Zi--Comment Button-zi"
-                                  fill="currentColor"
-                                >
-                                  <path
-                                    fill-rule="evenodd"
-                                    d="M12 2.75a9.25 9.25 0 1 0 4.737 17.197l2.643.817a1 1 0 0 0 1.25-1.25l-.8-2.588A9.25 9.25 0 0 0 12 2.75Z"
-                                    clip-rule="evenodd"
-                                  ></path></svg></span
-                              >303 条评论
-                            </button>
+                                ><div class="icons-list">
+                                  <a-icon type="caret-up" />
+                                </div>
+                              </span>
+                              赞同</a-button
+                            >
+                            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                            <a-button
+                              class="Button VoteButton VoteButton--down"
+                              :style="{ background: '#F0F8FF' }"
+                            >
+                              <span
+                                style="
+                                  display: inline-flex;
+                                  align-items: center;
+                                "
+                                ><div class="icons-list">
+                                  <a-icon type="caret-down" /></div></span
+                            ></a-button>
+                            <div
+                              type="button"
+                              class="ContentItem-action Button--plain Button--withIcon Button--withLabel"
+                            >
+                              <span
+                                style="
+                                  display: inline-flex;
+                                  align-items: center;
+                                "
+                                ><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                <div class="icons-list">
+                                  <a-icon type="message" /></div></span
+                              >200 条评论
+                            </div>
                             <div class="Popover ShareMenu ContentItem-action">
                               <div
                                 class="ShareMenu-toggler"
@@ -297,61 +268,6 @@
                                   ></path></svg></span
                               >喜欢
                             </button>
-                            <div class="Popover ContentItem-action">
-                              <button
-                                aria-label="更多"
-                                id="Popover640-toggle"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                aria-owns="Popover640-content"
-                                type="button"
-                                class="Button OptionsButton Button--plain Button--withIcon Button--iconOnly"
-                              >
-                                <span
-                                  style="
-                                    display: inline-flex;
-                                    align-items: center;
-                                  "
-                                  >&ZeroWidthSpace;<svg
-                                    width="1.2em"
-                                    height="1.2em"
-                                    viewBox="0 0 24 24"
-                                    class="Zi Zi--Dots Button-zi"
-                                    fill="currentColor"
-                                  >
-                                    <path
-                                      d="M5.34 12a1.665 1.665 0 1 1-3.33 0 1.665 1.665 0 0 1 3.33 0ZM13.665 12a1.665 1.665 0 1 1-3.33 0 1.665 1.665 0 0 1 3.33 0ZM21.99 12a1.665 1.665 0 1 1-3.33 0 1.665 1.665 0 0 1 3.33 0Z"
-                                    ></path></svg
-                                ></span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div>
-                            <div class=""></div>
-                            <div class="ModalLoading-content">
-                              <svg
-                                width="30"
-                                height="30"
-                                viewBox="0 0 66 66"
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="CircleLoadingBar css-bypjk1"
-                                aria-hidden="true"
-                              >
-                                <g>
-                                  <circle
-                                    class="path"
-                                    fill="none"
-                                    stroke-width="6"
-                                    stroke-linecap="round"
-                                    cx="33"
-                                    cy="33"
-                                    r="30"
-                                  ></circle>
-                                </g>
-                              </svg>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -369,7 +285,6 @@
 
 <script>
 export default {
-  
   methods: {
     openQA_myQuestion() {
       this.$router.push("/QA_myQuestion");
@@ -390,6 +305,10 @@ export default {
 </script>
 
 <style>
+.icons-list >>> .anticon {
+  margin-right: 6px;
+  font-size: 24px;
+}
 .Topstory-container {
   position: relative;
   display: -webkit-box;
