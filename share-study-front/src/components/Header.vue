@@ -17,9 +17,13 @@
           <a-icon type="message" />
           好友私信
         </a-menu-item>
+        <a-menu-item key="4" @click="openMessage">
+          <a-icon type="team" />
+          好友管理
+        </a-menu-item>
         <a-menu-item
           v-if="!isLogin"
-          key="4"
+          key="5"
           style="float: right"
           @click="showModal"
         >
