@@ -6,7 +6,16 @@
 
 <Tinymce class="setTinymce" :height="200" v-model="value"></Tinymce>		
 
+    </div>
 
+    <div class="css-qciawt-Wrapper">
+      <div style="width:100%">
+        <div class="css-a11gpv-ContentWrapper">
+          <div v-for="item in noteItems">
+            <StudyNoteItem :note="item"></StudyNoteItem>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div
@@ -441,6 +450,7 @@ import StudyNotes from "@/components/StudyNotes.vue";
 
 import Tinymce from "../components/editor.vue";
 
+import StudyNoteItem from "@/components/StudyNoteItem.vue"
 export default {
   name: "StudyNotes-view",
   mounted() {
@@ -449,9 +459,28 @@ export default {
   data() {
     return {     
 		
-	form: {
+	    form: {
         content: "",
       },
+      noteItems:[{
+        title:"如何makeDQFhappy",
+        tags:["历史遗留问题","非常难以解决","让人捉摸不透"],
+        content:"关于这个事，我简单说两句，你明白就行，总而言之这个事呢，现在就是这个情况，具体的呢，大家也都看得到，也得出来说那么几句，可能你听的不是很明白，但是意思就是那么个意思，不知道的你也不用去猜，这种事情见得多了，我只想说懂得都懂，不懂的我也不多解释，毕竟自己知道就好，细细品吧。",
+        likeNum:10,
+        starNum:10,
+        commentNum:10,
+        isLiked:true, //这个用户是否点赞和收藏
+        isStared:true
+      },{
+        title:"关于我每天跑步自律这件事",
+        tags:["DQF自传"],
+        content:"我猛然一看，就猛然看到这个评论，我直呼我直呼，上次看到这么这么的发言还是上次，这评论属于是典型的典型了属于是，我之前还没发现，当我发现的时候我已经发现了，这评论就像一个评论，评论的内容充满了内容，我不禁感慨了一句感慨，真是听君一席话，如听一席话，希望下次看到这么这么的发言是下次。",
+        likeNum:10,
+        starNum:10,
+        commentNum:10,
+        isLiked:false,
+        isStared:false
+      }]
 
 	};
   },
@@ -461,11 +490,23 @@ export default {
   components: {
     StudyNotes,
 	Tinymce,
+  StudyNoteItem
   },
 };
 </script>
 
 <style scoped>
+.css-a11gpv-ContentWrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.css-qciawt-Wrapper {
+    flex: 1 1 auto;
+    height: 100%;
+    max-width: 734px;
+}
+
 :root {
   --w-color-schemes: primary, default;
   --w-b-flat-primary: var(--w-contrast);
