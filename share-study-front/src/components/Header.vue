@@ -78,7 +78,7 @@ export default {
       this.$router.push("/QA_myQuestion");
     },
     openStudyNotes(){
-      this.$router.push("/studyNotes");
+      this.$router.push("/studyNotesOverview");
     },
     showModal() {
       this.visible = true;

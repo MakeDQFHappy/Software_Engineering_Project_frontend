@@ -6,6 +6,7 @@ import QA_myAnswerView from '../views/QA_myAnswerView.vue'
 import QA_myCollectionView from '../views/QA_myCollectionView.vue'
 import QA_myQuestionView  from '../views/QA_myQuestionView.vue'
 import StudyNotes  from '../views/StudyNotesView.vue'
+import StudyNotesOverview from '../views/StudyNotesOverviewView.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -46,6 +47,11 @@ const routes = [
     path: '/studyNotes',
     name: 'studyNotes',
     component: StudyNotes
+  },
+  {
+    path: '/studyNotesOverview',
+    name: 'studyNotesOverview',
+    component: StudyNotesOverview
   },
 ]
 

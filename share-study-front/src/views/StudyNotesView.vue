@@ -58,16 +58,6 @@
                       href="/u/7524392184"
                       ><span title="理塘丁真">理塘丁真</span></a
                     >
-                    <div class="woo-box-flex woo-box-alignCenter">
-                      <span
-                        class="woo-icon-wrap IconVip_icon_2tjdp"
-                        aria-label="vip6"
-                        ><span class="woo-icon-main"
-                          ><img
-                            src="https://h5.sinaimg.cn/upload/108/1866/2022/11/02/svip_6.png"
-                            class="woo-icon-vipimg" /></span></span
-                      ><!---->
-                    </div>
                     <!---->
                   </div>
                   <div
