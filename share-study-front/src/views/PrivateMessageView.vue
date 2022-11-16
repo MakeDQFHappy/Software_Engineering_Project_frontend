@@ -13,26 +13,14 @@
             <a-menu mode="inline" :open-keys="openKeys" style="width: 100%" @openChange="onOpenChange">
                 <a-sub-menu key="sub1">
                     <span slot="title"><a-icon type="fire" /><span>最近联系</span></span>
-                    <a-menu-item key="1">
-                    Option 1
-                    </a-menu-item>
-                    <a-menu-item key="2">
-                    Option 2
-                    </a-menu-item>
-                    <a-menu-item key="3">
-                    Option 3
-                    </a-menu-item>
-                    <a-menu-item key="4">
-                    Option 4
-                    </a-menu-item>
+                        <a-menu-item style="height:60px" v-for="(item,index) in userItem" :key="index" >
+                            <ChatUserItem :item="item"></ChatUserItem>
+                        </a-menu-item>
                 </a-sub-menu>
                 <a-sub-menu key="sub2">
                     <span slot="title"><a-icon type="team" /><span>我的好友</span></span>
-                    <a-menu-item key="5">
-                    Option 5
-                    </a-menu-item>
-                    <a-menu-item key="6">
-                    Option 6
+                    <a-menu-item style="height:60px" v-for="(item,index) in userItem" :key="index" >
+                        <ChatUserItem :item="item"></ChatUserItem>
                     </a-menu-item>
                 </a-sub-menu>
             </a-menu>         
@@ -77,6 +65,7 @@
 <script>
 import Message from "@/components/Message.vue";
 import Emoji from "@/components/Emoji.vue"
+import ChatUserItem from "@/components/ChatUserListItem.vue"
 export default {
   name: 'message-view',
   onMounted(){
@@ -94,7 +83,14 @@ export default {
             senderId:2,
             createTime:new Date(),
             message:"hello",
-        }],    
+        }],  
+        userItem:[{
+            name:"史迪奇",
+            message:"巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉拔萝卜"
+        },{
+            name:"史莱姆",
+            message:"啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        },],
         title:"联系人名称",
         inputText:"",
         uploadFile:null,
@@ -152,7 +148,8 @@ export default {
   },
   components: {
     Message,
-    Emoji
+    Emoji,
+    ChatUserItem,
   }
 }
 </script>

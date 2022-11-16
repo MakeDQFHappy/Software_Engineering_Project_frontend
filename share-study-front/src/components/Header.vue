@@ -5,8 +5,8 @@
         <img :src="logoImg" style="width: 100%; height: 80%" />
       </div>
       <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
-        <a-menu-item key="1"  @click="openQA" >
-          <a-icon type="bulb"/>
+        <a-menu-item key="1" @click="openQA">
+          <a-icon type="bulb" />
           问答互助
         </a-menu-item>
         <a-menu-item key="2" @click="openStudyNotes">
@@ -17,9 +17,13 @@
           <a-icon type="message" />
           好友私信
         </a-menu-item>
+        <a-menu-item key="4" @click="openMessage">
+          <a-icon type="team" />
+          好友管理
+        </a-menu-item>
         <a-menu-item
           v-if="!isLogin"
-          key="4"
+          key="5"
           style="float: right"
           @click="showModal"
         >
@@ -77,8 +81,8 @@ export default {
     openQA() {
       this.$router.push("/QA_myQuestion");
     },
-    openStudyNotes(){
-      this.$router.push("/studyNotesOverview");
+    openStudyNotes() {
+      this.$router.push("/studyNotes");
     },
     showModal() {
       this.visible = true;
