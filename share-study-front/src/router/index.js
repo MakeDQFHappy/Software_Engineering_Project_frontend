@@ -7,7 +7,7 @@ import QA_myCollectionView from '../views/QA_myCollectionView.vue'
 import QA_myQuestionView  from '../views/QA_myQuestionView.vue'
 import StudyNotes  from '../views/StudyNotesView.vue'
 import FriendManage from '../views/FriendManage.vue'
-import StudyNotesOverview from '../views/StudyNotesOverviewView.vue'
+// import StudyNotesOverview from '../views/StudyNotesOverviewView.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -54,11 +54,11 @@ const routes = [
     name: 'FriendManage',
     component: FriendManage
   },
-  {
-    path: '/studyNotesOverview',
-    name: 'studyNotesOverview',
-    component: StudyNotesOverview
-  },
+  // {
+  //   path: '/studyNotesOverview',
+  //   name: 'studyNotesOverview',
+  //   component: StudyNotesOverview
+  // },
 ]
 
 const router = new VueRouter({
