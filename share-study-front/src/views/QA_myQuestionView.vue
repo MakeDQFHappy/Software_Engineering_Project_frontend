@@ -47,222 +47,8 @@
               <div class="ListShortcut">
                 <div class="Topstory-follow">
                   <div class="" role="list">
-                    <div
-                      class="Card TopstoryItem TopstoryItem-isFollow"
-                      tabindex="0"
-                    >
-                      <div class="FeedSource">
-                        <div class="FeedSource-firstline">
-                          <span
-                            ><span class="UserLink"
-                              ><div class="css-1gomreu">
-                                <a
-                                  class="UserLink-link"
-                                  data-za-detail-view-element_name="User"
-                                  target="_blank"
-                                  href="//sse.tongji.edu.cn/info/1206/3148.htm"
-                                  >张颖</a
-                                >
-                              </div></span
-                            ></span
-                          >
-                          提供了回答<span class="Bull"> · </span>1天前
-                        </div>
-                        <div
-                          class="AuthorInfo FeedSource-byline AuthorInfo--plain"
-                        >
-                          <div class="AuthorInfo">
-                            <meta itemprop="name" content="张颖" /><meta
-                              itemprop="image"
-                              content="https://sse.tongji.edu.cn/__local/7/8C/0E/AE7B71B95751451DA25F342F447_F7B7F920_12B65.png?e=.png"
-                            /><meta
-                              itemprop="url"
-                              content="https://sse.tongji.edu.cn/info/1206/3148.htm"
-                            /><meta itemprop="zhihu:followerCount" /><span
-                              class="UserLink AuthorInfo-avatarWrapper"
-                              ><div class="css-1gomreu">
-                                <a
-                                  class="UserLink-link"
-                                  data-za-detail-view-element_name="User"
-                                  target="_blank"
-                                  href="https://sse.tongji.edu.cn/info/1206/3148.htm"
-                                  ><img
-                                    class="Avatar AuthorInfo-avatar css-dhor58"
-                                    src="https://sse.tongji.edu.cn/__local/7/8C/0E/AE7B71B95751451DA25F342F447_F7B7F920_12B65.png?e=.png"
-                                    alt="张颖"
-                                /></a></div
-                            ></span>
-                            <div class="AuthorInfo-content">
-                              <div class="AuthorInfo-head">
-                                <span class="UserLink AuthorInfo-name"
-                                  ><div class="css-1gomreu">
-                                    <a
-                                      class="UserLink-link"
-                                      data-za-detail-view-element_name="User"
-                                      target="_blank"
-                                      href="https://sse.tongji.edu.cn/info/1206/3148.htm"
-                                      >张颖</a
-                                    >
-                                  </div></span
-                                >
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ContentItem AnswerItem">
-                        <h2 class="ContentItem-title">
-                          <div>
-                            <meta
-                              itemprop="url"
-                              content="https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4"
-                            /><meta
-                              itemprop="name"
-                              content="什么是元宇宙？"
-                            /><a
-                              target="_blank"
-                              href="https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4"
-                              >什么是元宇宙？</a
-                            >
-                          </div>
-                        </h2>
-                        <div class="ContentItem-meta">
-                          <div class="LabelContainer-wrapper"></div>
-                        </div>
-                        <meta itemprop="image" /><meta
-                          itemprop="upvoteCount"
-                          content="5023"
-                        /><meta
-                          itemprop="url"
-                          content="https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4"
-                        /><meta
-                          itemprop="dateCreated"
-                          content="2022-11-12T13:41:25.000Z"
-                        /><meta
-                          itemprop="dateModified"
-                          content="2022-11-12T14:28:35.000Z"
-                        /><meta itemprop="commentCount" content="303" />
-                        <div class="RichContent is-collapsed">
-                          <span
-                            ><div class="RichContent-inner">
-                              <div class="css-79elbk">
-                                <span
-                                  class="RichText ztext CopyrightRichText-richText css-4em6pe"
-                                  options="[object Object]"
-                                  itemprop="text"
-                                  >元宇宙(Metaverse),是人类运用数字技术构建的,由现实世界映射或超越现实世界,可与现实世界交互的虚拟世界
-                                  具备新型社会体系的数字生活空间。
-                                </span>
-                              </div>
-                              <a
-                                target="_blank"
-                                type="button"
-                                class="ContentItem-more Button--plain"
-                                href="https://baike.baidu.com/item/%E5%85%83%E5%AE%87%E5%AE%99/58292530"
-                              >
-                                阅读全文
-                              </a>
-                            </div></span
-                          >
-                          <div class="ContentItem-actions">
-                            <span></span>
-                            <a-button
-                              class="Button VoteButton VoteButton--up"
-                              :style="{ background: '#F0F8FF' }"
-                            >
-                              <span
-                                style="
-                                  display: inline-flex;
-                                  align-items: center;
-                                "
-                                ><div class="icons-list">
-                                  <a-icon type="caret-up" />
-                                </div>
-                              </span>
-                              赞同</a-button
-                            >
-                            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                            <a-button
-                              class="Button VoteButton VoteButton--down"
-                              :style="{ background: '#F0F8FF' }"
-                            >
-                              <span
-                                style="
-                                  display: inline-flex;
-                                  align-items: center;
-                                "
-                                ><div class="icons-list">
-                                  <a-icon type="caret-down" /></div></span
-                            ></a-button>
-                            <a-button
-                              type="link"
-                              class="ContentItem-action Button--plain Button--withIcon Button--withLabel"
-                            >
-                              <span
-                                style="
-                                  display: inline-flex;
-                                  align-items: center;
-                                "
-                                ><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                <div class="icons-list">
-                                  <a-icon type="message" /></div></span
-                              >200 条评论
-                            </a-button>
-                            <div class="Popover ShareMenu ContentItem-action">
-                              <div class="ShareMenu-toggler">
-                                <a-button
-                                  type="link"
-                                  class="Button--plain Button--withIcon Button--withLabel"
-                                >
-                                  <span
-                                    style="
-                                      display: inline-flex;
-                                      align-items: center;
-                                    "
-                                  >
-                                    <div class="icons-list">
-                                      <a-icon
-                                        type="yuque"
-                                        theme="filled"
-                                      /></div></span
-                                  >分享
-                                </a-button>
-                              </div>
-                            </div>
-                            <a-button
-                              type="link"
-                              class="ContentItem-action Button--plain Button--withIcon Button--withLabel"
-                            >
-                              <span
-                                style="
-                                  display: inline-flex;
-                                  align-items: center;
-                                "
-                                ><div class="icons-list">
-                                  <a-icon type="star" theme="filled" />
-                                </div> </span
-                              >收藏</a-button
-                            ><a-button
-                              type="link"
-                              class="ContentItem-action Button--plain Button--withIcon Button--withLabel"
-                            >
-                              <span
-                                style="
-                                  display: inline-flex;
-                                  align-items: center;
-                                "
-                              >
-                                <div>&nbsp;&nbsp;</div>
-                                <div class="icons-list">
-                                  <a-icon
-                                    type="heart"
-                                    theme="filled"
-                                  /></div></span
-                              >喜欢
-                            </a-button>
-                          </div>
-                        </div>
-                      </div>
+                    <div v-for="(item, index) in QAItems" :key="index">
+                      <QA_QuestionBlock :QA="item"></QA_QuestionBlock>
                     </div>
                   </div>
                 </div>
@@ -586,7 +372,52 @@
 </template>
 
 <script>
+import QA_QuestionBlock from "@/components/QA_QuestionBlock.vue";
+
 export default {
+  name: "QA_myQuestionView",
+  data() {
+    return {
+      form: { content: "" },
+      QAItems: [
+        {
+          username: "张颖",
+          date: "2",
+          title: "什么是元宇宙",
+          userlink: "https://sse.tongji.edu.cn/info/1206/3148.htm",
+          questionlink:
+            "https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4",
+
+          tags: ["历史遗留问题", "非常难以解决", "让人捉摸不透"],
+          content:
+            "关于这个事，我简单说两句，你明白就行，总而言之这个事呢，现在就是这个情况，具体的呢，大家也都看得到，也得出来说那么几句，可能你听的不是很明白，但是意思就是那么个意思，不知道的你也不用去猜，这种事情见得多了，我只想说懂得都懂，不懂的我也不多解释，毕竟自己知道就好，细细品吧。",
+          likeNum: 10,
+          starNum: 10,
+          commentNum: 10,
+          isLiked: true,
+          isStared: true,
+        },
+        {
+          username: "杜庆峰",
+          date: "1",
+          title: "为什么当代大学生越来越不自律",
+          userlink: "https://sse.tongji.edu.cn/info/1092/3135.htm",
+          questionlink:
+            "https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4",
+
+          tags: ["历史遗留问题", "非常难以解决", "让人捉摸不透"],
+          content:
+            "关于这个事，我简单说两句，你明白就行，总而言之这个事呢，现在就是这个情况，具体的呢，大家也都看得到，也得出来说那么几句，可能你听的不是很明白，但是意思就是那么个意思，不知道的你也不用去猜，这种事情见得多了，我只想说懂得都懂，不懂的我也不多解释，毕竟自己知道就好，细细品吧。",
+          likeNum: 10,
+          starNum: 10,
+          commentNum: 10,
+          isLiked: true,
+          isStared: true,
+        },
+      ],
+    };
+  },
+
   methods: {
     openQA_myQuestion() {
       this.$router.push("/QA_myQuestion");
@@ -606,6 +437,7 @@ export default {
       console.log(value);
     },
   },
+  components: { QA_QuestionBlock },
 };
 </script>
 
