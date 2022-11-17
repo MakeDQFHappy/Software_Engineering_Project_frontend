@@ -17,7 +17,7 @@
           <a-icon type="message" />
           好友私信
         </a-menu-item>
-        <a-menu-item key="4" @click="openMessage">
+        <a-menu-item key="4" @click="openFriendManage">
           <a-icon type="team" />
           好友管理
         </a-menu-item>
@@ -78,11 +78,20 @@ export default {
     openMessage() {
       this.$router.push("/message");
     },
+    openFriendManage() {
+      this.$router.push("/FriendManage");
+    },
     openQA() {
       this.$router.push("/QA_myQuestion");
     },
     openStudyNotes() {
-      this.$router.push("/studyNotes");
+      this.$router.push({
+        path: 'studyNotes',
+        query: {
+          id: "1"
+        }
+      })
+      // this.$router.push("/studyNotes");
     },
     showModal() {
       this.visible = true;

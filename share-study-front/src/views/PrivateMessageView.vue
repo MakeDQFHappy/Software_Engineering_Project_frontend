@@ -34,6 +34,7 @@
                         <Message :item="item" :avatar="personAvatar" />
                     </div>
                 </div>
+                <RecordingAnim v-show="recordData.showAnima" style="position:absolute; bottom:30px;left:0;right:0"></RecordingAnim>
             </div>
           <div class="InputBox">
             <ul class="ToolBar">
@@ -45,6 +46,9 @@
                     <a-upload :file-list="fileList" :before-upload="beforeUpload">
                         <a-button type="link" icon="file-add" style="color:black" />
                     </a-upload>
+                </li>
+                <li class="ToolBar-item">
+                    <a-button type="link" icon="audio" style="color:black" @click="clickRecord"/>
                 </li>
             </ul>
             <label class="InputBox-input">
@@ -66,6 +70,8 @@
 import Message from "@/components/Message.vue";
 import Emoji from "@/components/Emoji.vue"
 import ChatUserItem from "@/components/ChatUserListItem.vue"
+import Recorder from 'js-audio-recorder'
+import RecordingAnim from "@/components/RecordingAnim.vue";
 export default {
   name: 'message-view',
   onMounted(){
@@ -79,10 +85,12 @@ export default {
             senderId:1,
             createTime:new Date(),
             message:"hello",
+            type:1
         },{
             senderId:2,
             createTime:new Date(),
             message:"hello",
+            type:1
         }],  
         userItem:[{
             name:"史迪奇",
@@ -94,6 +102,10 @@ export default {
         title:"联系人名称",
         inputText:"",
         uploadFile:null,
+        recordData:{
+            showAnima:false,
+            recorder:null,
+        }
     }
   },
   methods: {
@@ -139,17 +151,61 @@ export default {
             }
         }
         changeSelectedText(textArea, this.$refs.getEmoji.faceList[this.$refs.getEmoji.emojiItem]);
-        this.inputText.value = textArea.value;// 要同步data中的数据
+        this.inputText = textArea.value;// 要同步data中的数据
         // console.log(this.$refs.getEmoji.faceList[this.$refs.getEmoji.emojiItem]);
     },
     sendMsg(){
-        console.log(this.inputText);
+        this.message.push({
+            senderId:1,
+            type:1,
+            message:this.inputText,
+            createTime:new Date()
+        })
+        this.inputText="";
+    },
+    //销毁录音实例
+    handleDestroy () {
+        console.log('销毁实例')
+        if (this.recordData.recorder) {
+            this.recordData.recorder.destroy() // 毁实例
+        }
+    },
+    //录音
+    clickRecord(){
+        if(this.recordData.showAnima){
+            this.recordData.recorder.pause() // 暂停录音
+            var blob = this.recordData.recorder.getWAVBlob()//获取wav格式音频数据
+            var msg = URL.createObjectURL(blob)
+            console.log(msg)
+            this.message.push({
+                senderId:1,
+                type:2,
+                message:msg,
+                createTime:new Date()
+            })
+            this.handleDestroy()
+        }
+        else{
+            this.recordData.recorder = new Recorder({
+                sampleBits: 16, // 采样位数，支持 8 或 16，默认是16
+                sampleRate: 11025, // 采样率，支持 11025、16000、22050、24000、44100、48000，根据浏览器默认值，我的chrome是48000
+                numChannels: 1 // 声道，支持 1 或 2， 默认是1
+            })
+            Recorder.getPermission().then(() => {
+                console.log('开始录音')
+                this.recordData.recorder.start() // 开始录音
+            }, (error) => {
+                console.log(`${error.name} : ${error.message}`)
+            })
+        }
+        this.recordData.showAnima=!this.recordData.showAnima;
     }
   },
   components: {
     Message,
     Emoji,
     ChatUserItem,
+    RecordingAnim
   }
 }
 </script>
