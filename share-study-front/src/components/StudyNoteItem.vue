@@ -60,6 +60,10 @@
 <script>
 export default {
   props:["note"],
+  data(){
+    return {
+    }
+  },
   methods: {
     clickLike(){
         this.note.likeNum+=(this.note.isLiked?-1:1)
@@ -71,7 +75,7 @@ export default {
     },
     clickComment(){
 
-    }
+    },
   },
 }
 </script>
