@@ -6,6 +6,7 @@ import QA_myAnswerView from '../views/QA_myAnswerView.vue'
 import QA_myCollectionView from '../views/QA_myCollectionView.vue'
 import QA_myQuestionView  from '../views/QA_myQuestionView.vue'
 import StudyNotes  from '../views/StudyNotesView.vue'
+import FriendManage from '../views/FriendManage.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -42,10 +43,15 @@ const routes = [
     name: 'QA_myQuestion',
     component: QA_myQuestionView
   },
-{
+  {
     path: '/studyNotes',
     name: 'studyNotes',
     component: StudyNotes
+  },
+  {
+    path: '/FriendManage',
+    name: 'FriendManage',
+    component: FriendManage
   },
 ]
 

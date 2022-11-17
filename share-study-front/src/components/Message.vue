@@ -15,7 +15,10 @@
                 <div class="Message-content">
                     <div class="TextMessage-sender TextMessage"> 
                         <div class="css-vurnku">
-                            {{item.message}}
+                            <div v-if="item.type==1">
+                                {{item.message}}
+                            </div>
+                            <audio :src="item.message" v-if="item.type==2"></audio>
                         </div>
                     </div>
                 </div>
@@ -36,7 +39,10 @@
                 <div class="Message-content Message-content--reverse" >
                     <div class="TextMessage TextMessage-receiver"> 
                         <div class="css-vurnku">
-                            {{item.message}}
+                            <div v-if="item.type==1">
+                                {{item.message}}
+                            </div>
+                            <audio :src="item.message" v-if="item.type==2" id="aud" ref="audio" controls="controls" ></audio>
                         </div>
                     </div>
                 </div>
@@ -51,12 +57,12 @@ export default {
   props:['item','avatar'],
   data(){
     return {
-        userId:2,
+        userId:1,
         userAvatar:"https://wc-project.oss-cn-shanghai.aliyuncs.com/2022/09/15/f32998ad64ff43a4a2a77af9c9cae32av2-0ca202b31685b55bb7a7bf091cceee97_r.jpg"
     }
   },
   methods:{
-
+    
   }
 }
 </script>
