@@ -26,8 +26,8 @@
                                 <div class="central-meta">
                                     <div class="frnds">
                                         <a-menu v-model="current" mode="horizontal" >
-                                            <a-menu-item key="1"> <a-icon type="mail" />我的好友</a-menu-item>
-                                            <a-menu-item key="2"> <a-icon type="appstore" />好友请求</a-menu-item>
+                                            <a-menu-item key="1" @click="getMyFriends" > <a-icon type="mail" />我的好友</a-menu-item>
+                                            <a-menu-item key="2" @click="getFriendReq" > <a-icon type="appstore" />好友请求</a-menu-item>
                                         </a-menu>
                                         <div class="tab-content"> 
                                             <div v-show="current=='1'" style="width:100%;padding-bottom: 20px;">
@@ -35,8 +35,8 @@
                                             </div>
                                             <div class="tab-pane active fade show">
                                                 <ul class="nearby-contct">
-                                                    <li v-for="item in 10">
-                                                        <MyFriendItem :type="current"></MyFriendItem>
+                                                    <li v-for="item in friendItem">
+                                                        <MyFriendItem :item="item" :type="current"></MyFriendItem>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -53,8 +53,8 @@
                                                 <a-input-search placeholder="输入用户名或用户手机号搜索" style="width: 100%" @search="onSearch" />
                                             </div>
                                             <ul id="people-list" class="ps-container followers">
-                                                <li v-for="item in 0">
-                                                    <AddFriendItem></AddFriendItem>
+                                                <li v-for="item in addFriendItem">
+                                                    <AddFriendItem :item="item"></AddFriendItem>
                                                 </li>
                                             </ul>
                                         </div>
@@ -72,15 +72,61 @@
 <script>
 import MyFriendItem  from '@/components/MyFriendItem.vue'
 import AddFriendItem from '@/components/AddFriendItem.vue'
+import { searchUser,getReq,getFriends } from '@/api/friend'
 export default {
   data(){
     return {
-        current:"1"
+        current:"1",
+        addFriendItem:[],
+        friendItem:[],
     }
   },
   components: {
     MyFriendItem,
     AddFriendItem
+  },
+  methods: {
+    onSearch(Value){
+        searchUser(Value).then(response=>{
+            if(response.status==200){
+                this.$message.success("搜索成功");
+                this.addFriendItem=response.data;
+                return;
+            }
+            this.$message.error("搜索失败");
+        }).catch(e=>{
+            console.log(e);
+            this.$message.error("搜索失败");
+        })
+    },
+    getFriendReq(){
+        getReq().then(response=>{
+            if(response.status==200){
+                this.friendItem=response.data;
+                this.$message.success("获取好友请求成功")
+            }
+            else{
+                this.$message.error("获取好友请求失败")
+            }
+        }).catch(e=>{
+            console.log(e)
+            this.$message.error("获取好友请求失败")
+        })
+    },
+    getMyFriends(){
+        getFriends().then(response=>{
+            if(response.status==200){
+                this.friendItem=response.data;
+                this.$message.success("获得好友列表成功")
+            }
+            else{
+                this.$message.error("获取好友列表失败")
+            }
+        }).catch(e=>{
+            console.log(e)
+            this.$message.error("获取好友列表失败")
+        })
+    }
   }
 }
 

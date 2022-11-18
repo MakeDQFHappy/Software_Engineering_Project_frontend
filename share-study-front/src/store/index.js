@@ -17,6 +17,13 @@ export default new Vuex.Store({
     changeLogin(state,user){
       state.userToken=user.userToken
       localStorage.setItem('userToken',user.userToken)
+    },
+    delLogin(){
+      localStorage.clear();
+    },
+    setId(state,user){
+      state.userId=user.id
+      localStorage.setItem('userId',user.id)
     }
   },
   actions: {

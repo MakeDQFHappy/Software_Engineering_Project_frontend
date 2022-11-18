@@ -16,7 +16,6 @@ export function getCurrentUrl() {
 
 // create an axios instance
 const service = axios.create({
-
   // baseURL:'https://api.guisu.fun:6001/api/',
   baseURL: getDomainUrl() + '/api',
   // withCredentials: true, // send cookies when cross-domain requests
@@ -26,7 +25,6 @@ const service = axios.create({
   crossDomain:true,
 
 })
-
 // request interceptor
 service.interceptors.request.use(
     config => {
@@ -46,38 +44,33 @@ service.interceptors.request.use(
 
 
 service.interceptors.response.use(
+
     response => {
-        console.log("response:", response);
-        // if the custom code is not 200, it is judged as an error.
-        if (response.status != 200) {
+      console.log('response：',response)
 
-            //判断token是否失效
-            if (response.status == 400) {
-                //清除当前token信息
-                store.commit('delLogin');
-                //打开登录界面
-                startLogin()
-                //前往首页
-                //this.$router.replace('/');
-
-                Message({
-                    message: '您尚未登录，请先登录',
-                    type: 'error',
-                    duration: 5 * 1000
-                })
-
-
-                return Promise.reject(new Error('您尚未登录' || 'Error'))
-            }
-
-            return Promise.reject(new Error(res.msg || 'Error'))
-        } else {
-            return response
+      // if the custom code is not 200, it is judged as an error.
+      if (response.status != 200) {
+        //判断token是否失效
+        if(response.status==500){
+          //清除当前token信息
+          store.commit('delLogin');
+          //前往登录页
+          return Promise.reject(new Error('您尚未登录'||'Error'))
         }
+
+        return Promise.reject(new Error('Error'))
+      } else {
+        return response
+      }
     },
     error => {
-        return Promise.reject(error)
+        if(error.response.status==500){
+            store.commit('delLogin');
+        }
+      console.log(error) // for debug
+      return Promise.reject(error)
     }
+
 )
 
 export default service

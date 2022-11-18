@@ -3,33 +3,82 @@
         <div class="nearly-pepls">
             <figure>
                 <a href="">
-                    <img src="https://wc-project.oss-cn-shanghai.aliyuncs.com/2022/09/15/f32998ad64ff43a4a2a77af9c9cae32av2-0ca202b31685b55bb7a7bf091cceee97_r.jpg" alt="">
+                    <img :src="item.friendAvatar" alt="">
                 </a>
             </figure>
             <div class="pepl-info" v-if="type=='1'">
-                <h4 style="font-weight: 1000;">好友名</h4>
-                <span style="color: #8d8d8d;">男 23</span>
-                <a href="#" class="add-butn more-action" style="background: rgb(230, 28, 75);">删除好友</a>
+                <h4 style="font-weight: 1000;">{{item.friendName}}</h4>
+                <span style="color: #8d8d8d;">{{item.sex}} {{item.age}}</span>
+                <a href="#" class="add-butn more-action" style="background: rgb(230, 28, 75);" @click="remove">删除好友</a>
                 <a href="#" class="add-butn" style="background: #088dcd;">发送私信</a>
             </div>
             <div class="pepl-info" v-if="type=='2'">
-                <h4 style="font-weight: 1000;">好友名</h4>
-                <span style="color: #8d8d8d;">男 23</span>
-                <a href="#" class="add-butn info">申请信息</a>
-                <a href="#" class="add-butn more-action" style="background: rgb(41, 113, 34);">同意请求</a>
-                <a href="#" class="add-butn" style="background: rgb(230, 28, 75);">拒绝请求</a>
+                <h4 style="font-weight: 1000;">{{item.friendName}}</h4>
+                <span style="color: #8d8d8d;">{{item.sex}} {{item.age}}</span>
+                <a href="#" class="add-butn info" @click="openModal">申请信息</a>
+                <a href="#" class="add-butn more-action" style="background: rgb(41, 113, 34);" @click="agree">同意请求</a>
+                <a href="#" class="add-butn" style="background: rgb(230, 28, 75);"@click="reject">拒绝请求</a>
             </div>
+            <a-modal v-model="visible" title="请求信息" @ok="handleOk">
+                <p>{{item.introduction}}</p>
+            </a-modal>
         </div>
     </div>
 </template>
 
 <script>
+import { agreeReq,rejectReq,removeFriend } from '@/api/friend'
 export default {
   props:["item","type"],
   data(){
     return {
+        visible:false,
     }
   },
+  methods:{
+    openModal(){
+        this.visible=true;
+    },
+    agree(){
+        agreeReq(this.item.applicationId).then(response=>{
+            if(response.status==200){
+                this.$message.success("添加好友成功")
+            }
+            else{
+                this.$message.error("添加好友失败")
+            }
+        }).catch(e=>{
+            console.log(e);
+            this.$message.error("添加好友失败")
+        })
+    },
+    remove(){
+        removeFriend(this.item.friendKey).then(response=>{
+            if(response.status==200){
+                this.$message.success("删除好友成功")
+            }
+            else{
+                this.$message.error("删除好友失败")
+            }
+        }).catch(e=>{
+            console.log(e)
+            this.$message.error("删除好友失败")
+        })
+    },
+    reject(){
+        rejectReq(this.item.applicationId).then(response=>{
+            if(response.status==200){
+                this.$message.success("拒绝请求成功")
+            }
+            else{
+                this.$message.error("拒绝请求失败")
+            }
+        }).catch(e=>{
+            console.log(e);
+            this.$message.error("拒绝请求失败")
+        })
+    }
+  }
 }
 </script>
 
