@@ -47,6 +47,8 @@
 
 <script>
 export default {
+
+    
   name: 'StudyNotes',
   props:['item','avatar'],
   data(){

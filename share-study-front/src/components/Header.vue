@@ -9,7 +9,7 @@
           <a-icon type="bulb" />
           问答互助
         </a-menu-item>
-        <a-menu-item key="2" @click="openStudyNotes">
+        <a-menu-item key="2" @click="openStudyNotesOverview">
           <a-icon type="read" />
           学习交流
         </a-menu-item>
@@ -81,8 +81,8 @@ export default {
     openQA() {
       this.$router.push("/QA_myQuestion");
     },
-    openStudyNotes() {
-      this.$router.push("/studyNotes");
+    openStudyNotesOverview() {
+      this.$router.push("/studyNotesOverview");
     },
     showModal() {
       this.visible = true;

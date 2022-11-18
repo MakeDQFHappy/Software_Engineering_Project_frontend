@@ -7,15 +7,8 @@
       @onClick="onClick"
     >
     </editor>
-    <Button type="primary" shape="round" size="{large}" @click="publishNotes">
-      发布
-    </Button>
-    <Button type="primary" shape="round" size="{large}" @click="getNotes">
-      get
-    </Button>
-    <div v-for="(item, index) in notesList" :key="index"> 
-      <div v-html=item></div>
-    </div>
+
+
   </div>
 </template>
 
@@ -33,7 +26,9 @@ import "tinymce/plugins/wordcount";
 import "tinymce/plugins/colorpicker";
 import "tinymce/plugins/textcolor";
 
-import axios from 'axios'
+import "tinymce/icons/default/icons.min.js";
+
+import axios from "axios";
 
 export default {
   components: {
@@ -75,14 +70,23 @@ export default {
         //此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
         //如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
         images_upload_handler: (blobInfo, success, failure) => {
-          const img = "data:image/jpeg;base64," + blobInfo.base64();
-          success(img);
+          let formData = new FormData();
+          formData.append("content", blobInfo.base64());
+          axios.post("/test_picture", formData).then((res) => {
+            console.log("数据：", res);
+            console.log(res.status);
+            if (res.status == 200) {
+              const img = "data:image/jpeg;base64," + blobInfo.base64();
+              success(img);
+            } else {
+              success("");
+            }
+          });
         },
         resize: false,
       },
       myValue: this.value,
-      noteContent : "",
-      notesList: [],
+
     };
   },
   mounted() {
@@ -98,33 +102,8 @@ export default {
     clear() {
       this.myValue = "";
     },
-    publishNotes(content) {
-      console.log(this.myValue);
 
-      // form-data 请求
-      let formData = new FormData();
-      formData.append("content", this.myValue);
-      axios.post("/upload", formData).then((res) => {
-        console.log("数据：", res);
-      });
     },
-
-
-    getNotes(){
-      axios.get('/download', {
-      params: {
-       
-      }
-    }).then((res) => {
-      console.log('数据：', res);
-      this.noteContent = res.data;
-      this.notesList.push(res.data);
-      console.log('数据：', this.notesList);
-
-    })
-
-    }
-  },
   watch: {
     value(newValue) {
       this.myValue = newValue;
