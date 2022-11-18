@@ -5,14 +5,10 @@ import PrivateMessage  from '../views/PrivateMessageView.vue'
 import QA_myAnswerView from '../views/QA_myAnswerView.vue'
 import QA_myCollectionView from '../views/QA_myCollectionView.vue'
 import QA_myQuestionView  from '../views/QA_myQuestionView.vue'
-<<<<<<< HEAD
 import StudyNotesOverview  from '../views/StudyNotesOverviewView.vue'
-import  StudyNotes from '../views/StudyNotesView.vue'
-=======
 import StudyNotes  from '../views/StudyNotesView.vue'
 import FriendManage from '../views/FriendManage.vue'
 // import StudyNotesOverview from '../views/StudyNotesOverviewView.vue'
->>>>>>> 17bfb6a6b274d56683fc094efce91ade8040d24b
 Vue.use(VueRouter)
 
 const routes = [
