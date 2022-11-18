@@ -47,8 +47,8 @@
               <div class="ListShortcut">
                 <div class="Topstory-follow">
                   <div class="" role="list">
-                    <div v-for="(item, index) in QAItems" :key="index">
-                      <QA_QuestionBlock :QA="item"></QA_QuestionBlock>
+                    <div v-for="(item, index) in QAQuestionItems" :key="index">
+                      <QA_QuestionBlock :QAQuestion="item"></QA_QuestionBlock>
                     </div>
                   </div>
                 </div>
@@ -379,7 +379,7 @@ export default {
   data() {
     return {
       form: { content: "" },
-      QAItems: [
+      QAQuestionItems: [
         {
           username: "张颖",
           date: "2",
@@ -388,26 +388,9 @@ export default {
           questionlink:
             "https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4",
 
-          tags: ["历史遗留问题", "非常难以解决", "让人捉摸不透"],
+          tags: ["元宇宙"],
           content:
-            "关于这个事，我简单说两句，你明白就行，总而言之这个事呢，现在就是这个情况，具体的呢，大家也都看得到，也得出来说那么几句，可能你听的不是很明白，但是意思就是那么个意思，不知道的你也不用去猜，这种事情见得多了，我只想说懂得都懂，不懂的我也不多解释，毕竟自己知道就好，细细品吧。",
-          likeNum: 10,
-          starNum: 10,
-          commentNum: 10,
-          isLiked: true,
-          isStared: true,
-        },
-        {
-          username: "杜庆峰",
-          date: "1",
-          title: "为什么当代大学生越来越不自律",
-          userlink: "https://sse.tongji.edu.cn/info/1092/3135.htm",
-          questionlink:
-            "https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4",
-
-          tags: ["历史遗留问题", "非常难以解决", "让人捉摸不透"],
-          content:
-            "关于这个事，我简单说两句，你明白就行，总而言之这个事呢，现在就是这个情况，具体的呢，大家也都看得到，也得出来说那么几句，可能你听的不是很明白，但是意思就是那么个意思，不知道的你也不用去猜，这种事情见得多了，我只想说懂得都懂，不懂的我也不多解释，毕竟自己知道就好，细细品吧。",
+            "原神是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「神之眼」，导引元素之力。你将扮演一位名为「旅行者」的神秘角色，在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲人——同时，逐步发掘「原神」的真相.",
           likeNum: 10,
           starNum: 10,
           commentNum: 10,
@@ -549,9 +532,6 @@ export default {
   justify-content: space-between;
   max-width: 654px;
   position: relative;
-}
-.FeedSource-byline {
-  margin-bottom: 14px;
 }
 .AuthorInfo-content {
   -webkit-box-flex: 1;
