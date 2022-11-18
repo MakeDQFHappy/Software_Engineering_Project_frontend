@@ -17,7 +17,7 @@
           <a-icon type="message" />
           好友私信
         </a-menu-item>
-        <a-menu-item key="4" @click="openMessage">
+        <a-menu-item key="4" @click="openFriendManage">
           <a-icon type="team" />
           好友管理
         </a-menu-item>
@@ -29,7 +29,7 @@
         >
           登录
         </a-menu-item>
-        <a-button type="link" v-if="isLogin" style="float: right">
+        <a-button type="link" v-if="isLogin" style="float: right" @click="logout">
           <a-avatar
             shape="square"
             :size="63"
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { userLogin } from "@/api/login";
+import { userLogin,userLogout } from "@/api/login";
 import { mapMutations } from "vuex";
 export default {
   name: "header",
@@ -78,19 +78,26 @@ export default {
     openMessage() {
       this.$router.push("/message");
     },
+    openFriendManage() {
+      this.$router.push("/FriendManage");
+    },
     openQA() {
       this.$router.push("/QA_myQuestion");
     },
     openStudyNotesOverview() {
       this.$router.push("/studyNotesOverview");
+
     },
     showModal() {
       this.visible = true;
     },
     ...mapMutations(["changeLogin"]),
+    ...mapMutations(["setId"]),
     submitLogin() {
+      this.setId({id:this.loginText})
       userLogin(this.loginText)
-        .then((response) => {
+        .then(response => {
+          console.log(response)
           if (response.status == 200) {
             this.isLogin = true;
             this.$message.success("登录成功");
@@ -106,6 +113,13 @@ export default {
           this.$message.error("登录失败");
         });
     },
+    ...mapMutations(["delLogin"]),
+    logout(){
+      userLogout();
+      this.delLogin();
+      this.$message.success("退出成功");
+      this.isLogin=false;
+    }
   },
 };
 </script>

@@ -8,7 +8,6 @@
     >
     </editor>
 
-
   </div>
 </template>
 
@@ -26,8 +25,11 @@ import "tinymce/plugins/wordcount";
 import "tinymce/plugins/colorpicker";
 import "tinymce/plugins/textcolor";
 
+<<<<<<< HEAD
 import "tinymce/icons/default/icons.min.js";
 
+=======
+>>>>>>> 17bfb6a6b274d56683fc094efce91ade8040d24b
 import axios from "axios";
 
 export default {
@@ -86,7 +88,6 @@ export default {
         resize: false,
       },
       myValue: this.value,
-
     };
   },
   mounted() {
@@ -104,6 +105,7 @@ export default {
     },
 
     },
+
   watch: {
     value(newValue) {
       this.myValue = newValue;
