@@ -55,12 +55,11 @@ const routes = [
     component: StudyNotes
   },
   {
-<<<<<<< HEAD
     path: '/studyNotesOverview',
     name: 'studyNotesOverview',
     component: StudyNotesOverview
   },
-=======
+  {
     path: '/FriendManage',
     name: 'FriendManage',
     component: FriendManage
@@ -70,7 +69,6 @@ const routes = [
   //   name: 'studyNotesOverview',
   //   component: StudyNotesOverview
   // },
->>>>>>> 17bfb6a6b274d56683fc094efce91ade8040d24b
 ]
 
 const router = new VueRouter({
