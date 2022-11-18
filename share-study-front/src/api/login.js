@@ -8,11 +8,10 @@ export function userLogin(userId) {
     })
 }
 
-export function userLogout(id) {
+export function userLogout() {
     return request({
         url: '/login/logout',
         method: 'get',
-        params: {"id":id},
         // headers: { 'Content-Type': 'multipart/form-data' }
     })
 }

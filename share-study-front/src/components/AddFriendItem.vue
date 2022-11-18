@@ -1,21 +1,89 @@
 <template>
     <div>
         <figure>
-            <img src="https://wc-project.oss-cn-shanghai.aliyuncs.com/2022/09/15/f32998ad64ff43a4a2a77af9c9cae32av2-0ca202b31685b55bb7a7bf091cceee97_r.jpg" alt="" >
+            <img :src="item.userAvatar" alt="" >
         </figure>
         <div class="friend-meta">
             <h4>
-                <a href="">好友名</a>
+                <a href="">{{item.userName}}</a>
             </h4>
-            <div style="font-size:12px">22 男</div>
+            <div style="font-size:12px">{{item.sex}} {{item.age}}</div>
         </div>
         <div class="addButton">
-            <a-button type="primary" style="">
+            <a-button type="primary" style="" @click="showModal">
                 添加好友
             </a-button>
         </div>
+        <a-modal v-model="visible" title="发送好友请求">
+            <template slot="footer">
+                <a-button key="back" @click="handleCancel">
+                取消
+                </a-button>
+                <a-button key="submit" type="primary" :loading="loading" @click="handleOk" >
+                发送
+                </a-button>
+            </template>
+            <a-textarea v-model="introduction" placeholder="输入请求信息,不超过五十字" allow-clear maxLength=50 />
+        </a-modal>
     </div>
 </template>
+
+<script>
+import { sendReq } from '@/api/friend'
+export default {
+  props:["item"],
+
+  data(){
+    return {
+        visible: false,
+        introduction:"",
+        loading: false,
+    }
+  },
+  methods:{
+    addFriend(){
+        sendReq(item.userId).then(response=>{
+            if(response.status==200){
+                this.$message.success("发送请求成功")
+            }
+            else{
+                this.$message.error("发送请求失败")
+            }
+        }).catch(e=>{
+            console.log(e)
+            this.$message.error("发送请求失败")
+        })
+    },
+    showModal() {
+      this.visible = true;
+    },
+    handleCancel(e) {
+      this.visible = false;
+      this.introduction="";
+    },
+    handleOk(e) {
+      this.loading = true;
+      sendReq(this.item.userId,this.introduction).then(response=>{
+            if(response.status==200){
+                this.handleCancel()
+                this.loading = false;
+                this.$message.success("发送请求成功")
+            }
+            else{
+                this.handleCancel()
+                this.loading = false;
+                this.$message.error("发送请求失败")
+            }
+        }).catch(e=>{
+            this.handleCancel()
+            this.loading = false;
+            console.log(e)
+            this.$message.error("发送请求失败")
+        })
+    },
+  }
+}
+</script>
 
 <style>
 .friend-meta {
