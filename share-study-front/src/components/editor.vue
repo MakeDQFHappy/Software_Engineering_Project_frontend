@@ -7,15 +7,7 @@
       @onClick="onClick"
     >
     </editor>
-    <Button type="primary" shape="round" size="{large}" @click="publishNotes">
-      发布
-    </Button>
-    <Button type="primary" shape="round" size="{large}" @click="getNotes">
-      get
-    </Button>
-    <div v-for="(item, index) in notesList" :key="index">
-      <div v-html="item"></div>
-    </div>
+
   </div>
 </template>
 
@@ -33,6 +25,11 @@ import "tinymce/plugins/wordcount";
 import "tinymce/plugins/colorpicker";
 import "tinymce/plugins/textcolor";
 
+<<<<<<< HEAD
+import "tinymce/icons/default/icons.min.js";
+
+=======
+>>>>>>> 17bfb6a6b274d56683fc094efce91ade8040d24b
 import axios from "axios";
 
 export default {
@@ -91,8 +88,6 @@ export default {
         resize: false,
       },
       myValue: this.value,
-      noteContent: "",
-      notesList: [],
     };
   },
   mounted() {
@@ -108,30 +103,9 @@ export default {
     clear() {
       this.myValue = "";
     },
-    publishNotes(content) {
-      console.log(this.myValue);
 
-      // form-data 请求
-      let formData = new FormData();
-      formData.append("content", this.myValue);
-      axios.post("/upload", formData).then((res) => {
-        console.log("数据：", res);
-      });
     },
 
-    getNotes() {
-      axios
-        .get("/download", {
-          params: {},
-        })
-        .then((res) => {
-          console.log("数据：", res);
-          this.noteContent = res.data.content;
-          this.notesList.push(res.data.content);
-          console.log("数据：", this.notesList);
-        });
-    },
-  },
   watch: {
     value(newValue) {
       this.myValue = newValue;

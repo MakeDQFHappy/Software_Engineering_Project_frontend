@@ -6,23 +6,23 @@
           ><span class="UserLink"
             ><div class="css-1gomreu">
               <button
-                @click="openuserlink(QA.userlink)"
+                @click="openuserlink(QAQuestion.userlink)"
                 onmouseover="this.style.color='#056de8';"
                 onmouseout="this.style.color='#8590a6';"
               >
-                {{ QA.username }}
+                {{ QAQuestion.username }}
               </button>
             </div></span
           ></span
         >
-        提供了回答<span class="Bull"> · </span>{{ QA.date }}天前
+        提供了回答<span class="Bull"> · </span>{{ QAQuestion.date }}天前
       </div>
       <div class="AuthorInfo FeedSource-byline AuthorInfo--plain">
         <div class="AuthorInfo">
           <span class="UserLink AuthorInfo-avatarWrapper"
             ><div class="css-1gomreu">
               <button
-                @click="openuserlink(QA.userlink)"
+                @click="openuserlink(QAQuestion.userlink)"
                 onmouseover="this.style.color='#056de8';"
                 onmouseout="this.style.color='#8590a6';"
               >
@@ -40,11 +40,11 @@
                 ><div class="css-1gomreu">
                   <button
                     type="text"
-                    @click="openuserlink(QA.userlink)"
+                    @click="openuserlink(QAQuestion.userlink)"
                     onmouseover="this.style.color='#056de8';"
                     onmouseout="this.style.color='#000000';"
                   >
-                    {{ QA.username }}
+                    {{ QAQuestion.username }}
                   </button>
                 </div></span
               >
@@ -52,16 +52,25 @@
           </div>
         </div>
       </div>
+      <div class="css-go5ofn-TagsContainer-StyledTags">
+        <div
+          class="css-pvcibd-TagWrap e27myof1"
+          v-for="(tag, index) in QAQuestion.tags"
+          :key="index"
+        >
+          <span>{{ tag }}</span>
+        </div>
+      </div>
     </div>
     <div class="ContentItem AnswerItem">
       <h2 class="ContentItem-title">
         <div>
           <button
-            @click="openquestion(QA.questionlink)"
+            @click="openquestion(QAQuestion.questionlink)"
             onmouseover="this.style.color='#056de8';"
             onmouseout="this.style.color='#000000';"
           >
-            {{ QA.title }}
+            {{ QAQuestion.title }}
           </button>
         </div>
       </h2>
@@ -76,8 +85,7 @@
                 class="RichText ztext CopyrightRichText-richText css-4em6pe"
                 options="[object Object]"
                 itemprop="text"
-                >元宇宙(Metaverse),是人类运用数字技术构建的,由现实世界映射或超越现实世界,可与现实世界交互的虚拟世界
-                具备新型社会体系的数字生活空间。
+                >{{ QAQuestion.content }}
               </span>
             </div>
             <a
@@ -113,20 +121,55 @@
                 <a-icon type="caret-down" /></div></span
           ></a-button>
           <a-button
+            v-if="!QAQuestion.isLiked"
             type="link"
-            class="ContentItem-action Button--plain Button--withIcon Button--withLabel"
+            style="color: black"
+            @click="clickLike"
           >
-            <span style="display: inline-flex; align-items: center"
-              ><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-              <div class="icons-list">
-                <a-icon type="message" /></div></span
-            >200 条评论
+            <a-icon type="like" />
+            <span>{{ QAQuestion.likeNum }}</span>
+          </a-button>
+          <a-button
+            v-if="QAQuestion.isLiked"
+            type="link"
+            style="color: red"
+            @click="clickLike"
+          >
+            <a-icon type="like" theme="filled" />
+            <span>{{ QAQuestion.likeNum }}</span>
+          </a-button>
+          <a-tooltip placement="top" title="收藏" trigger="hover"
+            ><a-button
+              v-if="!QAQuestion.isStared"
+              type="link"
+              style="color: black"
+              @click="clickStar"
+            >
+              <a-icon type="star" />
+              <span>{{ QAQuestion.starNum }}</span>
+            </a-button>
+          </a-tooltip>
+          <a-tooltip placement="top" title="收藏" trigger="hover">
+            <a-button
+              v-if="QAQuestion.isStared"
+              type="link"
+              style="color: #ffd700"
+              @click="clickStar"
+            >
+              <a-icon type="star" theme="filled" />
+              <span>{{ QAQuestion.starNum }}</span>
+            </a-button>
+          </a-tooltip>
+          <a-button type="link" style="color: black">
+            <a-icon type="message" />
+            <span>{{ QAQuestion.commentNum }}</span>
           </a-button>
           <div class="Popover ShareMenu ContentItem-action">
             <div class="ShareMenu-toggler">
               <a-button
                 type="link"
                 class="Button--plain Button--withIcon Button--withLabel"
+                @click="openNotification"
               >
                 <span style="display: inline-flex; align-items: center">
                   <div class="icons-list">
@@ -135,25 +178,6 @@
               </a-button>
             </div>
           </div>
-          <a-button
-            type="link"
-            class="ContentItem-action Button--plain Button--withIcon Button--withLabel"
-          >
-            <span style="display: inline-flex; align-items: center"
-              ><div class="icons-list">
-                <a-icon type="star" theme="filled" />
-              </div> </span
-            >收藏</a-button
-          ><a-button
-            type="link"
-            class="ContentItem-action Button--plain Button--withIcon Button--withLabel"
-          >
-            <span style="display: inline-flex; align-items: center">
-              <div>&nbsp;&nbsp;</div>
-              <div class="icons-list">
-                <a-icon type="heart" theme="filled" /></div></span
-            >喜欢
-          </a-button>
         </div>
       </div>
     </div>
@@ -162,11 +186,11 @@
 
 <script>
 export default {
-  props: ["QA"],
+  props: ["QAQuestion"],
   created: {
     loadimg() {
       var object = document.getElementById("userimg");
-      object.src = QA.userimg;
+      object.src;
     },
   },
   methods: {
@@ -176,6 +200,34 @@ export default {
     },
     openquestion(src) {
       window.open(src, "_blank");
+    },
+    clickLike() {
+      this.QAQuestion.likeNum += this.QAQuestion.isLiked ? -1 : 1;
+      this.QAQuestion.isLiked = !this.QAQuestion.isLiked;
+    },
+    clickStar() {
+      this.QAQuestion.starNum += this.QAQuestion.isStared ? -1 : 1;
+      this.QAQuestion.isStared = !this.QAQuestion.isStared;
+    },
+    clickComment() {},
+    openNotification() {
+      if (window.clipboardData) {
+        window.clipboardData.setData("text", window.location.href);
+      } else {
+        (function () {
+          document.oncopy = function (e) {
+            e.clipboardData.setData("text", window.location.href);
+            e.preventDefault();
+            document.oncopy = null;
+          };
+        })(window.location.href);
+        document.execCommand("Copy");
+      }
+      this.$notification.open({
+        message: "提示",
+        description: "链接已复制到剪切板,快分享给你的好友吧",
+        duration: 4.5,
+      });
     },
   },
 };
@@ -230,9 +282,6 @@ export default {
   justify-content: space-between;
   max-width: 654px;
   position: relative;
-}
-.FeedSource-byline {
-  margin-bottom: 14px;
 }
 .AuthorInfo-content {
   -webkit-box-flex: 1;
@@ -509,5 +558,45 @@ body {
   line-height: 32px;
   padding: 0 16px;
   text-align: center;
+}
+.e27myof1 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  cursor: default;
+}
+.css-pvcibd-TagWrap {
+  padding: 0px 8px;
+  font-size: 12px;
+  height: 24px;
+  line-height: 20px;
+  font-weight: 400;
+  color: rgb(139, 132, 132);
+  cursor: pointer;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  background-color: rgb(222, 223, 226);
+  border-radius: 12px;
+  margin: 2px 10px 2px 0px;
+}
+.css-go5ofn-TagsContainer-StyledTags {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+a,
+a:link,
+a:active,
+a:hover,
+a:focus {
+  text-decoration: none;
+  color: #2d95b5;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  transition: color 0.3s;
+  -webkit-text-decoration-skip: objects;
 }
 </style>
