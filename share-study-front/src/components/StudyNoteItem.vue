@@ -10,7 +10,9 @@
             </template>
             <a-avatar :size="22" icon="user" style="margin-right: 10px" />
           </a-popover>
-          <a href="" class="css-1l949x6-Title">{{ note.title }}</a>
+          <a class="css-1l949x6-Title" @click="openStudyNote">{{
+            note.title
+          }}</a>
         </div>
         <div>
           <div class="css-go5ofn-TagsContainer-StyledTags">
@@ -77,21 +79,49 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   props: ["note"],
-  data() {
-    return {};
-  },
   methods: {
+    like() {
+      let formData = new FormData();
+      formData.append("userID", 1);
+      formData.append("targetID", this.note.noteID);
+      axios.post("/like", formData).then((res) => {
+        console.log("数据：", res);
+      });
+    },
+    cancelLike() {
+      let formData = new FormData();
+      formData.append("userID", 1);
+      formData.append("targetID", this.note.noteID);
+      axios.post("/cancel_like", formData).then((res) => {
+        console.log("数据：", res);
+      });
+    },
     clickLike() {
+      if (this.note.isLiked) {
+        this.cancelLike();
+      } else {
+        this.like();
+      }
       this.note.likeNum += this.note.isLiked ? -1 : 1;
       this.note.isLiked = !this.note.isLiked;
     },
+
     clickStar() {
       this.note.starNum += this.note.isStared ? -1 : 1;
       this.note.isStared = !this.note.isStared;
     },
     clickComment() {},
+    openStudyNote() {
+      this.$router.push({
+        path: "/studyNotes",
+        query: {
+          noteID: this.note.noteID,
+        },
+      });
+    },
   },
 };
 </script>
