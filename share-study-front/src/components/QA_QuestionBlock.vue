@@ -1,22 +1,6 @@
 <template>
   <div class="Card TopstoryItem TopstoryItem-isFollow" tabindex="0">
     <div class="FeedSource">
-      <div class="FeedSource-firstline">
-        <span
-          ><span class="UserLink"
-            ><div class="css-1gomreu">
-              <button
-                @click="openuserlink(QAQuestion.userlink)"
-                onmouseover="this.style.color='#056de8';"
-                onmouseout="this.style.color='#8590a6';"
-              >
-                {{ QAQuestion.username }}
-              </button>
-            </div></span
-          ></span
-        >
-        提供了回答<span class="Bull"> · </span>{{ QAQuestion.date }}天前
-      </div>
       <div class="AuthorInfo FeedSource-byline AuthorInfo--plain">
         <div class="AuthorInfo">
           <span class="UserLink AuthorInfo-avatarWrapper"
@@ -50,6 +34,16 @@
               >
             </div>
           </div>
+        </div>
+        <div class="css-1gomreu">
+          <a-button
+            v-if="!QAQuestion.isadopted"
+            @click="openuserlink(QAQuestion.userlink)"
+            onmouseover="this.style.color='#056de8';"
+            onmouseout="this.style.color='#8590a6';"
+          >
+            采纳
+          </a-button>
         </div>
       </div>
       <div class="css-go5ofn-TagsContainer-StyledTags">
@@ -88,43 +82,76 @@
                 >{{ QAQuestion.content }}
               </span>
             </div>
-            <a
-              target="_blank"
-              type="button"
-              class="ContentItem-more Button--plain"
-              href="https://baike.baidu.com/item/%E5%85%83%E5%AE%87%E5%AE%99/58292530"
-            >
-              阅读全文
-            </a>
           </div></span
         >
+        <div class="read">
+          <a
+            target="_blank"
+            type="button"
+            class="ContentItem-more Button--plain"
+            href="https://baike.baidu.com/item/%E5%85%83%E5%AE%87%E5%AE%99/58292530"
+          >
+            阅读全文
+          </a>
+        </div>
+
         <div class="ContentItem-actions">
           <span></span>
           <a-button
+            v-if="!QAQuestion.isAgreed"
             class="Button VoteButton VoteButton--up"
             :style="{ background: '#F0F8FF' }"
+            @click="clickAgree"
           >
             <span style="display: inline-flex; align-items: center"
               ><div class="icons-list">
                 <a-icon type="caret-up" />
               </div>
             </span>
-            赞同</a-button
+            赞同&nbsp;{{ QAQuestion.agreenum }}</a-button
           >
+          <a-button
+            v-if="QAQuestion.isAgreed"
+            class="Button VoteButton VoteButton--up"
+            :style="{ background: '	#00BFFF' }"
+            @click="clickAgree"
+          >
+            <span style="display: inline-flex; align-items: center"
+              ><div class="icons-list">
+                <a-icon type="caret-up" />
+              </div>
+            </span>
+            已赞同&nbsp;{{ QAQuestion.agreenum }}</a-button
+          >
+
           <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
           <a-button
+            v-if="!QAQuestion.isDenied"
             class="Button VoteButton VoteButton--down"
             :style="{ background: '#F0F8FF' }"
+            @click="clickDeny"
           >
             <span style="display: inline-flex; align-items: center"
               ><div class="icons-list">
                 <a-icon type="caret-down" /></div></span
           ></a-button>
           <a-button
+            v-if="QAQuestion.isDenied"
+            class="Button VoteButton VoteButton--down"
+            :style="{ background: '#00BFFF' }"
+            @click="clickDeny"
+          >
+            <span style="display: inline-flex; align-items: center"
+              ><div class="icons-list">
+                <a-icon type="caret-down" /></div></span
+          ></a-button>
+
+          <a-button
             v-if="!QAQuestion.isLiked"
             type="link"
             style="color: black"
             @click="clickLike"
+            v-show="!QAQuestion.isLiked"
           >
             <a-icon type="like" />
             <span>{{ QAQuestion.likeNum }}</span>
@@ -134,32 +161,30 @@
             type="link"
             style="color: red"
             @click="clickLike"
+            v-show="QAQuestion.isLiked"
           >
             <a-icon type="like" theme="filled" />
-            <span>{{ QAQuestion.likeNum }}</span>
+            <span>{{ QAQuestion.likeNum }}</span> </a-button
+          ><a-button
+            v-if="!QAQuestion.isStared"
+            type="link"
+            style="color: black"
+            @click="clickStar"
+            v-show="!QAQuestion.isStared"
+          >
+            <a-icon type="star" />
+            <span>{{ QAQuestion.starNum }}</span>
           </a-button>
-          <a-tooltip placement="top" title="收藏" trigger="hover"
-            ><a-button
-              v-if="!QAQuestion.isStared"
-              type="link"
-              style="color: black"
-              @click="clickStar"
-            >
-              <a-icon type="star" />
-              <span>{{ QAQuestion.starNum }}</span>
-            </a-button>
-          </a-tooltip>
-          <a-tooltip placement="top" title="收藏" trigger="hover">
-            <a-button
-              v-if="QAQuestion.isStared"
-              type="link"
-              style="color: #ffd700"
-              @click="clickStar"
-            >
-              <a-icon type="star" theme="filled" />
-              <span>{{ QAQuestion.starNum }}</span>
-            </a-button>
-          </a-tooltip>
+          <a-button
+            v-if="QAQuestion.isStared"
+            type="link"
+            style="color: #ffd700"
+            @click="clickStar"
+            v-show="QAQuestion.isStared"
+          >
+            <a-icon type="star" theme="filled" />
+            <span>{{ QAQuestion.starNum }}</span>
+          </a-button>
           <a-button type="link" style="color: black">
             <a-icon type="message" />
             <span>{{ QAQuestion.commentNum }}</span>
@@ -194,12 +219,30 @@ export default {
     },
   },
   methods: {
+    adopt() {
+      this.QAQuestion.isadopted = true;
+    },
     openuserlink(src) {
       window.open(src, "_blank");
       // window.location.href = src;
     },
     openquestion(src) {
       window.open(src, "_blank");
+    },
+    clickAgree() {
+      this.QAQuestion.agreenum += this.QAQuestion.isAgreed ? -1 : 1;
+      this.QAQuestion.isAgreed = !this.QAQuestion.isAgreed;
+      this.QAQuestion.isDenied = false;
+    },
+    clickDeny() {
+      this.QAQuestion.isDenied = !this.QAQuestion.isDenied;
+      if (
+        this.QAQuestion.isAgreed == true &&
+        this.QAQuestion.isDenied == true
+      ) {
+        this.QAQuestion.isAgreed = false;
+        this.QAQuestion.agreenum -= 1;
+      }
     },
     clickLike() {
       this.QAQuestion.likeNum += this.QAQuestion.isLiked ? -1 : 1;
@@ -208,6 +251,17 @@ export default {
     clickStar() {
       this.QAQuestion.starNum += this.QAQuestion.isStared ? -1 : 1;
       this.QAQuestion.isStared = !this.QAQuestion.isStared;
+      if (this.QAQuestion.isStared == true)
+        this.$notification.open({
+          message: "收藏成功",
+          description: "已收藏在'我的收藏夹/提问'中",
+          duration: 1.5,
+        });
+      else
+        this.$notification.open({
+          message: "已取消收藏",
+          duration: 0.5,
+        });
     },
     clickComment() {},
     openNotification() {
@@ -260,10 +314,10 @@ export default {
   box-sizing: border-box;
 }
 .FeedSource-firstline {
-  height: 24px;
+  height: 25px;
 }
 .FeedSource-firstline {
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   color: #8590a6;
 }
 .css-1gomreu {
@@ -364,6 +418,9 @@ a:-webkit-any-link {
 }
 .AuthorInfo-avatar {
   vertical-align: top;
+}
+.read {
+  margin-top: 10px;
 }
 .css-dhor58 {
   box-sizing: border-box;
