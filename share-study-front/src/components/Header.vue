@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+    <a-layout-header :style="{ position: 'fixed', zIndex: 100, width: '100%' }">
       <div class="logo">
         <img :src="logoImg" style="width: 100%; height: 80%" />
       </div>

@@ -13,13 +13,13 @@
             <a-menu mode="inline" :open-keys="openKeys" style="width: 100%" @openChange="onOpenChange">
                 <a-sub-menu key="sub1">
                     <span slot="title"><a-icon type="fire" /><span>最近联系</span></span>
-                        <a-menu-item style="height:60px" v-for="(item,index) in userItem" :key="index" >
+                        <a-menu-item style="height:60px" v-for="(item,index) in userItem" :key="index" @click="changeChat(item)">
                             <ChatUserItem :item="item"></ChatUserItem>
                         </a-menu-item>
                 </a-sub-menu>
                 <a-sub-menu key="sub2">
                     <span slot="title"><a-icon type="team" /><span>我的好友</span></span>
-                    <a-menu-item style="height:60px" v-for="(item,index) in userItem" :key="index" >
+                    <a-menu-item style="height:60px" v-for="(item,index) in userItem" :key="index" @click="changeChat(item)">
                         <ChatUserItem :item="item"></ChatUserItem>
                     </a-menu-item>
                 </a-sub-menu>
@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="ChatBox ChatBox">
-            <header class="ChatBox-title">{{title}}</header>
+            <header class="ChatBox-title">{{contactPerson}}</header>
             <div class="MessagesBox-wrapper">
                 <div class="MessagesBox"  role="list" id="scrollDiv">
                     <div v-for="item in message">
@@ -72,9 +72,17 @@ import Emoji from "@/components/Emoji.vue"
 import ChatUserItem from "@/components/ChatUserListItem.vue"
 import Recorder from 'js-audio-recorder'
 import RecordingAnim from "@/components/RecordingAnim.vue";
+import { sendTextMessage,getMessage,sendFileMessage,sendAudioMessage } from '@/api/friendMessage'
+import { getFriends } from '@/api/friend'
 export default {
   name: 'message-view',
-  onMounted(){
+  mounted(){
+    getFriends().then(response=>{
+        if(response.status==200){
+            this.userItem=response.data
+            this.$message.success("获得好友列表成功")
+        }
+    })
   },
   data(){
     return {
@@ -93,22 +101,44 @@ export default {
             type:1
         }],  
         userItem:[{
-            name:"史迪奇",
-            message:"巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉拔萝卜"
+            friendAvatar:"",
+            friendName:"史迪奇",
+            lastMessage:"巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉拔萝卜"
         },{
-            name:"史莱姆",
-            message:"啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+            friendAvatar:"",
+            friendName:"史莱姆",
+            lastMessage:"啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
         },],
-        title:"联系人名称",
         inputText:"",
         uploadFile:null,
         recordData:{
             showAnima:false,
             recorder:null,
-        }
+        },
+        contactPerson:"",
+        contactId:"",
     }
   },
   methods: {
+    getMsg(){
+        getMessage(this.contactId).then(response=>{
+            if(response.status==200){
+                this.message=response.data;
+                this.$message.success("获取消息成功")
+            }
+            else{
+                this.$message.error("获取消息失败")
+            }
+        }).catch(e=>{
+            console.log(e)
+            this.$message.error("获取消息失败")
+        })
+    },
+    changeChat(item){
+        this.contactPerson=item.friendName;
+        this.contactId=item.friendId;
+        this.getMsg();
+    },
     onSearch(){
         console.log("search")
     },
@@ -120,7 +150,20 @@ export default {
     },
     submit(){
         if(this.uploadFile!=null){
-            console.log(this.uploadFile);
+            var formdata=new FormData();
+            formdata.append("file",this.uploadFile)
+            sendFileMessage(this.contactId,formdata).then(response=>{
+                if(response.status==200){
+                    this.message.push(response.data)
+                    this.$message.success("发送文件成功")
+                }
+                else{
+                    this.$message.error("发送文件失败")
+                }
+            }).catch(e=>{
+                console.log(e);
+                this.$message.error("发送文件失败")
+            })
         }
     },
     handleChange(value) {
@@ -155,12 +198,25 @@ export default {
         // console.log(this.$refs.getEmoji.faceList[this.$refs.getEmoji.emojiItem]);
     },
     sendMsg(){
-        this.message.push({
-            senderId:1,
-            type:1,
-            message:this.inputText,
-            createTime:new Date()
+        sendTextMessage(this.contactId,this.inputText).then(response=>{
+            if(response.status==200){
+                this.message.push(response.data)
+                this.$message.success("发送消息成功")
+            }
+            else{
+                this.$message.error("发送消息失败")
+            }
+        }).catch(e=>{
+            console.log(e)
+            this.$message.error("发送消息失败")
         })
+
+        // this.message.push({
+        //     senderId:1,
+        //     type:1,
+        //     message:this.inputText,
+        //     createTime:new Date()
+        // })
         this.inputText="";
     },
     //销毁录音实例
@@ -175,14 +231,28 @@ export default {
         if(this.recordData.showAnima){
             this.recordData.recorder.pause() // 暂停录音
             var blob = this.recordData.recorder.getWAVBlob()//获取wav格式音频数据
-            var msg = URL.createObjectURL(blob)
-            console.log(msg)
-            this.message.push({
-                senderId:1,
-                type:2,
-                message:msg,
-                createTime:new Date()
+            let file = new window.File([blob], new Date().getTime()+'.wav', {type: 'wav'}) // 转成file类型
+            let formData=new FormData
+            formData.append('file', file)
+            sendAudioMessage(this.contactId,formData).then(response=>{
+                if(response.status==200){
+                    this.message.push(response.data)
+                    this.$message.success("发送成功");
+                }
+                else{
+                    this.$message.error("发送失败")
+                }
+            }).catch(e=>{
+                console.log(e)
+                this.$message.error("发送失败")
             })
+            // console.log(msg)
+            // this.message.push({
+            //     senderId:1,
+            //     type:2,
+            //     message:msg,
+            //     createTime:new Date()
+            // })
             this.handleDestroy()
         }
         else{

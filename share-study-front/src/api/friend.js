@@ -15,6 +15,13 @@ export function getReq() {
     })
 }
 
+export function getMyReq() {
+    return request({
+        url: 'friend/getMyReq',
+        method: 'get'
+    })
+}
+
 export function getFriends() {
     return request({
         url: 'friend/getMyFriends',

@@ -1,17 +1,17 @@
 <template>
     <div class="ChatUserListItem">
         <div class="css-dgtvym">
-            <a-avatar src="https://wc-project.oss-cn-shanghai.aliyuncs.com/2022/09/15/f32998ad64ff43a4a2a77af9c9cae32av2-0ca202b31685b55bb7a7bf091cceee97_r.jpg" :size="40" icon="user" />
+            <a-avatar :src="item.friendAvatar" :size="40" icon="user" />
         </div>
         <div class="ChatUserListItem-Content">
             <div class="ChatUserListItem-Name">
                 <!-- 用户名 -->
                 <span class="userName">
-                    <span class="userName-nameArea"> {{item.name}}</span>
+                    <span class="userName-nameArea"> {{item.friendName}}</span>
                 </span>
                 <time>21小时前</time>
             </div>
-            <div class="ChatUserListItem-Snippet">{{item.message}}</div>
+            <div class="ChatUserListItem-Snippet">{{item.lastMessage}}</div>
         </div>
     </div>
 </template>
