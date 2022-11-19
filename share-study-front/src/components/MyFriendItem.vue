@@ -17,7 +17,23 @@
                 <span style="color: #8d8d8d;">{{item.sex}} {{item.age}}</span>
                 <a href="#" class="add-butn info" @click="openModal">申请信息</a>
                 <a href="#" class="add-butn more-action" style="background: rgb(41, 113, 34);" @click="agree">同意请求</a>
-                <a href="#" class="add-butn" style="background: rgb(230, 28, 75);"@click="reject">拒绝请求</a>
+                <a href="#" class="add-butn" style="background: rgb(230, 28, 75);" @click="reject">拒绝请求</a>
+            </div>
+            <div class="pepl-info" v-if="type=='3'">
+                <h4 style="font-weight: 1000;">{{item.friendName}}</h4>
+                <span style="color: #8d8d8d;">{{item.sex}} {{item.age}}</span>
+                <a href="#" class="add-butn" style="background: rgb(230, 28, 75);right: 178px;" @click="openModal">撤回请求</a>
+                <a href="#" class="add-butn more-action" style="background:rgb(63, 63, 79);right:81px"  @click="openModal">申请信息</a>
+                <a-tag v-if="item.status==1" color="green" style="width:auto;position:absolute;right:0;line-height:200%;top:10px " >
+                    已通过
+                </a-tag>
+                <a-tag v-if="item.status==0" color="green" style="width:auto;position:absolute;right:0;line-height:200%;top:10px " >
+                    待通过
+                </a-tag>
+                <a-tag v-if="item.status==2" color="green" style="width:auto;position:absolute;right:0;line-height:200%;top:10px " >
+                    已拒绝
+                </a-tag>
+                <!-- <a href="#" class="add-butn" style="background: rgb(230, 28, 75);" @click="reject">拒绝请求</a> -->
             </div>
             <a-modal v-model="visible" title="请求信息" @ok="handleOk">
                 <p>{{item.introduction}}</p>

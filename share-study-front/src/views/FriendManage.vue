@@ -28,6 +28,7 @@
                                         <a-menu v-model="current" mode="horizontal" >
                                             <a-menu-item key="1" @click="getMyFriends" > <a-icon type="mail" />我的好友</a-menu-item>
                                             <a-menu-item key="2" @click="getFriendReq" > <a-icon type="appstore" />好友请求</a-menu-item>
+                                            <a-menu-item key="3" @click="getMineReq" > <a-icon type="appstore" />我的请求</a-menu-item>
                                         </a-menu>
                                         <div class="tab-content"> 
                                             <div v-show="current=='1'" style="width:100%;padding-bottom: 20px;">
@@ -72,7 +73,7 @@
 <script>
 import MyFriendItem  from '@/components/MyFriendItem.vue'
 import AddFriendItem from '@/components/AddFriendItem.vue'
-import { searchUser,getReq,getFriends } from '@/api/friend'
+import { searchUser,getReq,getFriends,getMyReq } from '@/api/friend'
 export default {
   data(){
     return {
@@ -100,6 +101,7 @@ export default {
         })
     },
     getFriendReq(){
+        this.friendItem=[];
         getReq().then(response=>{
             if(response.status==200){
                 this.friendItem=response.data;
@@ -113,7 +115,23 @@ export default {
             this.$message.error("获取好友请求失败")
         })
     },
+    getMineReq(){
+        this.friendItem=[];
+        getMyReq().then(response=>{
+            if(response.status==200){
+                this.friendItem=response.data
+                this.$message.success("获取我的请求成功")
+            }
+            else{
+                this.$message.error("获取我的请求失败")
+            }
+        }).catch(e=>{
+            console.log(e)
+            this.$message.error("获取我的请求失败")
+        })
+    },
     getMyFriends(){
+        this.friendItem=[];
         getFriends().then(response=>{
             if(response.status==200){
                 this.friendItem=response.data;
@@ -127,6 +145,7 @@ export default {
             this.$message.error("获取好友列表失败")
         })
     }
+
   }
 }
 

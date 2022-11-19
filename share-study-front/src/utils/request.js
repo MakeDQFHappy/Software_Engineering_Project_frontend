@@ -32,9 +32,9 @@ service.interceptors.request.use(
         if (localStorage.getItem('userToken')) {
             config.headers.Token = localStorage.getItem('userToken');
         }
-        config.headers = {
-            'Content-Type': 'application/json'
-        }
+        // config.headers = {
+        //     'Content-Type': 'application/json'
+        // }
         return config;
     },
     error => {
