@@ -236,13 +236,16 @@ export default {
       });
       axios
       .get("/get_likes_info", {
-        params: { noteID: this.noteID },
+        params: { noteID: this.noteID,
+                  userID: 1,
+                  targetID: this.noteID
+        },
       })
       .then((res) => {
         this.userName = res.data.userName;
         this.title = res.data.title;
         this.content = res.data.content;
-        console.log("数据：", this.content);
+        console.log("数据：", res);
       });
   },
 

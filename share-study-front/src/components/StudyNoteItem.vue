@@ -95,6 +95,7 @@ export default {
       let formData = new FormData();
       formData.append("userID", 1);
       formData.append("targetID", this.note.noteID);
+      console.log(this.note.noteID)
       axios.post("/cancel_like", formData).then((res) => {
         console.log("数据：", res);
       });
