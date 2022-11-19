@@ -18,7 +18,7 @@
                             <div v-if="item.type==1">
                                 {{item.message}}
                             </div>
-                            <audio :src="item.message" v-if="item.type==2"></audio>
+                            <audio :src="item.message" v-if="item.type==2" id="aud" ref="audio" controls="controls" ></audio>
                             <img v-if="item.type==3" :src="item.message" alt="">
                             <div v-if="item.type>3">
                                 <a href="#" @click="preview">
