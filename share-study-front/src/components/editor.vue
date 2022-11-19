@@ -7,7 +7,6 @@
       @onClick="onClick"
     >
     </editor>
-
   </div>
 </template>
 
@@ -26,8 +25,6 @@ import "tinymce/plugins/colorpicker";
 import "tinymce/plugins/textcolor";
 
 import "tinymce/icons/default/icons.min.js";
-
-
 import axios from "axios";
 
 export default {
@@ -101,8 +98,7 @@ export default {
     clear() {
       this.myValue = "";
     },
-
-    },
+  },
 
   watch: {
     value(newValue) {
