@@ -86,6 +86,7 @@ export default {
 </script>
 
 <style scoped>
+
 .friend-meta {
     display: inline-block;
     padding-left: 10px;
