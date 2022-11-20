@@ -103,9 +103,7 @@ export default {
             this.$message.success("登录成功");
             this.visible = false;
             console.log(response.data);
-            this.changeLogin({
-              userToken: response.data,
-            });
+            this.changeLogin(response.data);
           }
         })
         .catch((error) => {

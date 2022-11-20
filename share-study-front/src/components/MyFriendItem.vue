@@ -135,9 +135,10 @@ a.add-butn {
 }
 
 img {
-    height: auto;
-    max-width: 100%;
+    height: 60px;
+    width: 100%;
     vertical-align: middle;
+    object-fit: cover;
     border-style: none;
     border-radius: 100%;
 }
