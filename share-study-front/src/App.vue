@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-fixed">
+  <a-layout id="components-layout-demo-fixed" style="min-height:100%">
     <Header />
     <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
       <a-breadcrumb :style="{ margin: '16px 0' }">

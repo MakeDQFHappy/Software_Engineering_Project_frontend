@@ -19,7 +19,9 @@
                                 {{item.message}}
                             </div>
                             <audio :src="item.message" v-if="item.type==2" id="aud" ref="audio" controls="controls" ></audio>
-                            <img v-if="item.type==3" :src="item.message" alt="">
+                            <a href="#" @click="previewImg">
+                                <img v-if="item.type==3" :src="item.message" alt="">
+                            </a>
                             <div v-if="item.type>3">
                                 <a href="#" @click="preview">
                                     <div class="file-name">{{fileName}}</div>
@@ -98,7 +100,7 @@
             </iframe>
         </a-modal>
         <a-modal v-model="imgVisible"  width="1000px" :footer="null" :dialog-style="{ top: '20px' }">
-            <img :src="item.message" alt="">
+            <img :src="item.message" width="1000px" alt="">
         </a-modal>
     </div>
 </template>
@@ -109,8 +111,11 @@ export default {
   props:['item','avatar'],
   mounted(){
     this.fileName=this.item.message.split('/')[this.item.message.split('/').length-1]
+    console.log(111)
     console.log(this.item)
     this.type=this.item.type
+    this.userAvatar=localStorage.getItem('userAvatar')
+    this.userId=localStorage.getItem('userId')
   },
   data(){
     return {

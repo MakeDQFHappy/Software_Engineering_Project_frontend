@@ -16,14 +16,18 @@ export default new Vuex.Store({
   mutations: {
     changeLogin(state,user){
       state.userToken=user.userToken
-
+      state.userId=user.userId
+      state.userAvatar=user.userAvatar
+      localStorage.setItem('userId',user.userId)
       localStorage.setItem('userToken',user.userToken)
+      localStorage.setItem('userAvatar',user.userAvatar)
     },
     delLogin(){
       localStorage.clear();
     },
     setId(state,user){
       state.userId=user.id
+      
       localStorage.setItem('userId',user.id)
     }
   },
