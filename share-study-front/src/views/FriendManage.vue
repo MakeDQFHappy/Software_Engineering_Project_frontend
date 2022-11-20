@@ -26,13 +26,13 @@
                                 <div class="central-meta">
                                     <div class="frnds">
                                         <a-menu v-model="current" mode="horizontal" >
-                                            <a-menu-item key="1" @click="getMyFriends" > <a-icon type="mail" />我的好友</a-menu-item>
-                                            <a-menu-item key="2" @click="getFriendReq" > <a-icon type="appstore" />好友请求</a-menu-item>
-                                            <a-menu-item key="3" @click="getMineReq" > <a-icon type="appstore" />我的请求</a-menu-item>
+                                            <a-menu-item key="1" @click="getMyFriends" > 我的好友</a-menu-item>
+                                            <a-menu-item key="2" @click="getFriendReq" > 好友请求</a-menu-item>
+                                            <a-menu-item key="3" @click="getMineReq" > 我的请求</a-menu-item>
                                         </a-menu>
                                         <div class="tab-content"> 
                                             <div v-show="current=='1'" style="width:100%;padding-bottom: 20px;">
-                                                <a-input-search placeholder="输入好友名或好友手机号搜索" style="width: 100%" @search="onSearch" />
+                                                <a-input-search placeholder="输入好友名搜索" style="width: 100%" @search="onFriendSearch" />
                                             </div>
                                             <div class="tab-pane active fade show">
                                                 <ul class="nearby-contct">
@@ -80,11 +80,15 @@ export default {
         current:"1",
         addFriendItem:[],
         friendItem:[],
+        allFriends:[],
     }
   },
   components: {
     MyFriendItem,
     AddFriendItem
+  },
+  mounted(){
+    this.getMyFriends()
   },
   methods: {
     onSearch(Value){
@@ -99,6 +103,21 @@ export default {
             console.log(e);
             this.$message.error("搜索失败");
         })
+    },
+    onFriendSearch(Value){
+        console.log(111)
+        if(Value==""){
+            console.log(this.allFriends)
+            this.friendItem=this.allFriends
+            return
+        }
+        this.friendItem=[];
+        for(let i=0;i<this.allFriends.length;++i){
+            console.log(this.allFriends[i].friendName.indexOf(Value))
+            if(this.allFriends[i].friendName.indexOf(Value)>=0){
+                this.friendItem.push(this.allFriends[i])
+            }
+        }
     },
     getFriendReq(){
         this.friendItem=[];
@@ -135,6 +154,7 @@ export default {
         getFriends().then(response=>{
             if(response.status==200){
                 this.friendItem=response.data;
+                this.allFriends=response.data;
                 this.$message.success("获得好友列表成功")
             }
             else{
@@ -144,8 +164,7 @@ export default {
             console.log(e)
             this.$message.error("获取好友列表失败")
         })
-    }
-
+    },
   }
 }
 
@@ -388,9 +407,10 @@ figure {
     width: 45px;
 }
 img {
-    height: auto;
-    max-width: 100%;
+    height: 60px;
+    width: 100%;
     vertical-align: middle;
+    object-fit: cover;
     border-style: none;
     border-radius: 100%;
 }

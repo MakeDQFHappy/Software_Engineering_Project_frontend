@@ -166,8 +166,8 @@ export default {
 };
 </script>
 
+<style src="@/css/bilibiliCSS/list.0ac357f4669ca460e5f026632d649bd086927338.css"  scoped></style>
 <style scoped>
-@import "../css/bilibiliCSS/list.0ac357f4669ca460e5f026632d649bd086927338.css";
 .css-a11gpv-ContentWrapper {
   display: flex;
   flex-direction: column;
