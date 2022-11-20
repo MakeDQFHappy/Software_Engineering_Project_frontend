@@ -7,7 +7,7 @@
             <nav class="TopstoryTabs Topstory-tabs">
               <a
                 tabindex="0"
-                class="TopstoryTabs-link Topstory-tabsLink is-active"
+                class="TopstoryTabs-link Topstory-tabsLink"
                 @click="openQA_myQuestion"
                 >我的提问</a
               ><a
@@ -17,7 +17,7 @@
                 >我的回答</a
               ><a
                 tabindex="2"
-                class="TopstoryTabs-link Topstory-tabsLink"
+                class="TopstoryTabs-link Topstory-tabsLink is-active"
                 @click="openQA_Recommend"
                 >推荐</a
               ><a
@@ -83,16 +83,14 @@ export default {
       form: { content: "" },
       QAQuestionItems: [
         {
-          username: "张颖",
+          username: "杜庆峰",
           agreenum: 1000,
-          title: "什么是元宇宙",
+          title: "看手机的危害",
           userlink: "https://sse.tongji.edu.cn/info/1206/3148.htm",
           questionlink:
             "https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4",
-
-          tags: ["元宇宙"],
           content:
-            "原神是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「神之眼」，导引元素之力。你将扮演一位名为「旅行者」的神秘角色，在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲人——同时，逐步发掘「原神」的真相.",
+            "每天早上我出去跑步的时候都看到我隔壁那个女的一边看手机一边走路，终于今天早上看到她走台阶的时候摔了一跤，我早就知道会有这一天了，所以同学们不要老是看手机。",
           likeNum: 10,
           starNum: 10,
           commentNum: 10,
