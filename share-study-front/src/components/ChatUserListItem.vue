@@ -1,7 +1,9 @@
 <template>
     <div class="ChatUserListItem">
         <div class="css-dgtvym">
-            <a-avatar :src="item.friendAvatar" :size="40" icon="user" />
+            <a-badge :count="item.notReadNum" :overflow-count="99">
+                <a-avatar :src="item.friendAvatar" :size="40" icon="user" />
+            </a-badge>
         </div>
         <div class="ChatUserListItem-Content">
             <div class="ChatUserListItem-Name">

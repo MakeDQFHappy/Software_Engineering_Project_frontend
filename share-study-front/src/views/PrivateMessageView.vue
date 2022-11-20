@@ -72,7 +72,7 @@ import Emoji from "@/components/Emoji.vue"
 import ChatUserItem from "@/components/ChatUserListItem.vue"
 import Recorder from 'js-audio-recorder'
 import RecordingAnim from "@/components/RecordingAnim.vue";
-import { sendTextMessage,getMessage,sendFileMessage,sendAudioMessage } from '@/api/friendMessage'
+import { sendTextMessage,getMessage,sendFileMessage,sendAudioMessage,readMsg } from '@/api/friendMessage'
 import { getFriends } from '@/api/friend'
 export default {
   name: 'message-view',
@@ -151,6 +151,20 @@ export default {
         this.contactId=item.friendId;
         this.personAvatar=item.friendAvatar
         this.getMsg();
+        if(item.notReadNum>0){
+            readMsg(item.friendId).then(response=>{
+                if(response.status==200){
+                    item.notReadNum=0;
+                }
+                else{
+                    this.$message.error("已读消息失败")
+                }
+            }).catch(e=>{
+                console.log(e)
+                this.$message.error("已读消息失败")
+            })
+        }
+        
     },
     onSearch(){
         console.log("search")
