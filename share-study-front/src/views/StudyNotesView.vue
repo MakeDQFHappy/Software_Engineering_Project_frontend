@@ -28,9 +28,9 @@
                   <div class="bili-avatar" style="width: 100%; height: 100%">
                     <img
                       class="bili-avatar-img bili-avatar-face bili-avatar-img-radius"
-                      data-src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                      data-src="https://sse.tongji.edu.cn/__local/F/F7/8C/FBF06C6434CF18D2B095068E3B4_0177F6A3_FF81.jpg?e=.jpg"
                       alt=""
-                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                      src="https://sse.tongji.edu.cn/__local/F/F7/8C/FBF06C6434CF18D2B095068E3B4_0177F6A3_FF81.jpg?e=.jpg"
                     />
 
                     <span
