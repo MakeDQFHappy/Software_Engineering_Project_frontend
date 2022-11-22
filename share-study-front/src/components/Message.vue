@@ -13,19 +13,20 @@
                     </div>
                 </div>
                 <div class="Message-content">
-                    <div class="TextMessage-sender TextMessage"> 
+                    <div class="TextMessage-sender TextMessage">
                         <div class="css-vurnku">
                             <div v-if="item.type==1">
                                 {{item.message}}
                             </div>
                             <audio :src="item.message" v-if="item.type==2" id="aud" ref="audio" controls="controls" ></audio>
+
                             <a href="#" @click="previewImg">
                                 <img v-if="item.type==3" :src="item.message" alt="">
                             </a>
                             <div v-if="item.type>3">
                                 <a href="#" @click="preview">
                                     <div class="file-name">{{fileName}}</div>
-                                    <img :src="fileImgs[type-4]" alt="" class="file-img" > 
+                                    <img :src="fileImgs[type-4]" alt="" class="file-img" >
                                 </a>
                             </div>
                         </div>
@@ -39,7 +40,7 @@
                                     . . .
                                 </a-button>
                             </a-popover>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -58,7 +59,7 @@
                     </div>
                 </div>
                 <div class="Message-content Message-content--reverse" >
-                    <div class="TextMessage TextMessage-receiver"> 
+                    <div class="TextMessage TextMessage-receiver">
                         <div class="css-vurnku">
                             <div v-if="item.type==1">
                                 {{item.message}}
@@ -70,7 +71,7 @@
                             <div v-if="item.type>3">
                                 <a href="#" @click="preview">
                                     <div class="file-name">{{fileName}}</div>
-                                    <img :src="fileImgs[type-4]" alt="" class="file-img" > 
+                                    <img :src="fileImgs[type-4]" alt="" class="file-img" >
                                 </a>
                             </div>
                         </div>
@@ -80,13 +81,13 @@
                             <a-popover v-model="vsb" trigger="click">
                                 <p slot="content"><a @click="hide" style="color:black">举报</a></p>
                                 <p slot="content" v-if="item.type>=3"> <a @click="download" style="color:black">下载</a></p>
-                               
-                                
+
+
                                 <a-button type="link" style="color:black">
                                     . . .
                                 </a-button>
                             </a-popover>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -216,7 +217,7 @@ img {
     max-width: 100%;
     vertical-align: middle;
     border-style: none;
-    
+
 }
 .Message--reverse {
     -webkit-box-orient: horizontal;
