@@ -20,12 +20,13 @@
                 class="TopstoryTabs-link Topstory-tabsLink"
                 @click="openQA_Recommend"
                 >推荐</a
-              ><a
+              >
+              <!-- <a
                 tabindex="3"
                 class="TopstoryTabs-link Topstory-tabsLink"
                 @click="openQA_myCollection"
                 >我的收藏</a
-              >
+              > -->
               <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
               <a-input-search
                 placeholder="搜索"
@@ -76,6 +77,7 @@
 <script>
 import QA_QuestionBlock from "@/components/QA_QuestionBlock.vue";
 import QA_Manager from "@/components/QA_Manager.vue";
+import { get_myQuestion } from "@/api/QA";
 export default {
   name: "QA_myQuestionView",
   data() {
@@ -90,7 +92,7 @@ export default {
           questionlink:
             "https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4",
 
-          tags: ["元宇宙"],
+          labels: ["元宇宙"],
           content:
             "原神是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「神之眼」，导引元素之力。你将扮演一位名为「旅行者」的神秘角色，在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲人——同时，逐步发掘「原神」的真相.",
           likeNum: 10,
@@ -106,8 +108,27 @@ export default {
       ],
     };
   },
-
+  mounted() {
+    this.get_myQuestionReq();
+  },
   methods: {
+    get_myQuestionReq() {
+      this.QAQuestionItems = [];
+      get_myQuestion()
+        .then((response) => {
+          if (response.status == 200) {
+            this.QAQuestionItems = response.data;
+            this.$message.success("获取我的问题请求成功");
+          } else {
+            this.$message.error("获取我的问题请求失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("获取我的问题请求失败");
+        });
+    },
+
     openQA_myQuestion() {
       this.$router.push("/QA_myQuestion");
     },

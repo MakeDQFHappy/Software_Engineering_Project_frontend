@@ -27,7 +27,23 @@
         <div class="css-16vu25q">
           <div class="GlobalWriteV2">
             <div class="GlobalWriteV2-navTop">
-              <button class="GlobalWriteV2-topItem" title="回答">
+              <a-button
+                class="GlobalWriteV2-topItem"
+                title="回答"
+                type="link"
+                @click="() => (modal1Visible = true)"
+              >
+                <a-modal
+                  v-model="modal1Visible"
+                  title="写下你的问题"
+                  centered
+                  @ok="() => (modal1Visible = false)"
+                >
+                  <p>some contents...</p>
+                  <p>some contents...</p>
+                  <p>some contents...</p>
+                </a-modal>
+
                 <svg
                   width="40"
                   height="40"
@@ -44,7 +60,7 @@
                   </g>
                 </svg>
                 <div class="GlobalWriteV2-topTitle">回答问题</div>
-              </button>
+              </a-button>
               <!-- <button class="GlobalWriteV2-topItem">
                 <svg
                   width="40"
@@ -88,7 +104,26 @@
                   </g>
                 </svg>
                 <div class="GlobalWriteV2-topTitle">写文章</div></button> -->
-              <button class="GlobalWriteV2-topItem">
+              <a-button
+                class="GlobalWriteV2-topItem"
+                type="link"
+                @click="() => (modalVisible = true)"
+              >
+                <a-modal v-model="modalVisible" centered @ok="() => clickask()">
+                  <a-input placeholder="写下你的问题" v-model="inputHeader" />
+                  <a-textarea
+                    v-model="inputText"
+                    placeholder="请写下问题的具体描述"
+                    :auto-size="{ minRows: 3, maxRows: 8 }"
+                  />
+                  <a-input-number
+                    id="inputNumber"
+                    v-model="rewardpoints"
+                    :min="0"
+                    :max="10"
+                  />
+                  积分悬赏:{{ rewardpoints }}比特币
+                </a-modal>
                 <svg
                   width="40"
                   height="40"
@@ -105,7 +140,7 @@
                   </g>
                 </svg>
                 <div class="GlobalWriteV2-topTitle">提问</div>
-              </button>
+              </a-button>
             </div>
           </div>
         </div>
@@ -157,10 +192,60 @@
 </template>
 
 <script>
-export default {};
+import { askQuestion } from "@/api/QA";
+
+export default {
+  data() {
+    return {
+      message: [],
+      modalVisible: false,
+      modal1Visible: false,
+      inputText: "",
+      inputHeader: "",
+      rewardpoints: 0,
+    };
+  },
+  inject: ["reload"],
+  methods: {
+    clickask() {
+      this.modalVisible = false;
+      askQuestion(this.inputText, this.inputHeader, this.rewardpoints)
+        .then((response) => {
+          if (response.status == 200) {
+            this.reload();
+            this.message.push(response.data);
+            this.$message.success("提问成功");
+          } else {
+            this.$message.error("提问失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("提问失败");
+        }); // this.message.push({ // senderId:1,
+      // type:1, // message:this.inputText, // createTime:new Date() // })
+      this.inputText = "";
+    },
+  },
+};
 </script>
 
 <style>
+.InputBox-input {
+  -webkit-box-flex: 1;
+  -ms-flex: auto;
+  flex: auto;
+  border-width: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 0 4px 0 10px;
+}
+
 .icons-list >>> .anticon {
   margin-right: 6px;
   font-size: 24px;
