@@ -40,7 +40,8 @@
               </div>
             </div>
           </div>
-          <div class="right-side">
+          <div class="right-side scroll" style="margin: 0;
+    padding: 0;">
             <div class="more">
               <div class="top-bar">
                 <label >更多</label>
@@ -183,6 +184,12 @@ export default {
 
 <style src="@/css/bilibiliCSS/list.0ac357f4669ca460e5f026632d649bd086927338.css"  scoped></style>
 <style scoped>
+
+.page-content .right-side.scroll {
+    position: fixed;
+    transform: translateY(-50px);
+    -webkit-transform: translateY(-50px);
+}
 .nav-tab-bar {
     top: 72px;
     position: fixed;
