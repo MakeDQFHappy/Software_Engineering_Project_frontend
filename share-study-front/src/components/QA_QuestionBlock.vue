@@ -47,15 +47,15 @@
           <a-button v-if="QAQuestion.isadopted" disabled> 已采纳 </a-button>
         </div>
       </div>
-      <div class="css-go5ofn-TagsContainer-StyledTags">
+      <!-- <div class="css-go5ofn-TagsContainer-StyledTags">
         <div
           class="css-pvcibd-TagWrap e27myof1"
-          v-for="(tag, index) in QAQuestion.tags"
+          v-for="(tag, index) in QAQuestion.labels"
           :key="index"
         >
           <span>{{ tag }}</span>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="ContentItem AnswerItem">
       <h2 class="ContentItem-title">
@@ -65,7 +65,7 @@
             onmouseover="this.style.color='#056de8';"
             onmouseout="this.style.color='#000000';"
           >
-            {{ QAQuestion.title }}
+            {{ QAQuestion.questionheader }}
           </button>
         </div>
       </h2>
@@ -80,7 +80,7 @@
                 class="RichText ztext CopyrightRichText-richText css-4em6pe"
                 options="[object Object]"
                 itemprop="text"
-                >{{ QAQuestion.content }}
+                >{{ QAQuestion.questioncontent }}
               </span>
             </div>
           </div></span
@@ -104,7 +104,7 @@
             "
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悬赏:{{
-              QAQuestion.wanted
+              QAQuestion.rewardpoints
             }}比特币
           </div>
         </div>

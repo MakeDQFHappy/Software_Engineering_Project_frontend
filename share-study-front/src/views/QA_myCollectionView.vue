@@ -20,12 +20,13 @@
                 class="TopstoryTabs-link Topstory-tabsLink"
                 @click="openQA_Recommend"
                 >推荐</a
-              ><a
+              >
+              <!-- <a
                 tabindex="3"
                 class="TopstoryTabs-link Topstory-tabsLink is-active"
                 @click="openQA_myCollection"
                 >我的收藏</a
-              >
+              > -->
               <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
               <a-input-search
                 placeholder="搜索"
