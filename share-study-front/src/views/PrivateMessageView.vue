@@ -125,12 +125,9 @@ import { getFriends } from "@/api/friend";
 export default {
   name: "message-view",
   mounted() {
-    getFriends().then((response) => {
-      if (response.status == 200) {
-        this.userItem = response.data;
-        this.$message.success("获得好友列表成功");
-      }
-    });
+    this.getFriendsList();
+    this.userId = localStorage.getItem("userId");
+    this.openSocket();
   },
   data() {
     return {
@@ -138,20 +135,7 @@ export default {
       openKeys: ["sub1"],
       personAvatar:
         "https://wc-project.oss-cn-shanghai.aliyuncs.com/2022/09/15/f32998ad64ff43a4a2a77af9c9cae32av2-0ca202b31685b55bb7a7bf091cceee97_r.jpg",
-      message: [
-        {
-          senderId: 1,
-          createTime: new Date(),
-          message: "hello",
-          type: 1,
-        },
-        {
-          senderId: 2,
-          createTime: new Date(),
-          message: "hello",
-          type: 1,
-        },
-      ],
+      message: [],
       userItem: [
         {
           friendAvatar: "",
@@ -172,16 +156,34 @@ export default {
         recorder: null,
       },
       contactPerson: "",
+      userId: "",
       contactId: "",
+      socket: null,
     };
   },
   methods: {
+    getFriendsList() {
+      getFriends()
+        .then((response) => {
+          if (response.status == 200) {
+            this.userItem = response.data;
+            this.$message.success("获得好友列表成功");
+          } else {
+            this.$message.error("获得好友失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("获得好友失败");
+        });
+    },
     getMsg() {
       getMessage(this.contactId)
         .then((response) => {
           if (response.status == 200) {
             this.message = response.data;
             this.$message.success("获取消息成功");
+            this.scrollToBottom();
           } else {
             this.$message.error("获取消息失败");
           }
@@ -189,11 +191,24 @@ export default {
         .catch((e) => {
           console.log(e);
           this.$message.error("获取消息失败");
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("获取消息失败");
         });
     },
+
+    scrollToBottom() {
+      var ele = document.getElementById("scrollDiv");
+      setTimeout(function () {
+        ele.scrollTop = ele.scrollHeight;
+      }, 200);
+    },
     changeChat(item) {
+      this.message = [];
       this.contactPerson = item.friendName;
       this.contactId = item.friendId;
+      this.personAvatar = item.friendAvatar;
       this.getMsg();
     },
     onSearch() {
@@ -260,15 +275,22 @@ export default {
       this.inputText = textArea.value; // 要同步data中的数据
       // console.log(this.$refs.getEmoji.faceList[this.$refs.getEmoji.emojiItem]);
     },
+
     sendMsg() {
       sendTextMessage(this.contactId, this.inputText)
         .then((response) => {
           if (response.status == 200) {
+            this.sendMessage();
             this.message.push(response.data);
+            this.scrollToBottom();
             this.$message.success("发送消息成功");
           } else {
             this.$message.error("发送消息失败");
           }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("发送消息失败");
         })
         .catch((e) => {
           console.log(e);
@@ -338,6 +360,70 @@ export default {
         );
       }
       this.recordData.showAnima = !this.recordData.showAnima;
+    },
+
+    //websocket实时通讯
+    openSocket() {
+      if (typeof WebSocket == "undefined") {
+        console.log("您的浏览器不支持WebSocket");
+      } else {
+        console.log("您的浏览器支持WebSocket");
+        //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+        //等同于socket = new WebSocket("ws://localhost:8888/xxxx/im/25");
+        //var socketUrl="${request.contextPath}/im/"+$("#userId").val();
+        var socketUrl = "http://localhost:10001/imserver/" + this.userId;
+        socketUrl = socketUrl.replace("https", "ws").replace("http", "ws");
+        console.log(socketUrl);
+        if (this.socket != null) {
+          this.socket.close();
+          this.socket = null;
+        }
+        this.socket = new WebSocket(socketUrl);
+        //打开事件
+        this.socket = new WebSocket(socketUrl);
+        //打开事件
+        this.socket.onopen = function () {
+          console.log("websocket已打开");
+          //socket.send("这是来自客户端的消息" + location.href + new Date());
+        };
+        var that = this;
+        //获得消息事件
+        this.socket.onmessage = function (msg) {
+          var json = eval("(" + msg.data + ")");
+          if (Number(json.fromUserId) == that.contactId) {
+            that.getFriendsList();
+            that.getMsg();
+          } else {
+            that.getFriendsList();
+          }
+          //发现消息进入    开始处理前端触发逻辑
+        };
+        //关闭事件
+        this.socket.onclose = function () {
+          console.log("websocket已关闭");
+        };
+        //发生了错误事件
+        this.socket.onerror = function () {
+          console.log("websocket发生了错误");
+        };
+      }
+    },
+    sendMessage() {
+      if (typeof WebSocket == "undefined") {
+        console.log("您的浏览器不支持WebSocket");
+      } else {
+        console.log("您的浏览器支持WebSocket");
+        console.log(
+          '{"toUserId":"' +
+            this.contactId +
+            '","contentText":"' +
+            "this.content" +
+            '"}'
+        );
+        this.socket.send(
+          '{"toUserId":"' + this.contactId + '","contentText":"' + "111" + '"}'
+        );
+      }
     },
   },
   components: {

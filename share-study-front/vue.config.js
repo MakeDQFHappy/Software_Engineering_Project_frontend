@@ -14,6 +14,9 @@ module.exports = defineConfig({
           pathRewrite: {//对路径匹配到的字符串重写
             "^/api": "",
           },
+          client: {
+            webSocketURL: 'ws://0.0.0.0:3000/ws',
+          },
         },
       },
     },
