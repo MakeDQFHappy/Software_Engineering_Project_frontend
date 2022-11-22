@@ -28,9 +28,9 @@
                   <div class="bili-avatar" style="width: 100%; height: 100%">
                     <img
                       class="bili-avatar-img bili-avatar-face bili-avatar-img-radius"
-                      data-src="https://i1.hdslb.com/bfs/face/d3475952aa2fdc6310530214ba48afb46843f6f3.jpg@96w_96h_1c_1s.webp"
+                      data-src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
                       alt=""
-                      src="https://i1.hdslb.com/bfs/face/d3475952aa2fdc6310530214ba48afb46843f6f3.jpg@96w_96h_1c_1s.webp"
+                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
                     />
 
                     <span
@@ -90,6 +90,11 @@
                     contenteditable="false"
                   >
                     <div v-html="content"></div>
+
+
+                    <v-html-panel :url.asyc="'https://tj-software-engineer.oss-cn-shanghai.aliyuncs.com/note123123.html'"></v-html-panel>
+
+
 
                     <p><br /></p>
                   </div>
@@ -231,6 +236,7 @@ export default {
               "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
             datetime: moment().subtract(1, "days"),
           };
+        
           this.comments.push(newNoteItem);
         }
       });

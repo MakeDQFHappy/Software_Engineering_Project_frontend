@@ -10,7 +10,7 @@
             </template>
             <a-avatar :size="22" icon="user" style="margin-right: 10px" />
           </a-popover>
-          <a class="css-1l949x6-Title" @click="openStudyNote">{{
+          <a class="css-1l949x6-Title" @click="chargePoints">{{
             note.title
           }}</a>
         </div>
@@ -95,7 +95,7 @@ export default {
       let formData = new FormData();
       formData.append("userID", 1);
       formData.append("targetID", this.note.noteID);
-      console.log(this.note.noteID)
+      console.log(this.note.noteID);
       axios.post("/cancel_like", formData).then((res) => {
         console.log("数据：", res);
       });
@@ -114,7 +114,7 @@ export default {
       this.note.starNum += this.note.isStared ? -1 : 1;
       this.note.isStared = !this.note.isStared;
     },
-    clickComment() {},
+
     openStudyNote() {
       this.$router.push({
         path: "/studyNotes",
@@ -122,6 +122,22 @@ export default {
           noteID: this.note.noteID,
         },
       });
+    },
+    clickComment() {},
+    chargePoints() {
+      if (this.note.needPoints > 0) {
+        let self = this;
+        this.$confirm({
+          title: "该笔记需要积分",
+          content: "是否支付"+this.note.needPoints+"积分来打开笔记",
+          onOk() {
+            self.openStudyNote()
+          },
+          onCancel() {},
+        });
+      } else {
+        this.openStudyNote();
+      }
     },
   },
 };

@@ -8,8 +8,10 @@
                             <div class="col-lg-3">
                                 <aside class="sidebar static">
                                     <a-affix :offset-top="65">
+
                                         <div class="widget">
                                             <h4 class="widget-title">推荐好友</h4>
+
                                             <ul class="ps-container followers">
                                                 <li v-for="item in 5">
                                                     <AddFriendItem></AddFriendItem>
