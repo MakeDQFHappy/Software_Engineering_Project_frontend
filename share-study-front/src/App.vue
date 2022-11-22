@@ -8,7 +8,7 @@
         <a-breadcrumb-item>App</a-breadcrumb-item>
       </a-breadcrumb>
       <div>
-        <router-view></router-view>
+        <router-view v-if="isRouterAlive"></router-view>
       </div>
     </a-layout-content>
   </a-layout>
@@ -18,8 +18,24 @@
 import Header from "@/components/Header.vue";
 export default {
   name: "home-view",
+  provide() {
+    // 注册一个方法
+    return {
+      reload: this.reload,
+    };
+  },
   data() {
-    return {};
+    return {
+      isRouterAlive: true,
+    };
+  },
+  methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function () {
+        this.isRouterAlive = true;
+      });
+    },
   },
   components: {
     Header,
