@@ -13,3 +13,20 @@ export function askQuestion(content,header,rewardpoints) {
         data:content
     })
 }
+export function getAnswer(questionid)
+{
+    return request({
+        url: 'QA/getAnswer',
+        method: 'get',
+        params:{"questionid":questionid}
+    })
+}
+export function answerQuestion(questionid,content)
+{
+        return request({
+        url: 'QA/answerQuestion',
+        method: 'post',
+        params: { "questionid": questionid },
+        data:content
+    })
+}

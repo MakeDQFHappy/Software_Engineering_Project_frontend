@@ -110,7 +110,12 @@
                 @click="() => (modalVisible = true)"
               >
                 <a-modal v-model="modalVisible" centered @ok="() => clickask()">
-                  <a-input placeholder="写下你的问题" v-model="inputHeader" />
+                  <a-input
+                    placeholder="写下你的问题"
+                    v-model="inputHeader"
+                    @input="check_question"
+                  />
+                  <a-alert v-show="flag" message="你还没有输入问号" banner />
                   <a-textarea
                     v-model="inputText"
                     placeholder="请写下问题的具体描述"
@@ -203,6 +208,7 @@ export default {
       inputText: "",
       inputHeader: "",
       rewardpoints: 0,
+      flag: false,
     };
   },
   inject: ["reload"],
@@ -225,6 +231,16 @@ export default {
         }); // this.message.push({ // senderId:1,
       // type:1, // message:this.inputText, // createTime:new Date() // })
       this.inputText = "";
+    },
+    check_question(e) {
+      let a = e.target.value.replace(/[^?]/g, "");
+      console.log(a);
+      console.log(e.target.value);
+      if (a != e.target.value) {
+        this.flag = true;
+      } else {
+        this.flag = false;
+      }
     },
   },
 };

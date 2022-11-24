@@ -1,53 +1,109 @@
 <template>
   <div class="Card TopstoryItem TopstoryItem-isFollow" tabindex="0">
-    <div class="FeedSource">
-      <div class="AuthorInfo FeedSource-byline AuthorInfo--plain">
-        <div class="AuthorInfo">
-          <span class="UserLink AuthorInfo-avatarWrapper"
-            ><div class="css-1gomreu">
-              <button
-                @click="openuserlink(QAQuestion.userlink)"
+    <div class="AuthorInfo">
+      <div class="ContentItem AnswerItem">
+        <h2 class="ContentItem-title">
+          <div>
+            <button
+              @click="openquestion()"
+              onmouseover="this.style.color='#056de8';"
+              onmouseout="this.style.color='#000000';"
+            >
+              {{ QAQuestion.questionheader }}
+            </button>
+          </div>
+        </h2>
+      </div>
+      <div
+        style="
+           {
+            font-size: 15px;
+            margin-left: 10px;
+            font-weight: 800;
+          }
+        "
+      >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悬赏:{{
+          QAQuestion.rewardpoints
+        }}比特币
+      </div>
+
+      <a-button type="primary" @click="() => (modal2Visible = true)">
+        回答
+      </a-button>
+      <a-modal
+        v-model="modal2Visible"
+        title="Vertically centered modal dialog"
+        centered
+        @ok="() => answer()"
+      >
+        <a-textarea
+          v-model="Inputanswer"
+          placeholder="写下你的回答"
+          :auto-size="{ minRows: 3, maxRows: 8 }"
+        />
+      </a-modal>
+    </div>
+    <br>--------------------------------------------------------------------------------------------------------------------</br>
+    <div class="AuthorInfo" v-if="!QAQuestion.hasanswerer">
+      <div class="AuthorInfo-content">
+        <div class="AuthorInfo-head">
+          <span class="UserLink AuthorInfo-name"
+            ><div class="css-1gomreu">唔...看来还没有人回答你的问题</div></span
+          >
+        </div>
+      </div>
+    </div>
+    <div v-if="QAQuestion.hasanswerer">
+      <div v-for="(item, index) in QuestionAnswers.slice(0, 1)" :key="index">
+        <div class="FeedSource">
+          <div class="AuthorInfo FeedSource-byline AuthorInfo--plain">
+            <div class="AuthorInfo">
+              <span class="UserLink AuthorInfo-avatarWrapper"
+                ><div class="css-1gomreu">
+                  <button
+                    onmouseover="this.style.color='#056de8';"
+                    onmouseout="this.style.color='#8590a6';"
+                  >
+                    <div class="css-dgtvym">
+                      <a-avatar
+                        :src="item.answereravatar"
+                        :size="40"
+                        icon="user"
+                      />
+                    </div>
+                  </button></div
+              ></span>
+              <div class="AuthorInfo-content">
+                <div class="AuthorInfo-head">
+                  <span class="UserLink AuthorInfo-name"
+                    ><div class="css-1gomreu">
+                      <button
+                        type="text"
+                        @click="openuserlink(QAQuestion.userlink)"
+                        onmouseover="this.style.color='#056de8';"
+                        onmouseout="this.style.color='#000000';"
+                      >
+                        {{ item.answerername }}
+                      </button>
+                    </div></span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="css-1gomreu">
+              <a-button
+                v-if="!QAQuestion.isadopted"
+                @click="adopt"
                 onmouseover="this.style.color='#056de8';"
                 onmouseout="this.style.color='#8590a6';"
               >
-                <img
-                  class="Avatar AuthorInfo-avatar css-dhor58"
-                  src="https://sse.tongji.edu.cn/__local/7/8C/0E/AE7B71B95751451DA25F342F447_F7B7F920_12B65.png?e=.png"
-                  alt="张颖"
-                  id="userimg"
-                />
-              </button></div
-          ></span>
-          <div class="AuthorInfo-content">
-            <div class="AuthorInfo-head">
-              <span class="UserLink AuthorInfo-name"
-                ><div class="css-1gomreu">
-                  <button
-                    type="text"
-                    @click="openuserlink(QAQuestion.userlink)"
-                    onmouseover="this.style.color='#056de8';"
-                    onmouseout="this.style.color='#000000';"
-                  >
-                    {{ QAQuestion.username }}
-                  </button>
-                </div></span
-              >
+                采纳
+              </a-button>
+              <a-button v-if="QAQuestion.isadopted" disabled> 已采纳 </a-button>
             </div>
           </div>
-        </div>
-        <div class="css-1gomreu">
-          <a-button
-            v-if="!QAQuestion.isadopted"
-            @click="adopt"
-            onmouseover="this.style.color='#056de8';"
-            onmouseout="this.style.color='#8590a6';"
-          >
-            采纳
-          </a-button>
-          <a-button v-if="QAQuestion.isadopted" disabled> 已采纳 </a-button>
-        </div>
-      </div>
-      <!-- <div class="css-go5ofn-TagsContainer-StyledTags">
+          <!-- <div class="css-go5ofn-TagsContainer-StyledTags">
         <div
           class="css-pvcibd-TagWrap e27myof1"
           v-for="(tag, index) in QAQuestion.labels"
@@ -56,61 +112,37 @@
           <span>{{ tag }}</span>
         </div>
       </div> -->
-    </div>
-    <div class="ContentItem AnswerItem">
-      <h2 class="ContentItem-title">
-        <div>
-          <button
-            @click="openquestion(QAQuestion.questionlink)"
-            onmouseover="this.style.color='#056de8';"
-            onmouseout="this.style.color='#000000';"
-          >
-            {{ QAQuestion.questionheader }}
-          </button>
         </div>
-      </h2>
-      <div class="ContentItem-meta">
-        <div class="LabelContainer-wrapper"></div>
-      </div>
-      <div class="RichContent is-collapsed">
-        <span
-          ><div class="RichContent-inner">
-            <div class="css-79elbk">
-              <span
-                class="RichText ztext CopyrightRichText-richText css-4em6pe"
-                options="[object Object]"
-                itemprop="text"
-                >{{ QAQuestion.questioncontent }}
-              </span>
-            </div>
-          </div></span
-        >
-        <div class="read">
-          <a
-            target="_blank"
-            type="button"
-            class="ContentItem-more Button--plain"
-            href="https://baike.baidu.com/item/%E5%85%83%E5%AE%87%E5%AE%99/58292530"
-          >
-            阅读全文
-          </a>
-          <div
-            style="
-               {
-                font-size: 15px;
-                margin-left: 10px;
-                font-weight: 800;
-              }
-            "
-          >
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悬赏:{{
-              QAQuestion.rewardpoints
-            }}比特币
+        <div class="ContentItem AnswerItem">
+          <div class="ContentItem-meta">
+            <div class="LabelContainer-wrapper"></div>
           </div>
-        </div>
+          <div class="RichContent is-collapsed">
+            <span
+              ><div class="RichContent-inner">
+                <div class="css-79elbk">
+                  <span
+                    class="RichText ztext CopyrightRichText-richText css-4em6pe"
+                    options="[object Object]"
+                    itemprop="text"
+                    >{{ item.answercontent }}
+                  </span>
+                </div>
+              </div></span
+            >
+            <div class="read">
+              <a
+                target="_blank"
+                type="button"
+                class="ContentItem-more Button--plain"
+                href="https://baike.baidu.com/item/%E5%85%83%E5%AE%87%E5%AE%99/58292530"
+              >
+                阅读全文
+              </a>
+            </div>
 
-        <div class="ContentItem-actions">
-          <span></span>
+            <div class="ContentItem-actions">
+              <!-- <span></span>
           <a-button
             v-if="!QAQuestion.isAgreed"
             class="Button VoteButton VoteButton--up"
@@ -158,63 +190,65 @@
             <span style="display: inline-flex; align-items: center"
               ><div class="icons-list">
                 <a-icon type="caret-down" /></div></span
-          ></a-button>
+          ></a-button> -->
 
-          <a-button
-            v-if="!QAQuestion.isLiked"
-            type="link"
-            style="color: black"
-            @click="clickLike"
-            v-show="!QAQuestion.isLiked"
-          >
-            <a-icon type="like" />
-            <span>{{ QAQuestion.likeNum }}</span>
-          </a-button>
-          <a-button
-            v-if="QAQuestion.isLiked"
-            type="link"
-            style="color: red"
-            @click="clickLike"
-            v-show="QAQuestion.isLiked"
-          >
-            <a-icon type="like" theme="filled" />
-            <span>{{ QAQuestion.likeNum }}</span> </a-button
-          ><a-button
-            v-if="!QAQuestion.isStared"
-            type="link"
-            style="color: black"
-            @click="clickStar"
-            v-show="!QAQuestion.isStared"
-          >
-            <a-icon type="star" />
-            <span>{{ QAQuestion.starNum }}</span>
-          </a-button>
-          <a-button
-            v-if="QAQuestion.isStared"
-            type="link"
-            style="color: #ffd700"
-            @click="clickStar"
-            v-show="QAQuestion.isStared"
-          >
-            <a-icon type="star" theme="filled" />
-            <span>{{ QAQuestion.starNum }}</span>
-          </a-button>
-          <a-button type="link" style="color: black">
-            <a-icon type="message" />
-            <span>{{ QAQuestion.commentNum }}</span>
-          </a-button>
-          <div class="Popover ShareMenu ContentItem-action">
-            <div class="ShareMenu-toggler">
               <a-button
+                v-if="!QAQuestion.isLiked"
                 type="link"
-                class="Button--plain Button--withIcon Button--withLabel"
-                @click="openNotification"
+                style="color: black"
+                @click="clickLike"
+                v-show="!QAQuestion.isLiked"
               >
-                <span style="display: inline-flex; align-items: center">
-                  <div class="icons-list">
-                    <a-icon type="yuque" theme="filled" /></div></span
-                >分享
+                <a-icon type="like" />
+                <span>{{ QAQuestion.likeNum }}</span>
               </a-button>
+              <a-button
+                v-if="QAQuestion.isLiked"
+                type="link"
+                style="color: red"
+                @click="clickLike"
+                v-show="QAQuestion.isLiked"
+              >
+                <a-icon type="like" theme="filled" />
+                <span>{{ QAQuestion.likeNum }}</span> </a-button
+              ><a-button
+                v-if="!QAQuestion.isStared"
+                type="link"
+                style="color: black"
+                @click="clickStar"
+                v-show="!QAQuestion.isStared"
+              >
+                <a-icon type="star" />
+                <span>{{ QAQuestion.starNum }}</span>
+              </a-button>
+              <a-button
+                v-if="QAQuestion.isStared"
+                type="link"
+                style="color: #ffd700"
+                @click="clickStar"
+                v-show="QAQuestion.isStared"
+              >
+                <a-icon type="star" theme="filled" />
+                <span>{{ QAQuestion.starNum }}</span>
+              </a-button>
+              <a-button type="link" style="color: black">
+                <a-icon type="message" />
+                <span>{{ QAQuestion.commentNum }}</span>
+              </a-button>
+              <div class="Popover ShareMenu ContentItem-action">
+                <div class="ShareMenu-toggler">
+                  <a-button
+                    type="link"
+                    class="Button--plain Button--withIcon Button--withLabel"
+                    @click="openNotification"
+                  >
+                    <span style="display: inline-flex; align-items: center">
+                      <div class="icons-list">
+                        <a-icon type="yuque" theme="filled" /></div></span
+                    >分享
+                  </a-button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -224,15 +258,56 @@
 </template>
 
 <script>
+import { getAnswer, answerQuestion } from "@/api/QA";
 export default {
+  data() {
+    return {
+      modal2Visible: false,
+      Inputanswer: "",
+      QuestionAnswers: [],
+      message: [],
+    };
+  },
+  inject: ["reload"],
   props: ["QAQuestion"],
-  created: {
-    loadimg() {
-      var object = document.getElementById("userimg");
-      object.src;
-    },
+  mounted() {
+    this.getAnswersReq();
   },
   methods: {
+    answer() {
+      this.modal2Visible = false;
+      answerQuestion(this.QAQuestion.questionid, this.Inputanswer)
+        .then((response) => {
+          if (response.status == 200) {
+            this.reload();
+            this.message.push(response.data);
+            this.$message.success("回答成功");
+          } else {
+            this.$message.error("回答失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("回答失败");
+        });
+      this.Inputanswer = "";
+    },
+    getAnswersReq() {
+      this.QuestionAnswers = [];
+      getAnswer(this.QAQuestion.questionid)
+        .then((response) => {
+          if (response.status == 200) {
+            this.QuestionAnswers = response.data;
+            this.$message.success("获取回答成功");
+          } else {
+            this.$message.error("获取回答失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("获取回答失败");
+        });
+    },
     calladopt() {
       this.QAQuestion.isadopted = true;
     },
@@ -241,9 +316,9 @@ export default {
       this.$confirm({
         title: "是否确认采纳此回答？",
         content: (h) => <div style="color:red;">注意,此操作将不可逆</div>,
-        onOk() {
+        onOk(e) {
           console.log("OK");
-          self.QAQuestion.isadopted = true;
+          self.calladopt();
         },
         onCancel() {
           console.log("Cancel");
@@ -254,24 +329,28 @@ export default {
       window.open(src, "_blank");
       // window.location.href = src;
     },
-    openquestion(src) {
-      window.open(src, "_blank");
+    openquestion() {
+      let routeUrl = this.$router.resolve({
+        path: "/QADetails",
+        // query: { akserid: },
+      });
+      window.open(routeUrl.href, "_blank");
     },
-    clickAgree() {
-      this.QAQuestion.agreenum += this.QAQuestion.isAgreed ? -1 : 1;
-      this.QAQuestion.isAgreed = !this.QAQuestion.isAgreed;
-      this.QAQuestion.isDenied = false;
-    },
-    clickDeny() {
-      this.QAQuestion.isDenied = !this.QAQuestion.isDenied;
-      if (
-        this.QAQuestion.isAgreed == true &&
-        this.QAQuestion.isDenied == true
-      ) {
-        this.QAQuestion.isAgreed = false;
-        this.QAQuestion.agreenum -= 1;
-      }
-    },
+    // clickAgree() {
+    //   this.QAQuestion.agreenum += this.QAQuestion.isAgreed ? -1 : 1;
+    //   this.QAQuestion.isAgreed = !this.QAQuestion.isAgreed;
+    //   this.QAQuestion.isDenied = false;
+    // },
+    // clickDeny() {
+    //   this.QAQuestion.isDenied = !this.QAQuestion.isDenied;
+    //   if (
+    //     this.QAQuestion.isAgreed == true &&
+    //     this.QAQuestion.isDenied == true
+    //   ) {
+    //     this.QAQuestion.isAgreed = false;
+    //     this.QAQuestion.agreenum -= 1;
+    //   }
+    // },
     clickLike() {
       this.QAQuestion.likeNum += this.QAQuestion.isLiked ? -1 : 1;
       this.QAQuestion.isLiked = !this.QAQuestion.isLiked;
@@ -684,5 +763,15 @@ a:focus {
   cursor: pointer;
   transition: color 0.3s;
   -webkit-text-decoration-skip: objects;
+}
+.css-dgtvym {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  margin-right: 10px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  position: relative;
 }
 </style>
