@@ -5,7 +5,8 @@ import PrivateMessage  from '../views/PrivateMessageView.vue'
 import QA_myAnswerView from '../views/QA_myAnswerView.vue'
 import QA_myCollectionView from '../views/QA_myCollectionView.vue'
 import QA_myQuestionView from '../views/QA_myQuestionView.vue'
-import QA_RecommendView  from '../views/QA_RecommendView.vue'
+import QA_RecommendView from '../views/QA_RecommendView.vue'
+import QADetails  from '../views/QADetails.vue'
 import StudyNotesOverview  from '../views/StudyNotesOverviewView.vue'
 import StudyNotes  from '../views/StudyNotesView.vue'
 import FriendManage from '../views/FriendManage.vue'
@@ -35,6 +36,11 @@ const routes = [
     path: '/QA_myAnswer',
     name: 'QA_myAnswer',
     component: QA_myAnswerView
+  },
+  {
+    path: '/QADetails',
+    name: 'QADetails',
+    component: QADetails
   },
   {
     path: '/QA_myCollection',
