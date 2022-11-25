@@ -34,3 +34,11 @@ export function getMessage(receiverId) {
         params: {"receiverId":receiverId},
     })
 }
+
+export function readMsg(senderId) {
+    return request({
+        url: 'friendMessage/readMsg',
+        method: 'get',
+        params: {"senderId":senderId},
+    })
+}
