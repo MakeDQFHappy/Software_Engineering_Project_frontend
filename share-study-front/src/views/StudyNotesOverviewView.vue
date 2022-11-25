@@ -25,6 +25,9 @@
               </div>
             </div>
 
+
+
+
             <div class="article-list">
               <div class="article-list-holder">
                 <div v-for="item in noteItems">
@@ -66,7 +69,7 @@
         type="primary"
         @click="publishNotes"
         shape="round"
-        :size="large"
+        size='large'
       >
         发布
       </a-button>
@@ -99,38 +102,7 @@ export default {
   mounted: function () {
     console.log(111);
     //Tinymce.init({});
-    axios
-      .get("/get_all_notes", {
-        params: { noteID: this.noteID },
-      })
-      .then((res) => {
-        console.log("res", res.data);
-        console.log("ressdasd", res.data[0]);
-        this.content = res.data.content;
-        for (var index in res.data) {
-          var text = res.data[index].note_content;
-
-          let value = text.replaceAll(this.reg, "[图片]");
-          text = htmlToText(value);
-
-          var note = res.data[index];
-          var newNoteItem = {
-            noteID: note.study_note_id,
-            title: note.note_header,
-            tags: ["历史遗留问题", "非常难以解决", "让人捉摸不透"],
-            content: text,
-            likeNum: 10,
-            starNum: 10,
-            commentNum: 10,
-            isLiked: false, //这个用户是否点赞和收藏
-            isStared: true,
-          };
-
-          this.noteItems.push(newNoteItem);
-        }
-
-        console.log("数据：", this.content);
-      });
+    this.getNotesInPage();
   },
   data() {
     return {
@@ -142,13 +114,60 @@ export default {
       title: "",
       content: "",
 
+      isEnd: false,
+
       form: {
         content: "",
       },
       noteItems: [],
+      page: 1,
     };
   },
   methods: {
+    getNotesInPage() {
+      if (this.isEnd){
+        return
+      }
+      axios
+        .get("/get_all_notes", {
+          params: { userID: 1 , page: this.page++},
+        })
+        .then((res) => {
+          console.log("res", res.data);
+
+
+          if (res.data.length == 0){
+            this.isEnd = true
+            return
+          }
+
+          for (var index in res.data) {
+            var text = res.data[index].note_content;
+            if (text) {
+              let value = text.replaceAll(this.reg, "[图片]");
+              text = htmlToText(value);
+            }
+
+            var data = res.data[index];
+            var note = data.Note;
+            var newNoteItem = {
+              noteID: note.study_note_id,
+              title: note.note_header,
+              tags: ["历史遗留问题", "非常难以解决", "让人捉摸不透"],
+              content: text,
+              likeNum: data.LikeNum,
+              starNum: 10,
+              commentNum: 10,
+              isLiked: data.IsLiked, //这个用户是否点赞和收藏
+              isStared: true,
+              needPoints: note.points,
+            };
+
+            this.noteItems.push(newNoteItem);
+          }
+
+        });
+    },
     publishNotes() {
       // form-data 请求
       this.$router.go(0);
@@ -173,6 +192,29 @@ export default {
           console.log("数据：", this.notesList);
         });
     },
+    lazyLoading() {
+      // 滚动到底部，再加载的处理事件
+      // 获取 可视区高度`、`滚动高度`、`页面高度`
+      let scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      let clientHeight = document.documentElement.clientHeight;
+      let scrollHeight = document.documentElement.scrollHeight;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        // 滚动到底部，逻辑代码
+        //事件处理
+        console.log("滚动到底部，触发"); //此处可以添加数据请求
+        this.getNotesInPage()
+      }
+    },
+
+  },
+  created() {
+    window.addEventListener("scroll", this.lazyLoading); // 滚动到底部，再加载的处理事件
+  },
+  //页面离开后销毁，防止切换路由后上一个页面监听scroll滚动事件会在新页面报错问题
+  destroyed() {
+    window.removeEventListener("scroll", this.lazyLoading);
+    //页面离开后销毁，防止切换路由后上一个页面监听scroll滚动事件会在新页面报错问题
   },
   components: {
     StudyNotes,
@@ -182,7 +224,10 @@ export default {
 };
 </script>
 
-<style src="@/css/bilibiliCSS/list.0ac357f4669ca460e5f026632d649bd086927338.css"  scoped></style>
+<style
+  src="@/css/bilibiliCSS/list.0ac357f4669ca460e5f026632d649bd086927338.css"
+  scoped
+></style>
 <style scoped>
 
 .page-content .right-side.scroll {

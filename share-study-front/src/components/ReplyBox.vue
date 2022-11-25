@@ -3,7 +3,7 @@
     <a-comment>
       <a-avatar
         slot="avatar"
-        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+        src="https://sse.tongji.edu.cn/__local/7/8C/0E/AE7B71B95751451DA25F342F447_F7B7F920_12B65.png?e=.png"
         alt="Han Solo"
       />
       <div slot="content">

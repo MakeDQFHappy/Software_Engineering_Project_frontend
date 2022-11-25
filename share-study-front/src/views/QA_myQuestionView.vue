@@ -48,7 +48,11 @@
               <div class="ListShortcut">
                 <div class="Topstory-follow">
                   <div class="" role="list">
-                    <div v-for="(item, index) in QAQuestionItems" :key="index">
+                    <div
+                      v-for="(item, index) in QAQuestionItems"
+                      :key="index"
+                      :QAQuestion="item"
+                    >
                       <QA_QuestionBlock :QAQuestion="item"></QA_QuestionBlock>
                     </div>
                   </div>
@@ -82,30 +86,7 @@ export default {
   name: "QA_myQuestionView",
   data() {
     return {
-      form: { content: "" },
-      QAQuestionItems: [
-        {
-          username: "张颖",
-          agreenum: 1000,
-          title: "什么是元宇宙",
-          userlink: "https://sse.tongji.edu.cn/info/1206/3148.htm",
-          questionlink:
-            "https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4",
-
-          labels: ["元宇宙"],
-          content:
-            "原神是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「神之眼」，导引元素之力。你将扮演一位名为「旅行者」的神秘角色，在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲人——同时，逐步发掘「原神」的真相.",
-          likeNum: 10,
-          starNum: 10,
-          commentNum: 10,
-          wanted: 10,
-          isadopted: false,
-          isLiked: false,
-          isStared: false,
-          isDenied: false,
-          isAgreed: false,
-        },
-      ],
+      QAQuestionItems: [],
     };
   },
   mounted() {
