@@ -9,6 +9,7 @@ import QA_RecommendView  from '../views/QA_RecommendView.vue'
 import StudyNotesOverview  from '../views/StudyNotesOverviewView.vue'
 import StudyNotes  from '../views/StudyNotesView.vue'
 import FriendManage from '../views/FriendManage.vue'
+import Login from '../views/LoginView.vue'
 // import StudyNotesOverview from '../views/StudyNotesOverviewView.vue'
 Vue.use(VueRouter)
 
@@ -65,6 +66,11 @@ const routes = [
     path: '/FriendManage',
     name: 'FriendManage',
     component: FriendManage
+  },
+  {
+    path: '/Login',
+    name: 'Login',
+    component: Login
   },
   // {
   //   path: '/studyNotesOverview',
