@@ -25,18 +25,30 @@
           v-if="!isLogin"
           key="5"
           style="float: right"
-          @click="showModal"
+          @click="openLogin"
         >
           登录
         </a-menu-item>
-        <a-button type="link" v-if="isLogin" style="float: right" @click="logout">
-          <a-avatar
-            shape="square"
-            :size="63"
-            icon="user"
-            style="float: right"
-          />
-        </a-button>
+        <a-dropdown :trigger="['click']" v-if="isLogin" >
+          <a-button type="link" style="float: right;">
+            <a-avatar
+              :size="63"
+              icon="user"
+              style="float: right"
+              :src="userAvatar"
+            />
+          </a-button>
+          <a-menu slot="overlay" style="margin-top:30px">
+            <a-menu-item key="0" @click="openPersonalInfo">
+              <a-icon type="user" />
+              我的主页
+            </a-menu-item>
+            <a-menu-item key="1" @click="logout">
+              <a-icon type="poweroff" />
+              退出登录
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
       </a-menu>
     </a-layout-header>
 
@@ -54,7 +66,7 @@
 </template>
 
 <script>
-import { userLogin,userLogout } from "@/api/login";
+import { userLogout } from "@/api/login";
 import { mapMutations } from "vuex";
 export default {
   name: "header",
@@ -64,6 +76,7 @@ export default {
       isLogin: false,
       visible: false,
       loginText: "",
+      userAvatar:"",
     };
   },
   mounted() {
@@ -72,9 +85,20 @@ export default {
       localStorage.getItem("userToken") != null
     ) {
       this.isLogin = true;
+      this.userAvatar=localStorage.getItem("userAvatar");
     }
+    window['startLogin'] = () => {
+      this.openLogin()
+    };
   },
   methods: {
+    
+    openLogin(){
+      this.$router.push("/login");
+    },
+    openPersonalInfo(){
+      this.$router.push("/personalInfo")
+    },
     openMessage() {
       this.$router.push("/message");
     },
@@ -113,7 +137,7 @@ export default {
     },
     ...mapMutations(["delLogin"]),
     logout(){
-      userLogout();
+      userLogout(localStorage.getItem('userId'));
       this.delLogin();
       this.$message.success("退出成功");
       this.isLogin=false;

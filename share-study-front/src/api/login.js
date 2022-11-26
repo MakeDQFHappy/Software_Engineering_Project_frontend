@@ -1,17 +1,18 @@
 import request from '@/utils/request'
 
-export function userLogin(userId) {
+export function academicLogin(academicNum,passowrd) {
     return request({
-        url: 'login/user',
+        url: 'login/academic',
         method: 'get',
-        params: {"userId":userId}
+        params: {"academicNum":academicNum,
+                "password":passowrd}
     })
 }
 
-export function userLogout() {
+export function userLogout(id) {
     return request({
         url: '/login/logout',
         method: 'get',
-        // headers: { 'Content-Type': 'multipart/form-data' }
+        params:{"id":id}
     })
 }

@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="signQr-rightContainer">
-                        <div class="css-16h0l39">
+                        <div class="css-16h0l39" v-if="!isRegister">
                             <a-menu v-model="current" mode="horizontal" style="margin-top:20px">
                                 <a-menu-item key="academic" class="css-12345"> 学号登录 </a-menu-item>
                                 <a-menu-item key="phone" class="css-12345"> 手机号登录 </a-menu-item>
@@ -41,7 +41,7 @@
                                     'academic',
                                     { rules: [{ required: true, message: '请输入学号!' }] },
                                     ]"
-                                    placeholder="academic number"
+                                    placeholder="Academic Number"
                                 >
                                     <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
                                 </a-input>
@@ -87,9 +87,125 @@
                                     Log in
                                 </a-button>
                                 Or
-                                <a href="#">
+                                <a href="#" @click="isRegister=!isRegister">
                                     register now!
                                 </a>
+                                </a-form-item>
+                            </a-form>
+                        </div>
+                        <div v-if="isRegister">
+                            <div class="css-regtitle">
+                                欢迎注册
+                            </div>
+                            <a-steps :current="registerCurrent" size="small" progress-dot>
+                                <a-step title="学生认证" description="验证学号" ></a-step>
+                                <a-step title="手机号" description="绑定手机号" ></a-step>
+                                <a-step title="基本信息" description="填写基本信息"></a-step>
+                            </a-steps>
+                            <a-form
+                                id="components-form-demo-normal-register"
+                                :form="form"
+                                class="login-form"
+                                @submit="handleSubmit"
+                                style="margin:24px 15px 24px 15px"
+                            >
+                                <a-form-item>
+                                <a-input
+                                    v-if="registerCurrent==0"
+                                    v-decorator="[
+                                    'academic',
+                                    { rules: [{ required: true, message: '请输入学号!' }] },
+                                    ]"
+                                    placeholder="Academic Number"
+                                >
+                                    <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
+                                </a-input>
+                                <a-input
+                                    v-if="registerCurrent==1"
+                                    v-decorator="[
+                                    'phone',
+                                    { rules: [{ required: true, message: '请输入手机号!' }] },
+                                    ]"
+                                    placeholder="phone number"
+                                >
+                                    <a-icon slot="prefix" type="phone" style="color: rgba(0,0,0,.25)" />
+                                </a-input>
+                                <a-row :gutter="8" v-if="registerCurrent==2">
+                                    <a-col :span="12">
+                                        <a-select default-value="男" @change="handleChange">
+                                            <a-select-option value="男">
+                                                男
+                                            </a-select-option>
+                                            <a-select-option value="女">
+                                                女
+                                            </a-select-option>
+                                        </a-select>
+                                    </a-col>
+                                    <a-col :span="12">
+                                        <a-input
+                                            v-decorator="[
+                                            'age',
+                                            { rules: [{ required: true, message: '请输入年龄!' }] },
+                                            ]"
+                                            placeholder="age"
+                                        />
+                                    </a-col>
+                                </a-row>
+                                </a-form-item>
+                                <a-form-item>
+                                <a-input
+                                    v-if="registerCurrent==0"
+                                    v-decorator="[
+                                    'RealName',
+                                    validatorRules.userName ]"
+                                    placeholder="RealName"
+                                >
+                                    <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+                                </a-input>
+                                <a-row :gutter="8" v-if="registerCurrent==1">
+                                    <a-col :span="12">
+                                        <a-input
+                                            v-decorator="[
+                                            'captcha',
+                                            { rules: [{ required: true, message: '请输入验证码!' }] },
+                                            ]"
+                                            placeholder="captcha"
+                                        />
+                                        </a-col>
+                                    <a-col :span="12">
+                                        <a-button style="width:100px">获取验证码</a-button>
+                                    </a-col>
+                                </a-row>
+                                <a-input
+                                    v-if="registerCurrent==2"
+                                    v-decorator="[
+                                    'password',
+                                    validatorRules.password ]"
+                                    placeholder="password"
+                                    type="password"
+                                >
+                                    <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+                                </a-input>
+                                <div v-show="registerCurrent==3"  >
+                                    <div style="width:100%;margin:auto;display: flex;align-items: center; justify-content: center;">
+                                        <img :src="loginUrl" alt="" >
+                                    </div>
+                                    <div style="text-align:center;font-size:13px;font-weight:bold">
+                                        注册成功，即将跳转登录界面
+                                    </div>
+                                </div>
+                                
+                                </a-form-item>
+                                <a-form-item>
+                                <a-button type="primary" html-type="submit" style="width:100%" @click="clickNext" v-if="registerCurrent<3">
+                                    <div v-show="registerCurrent<2">
+                                        Next Step
+                                    </div >
+                                    <div v-show="registerCurrent==2">
+                                        Finish
+                                    </div>
+                                </a-button>
+                                
                                 </a-form-item>
                             </a-form>
                         </div>
@@ -101,6 +217,8 @@
 </template>
 
 <script>
+import { academicLogin } from "@/api/login";
+import { mapMutations } from "vuex";
 export default {
   name: "login",
   data() {
@@ -114,25 +232,61 @@ export default {
               { required: true, message: '请输入密码!'},//此处开启校验必填
               { min: 5, message: '长度不少于 5 个字符'}, // 长度校验
             ],
-            trigger: 'blur' // 触发方式
           },
+          userName : {
+            initialValue: "",//初始值
+            rules: [
+              { required: true, message: '请输入姓名!'},//此处开启校验必填
+            ],
+          }
       },
+      isRegister:false,
+      registerCurrent:0,
+      loginUrl:require("../assets/success.png")
     }
   },
   methods:{
+    ...mapMutations(["changeLogin"]),
+    clickNext(){
+        this.registerCurrent++;
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          if(this.current=="academic"){
+            academicLogin(values.academic,values.password).then(response=>{
+                if(response.status==200){
+                    this.$message.success("登录成功");
+                    this.changeLogin(response.data);
+                    this.$router.push("/");
+                }
+                else if(response.status==403){
+                    this.$message.error("登录失败，账号不存在或密码错误");
+                }
+            }).catch(e=>{
+                console.log(e);
+                this.$message.error("登录失败，请稍后再试")
+            })
+          }
         }
       });
+
     },
   }
 };
 </script>
 
 <style scoped>
+
+.css-regtitle{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    width:100%;
+    margin-top:20px;
+    margin-bottom: 20px;
+}
 .css-title{
     font-weight: 600;
     font-size: 20px;
@@ -151,6 +305,9 @@ export default {
     height: 49px;
     line-height: 46px;
     margin-right: 24px;
+}
+#components-form-demo-normal-register{
+    padding:5px 20px 5px 20px
 }
 #components-form-demo-normal-login .login-form {
   max-width: 300px;

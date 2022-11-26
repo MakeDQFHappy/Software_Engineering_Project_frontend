@@ -1,5 +1,6 @@
 <template>
-  <a-layout id="components-layout-demo-fixed" style="min-height:100%">
+  <router-view v-if="isRouterAlive"></router-view>
+  <!-- <a-layout id="components-layout-demo-fixed" style="min-height:100%">
     <Header />
     <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
       <a-breadcrumb :style="{ margin: '16px 0' }">
@@ -11,7 +12,7 @@
         <router-view v-if="isRouterAlive"></router-view>
       </div>
     </a-layout-content>
-  </a-layout>
+  </a-layout> -->
 </template>
 
 <script>
