@@ -10,6 +10,9 @@ export default new Vuex.Store({
     age:localStorage.getItem('age')?localStorage.getItem('age'):'',
     userName:localStorage.getItem('userName')?localStorage.getItem('userName'):'',
     userAvatar:localStorage.getItem('userAvatar')?localStorage.getItem('userAvatar'):'',
+    sex:localStorage.getItem('sex')?localStorage.getItem('sex'):'',
+    bonusPoints:localStorage.getItem('bonusPoints')?localStorage.getItem('bonusPoints'):'',
+    userType:localStorage.getItem('userType')?localStorage.getItem('userType'):'',
   },
   getters: {
   },
@@ -18,9 +21,23 @@ export default new Vuex.Store({
       state.userToken=user.userToken
       state.userId=user.userId
       state.userAvatar=user.userAvatar
+      state.userName=user.userName
+      state.sex=user.sex
+      state.userType=user.userType
+      state.bonusPoints=user.bonusPoints
+      state.age=user.age
       localStorage.setItem('userId',user.userId)
       localStorage.setItem('userToken',user.userToken)
       localStorage.setItem('userAvatar',user.userAvatar)
+      localStorage.setItem('userName',user.userName)
+      localStorage.setItem('sex',user.sex)
+      localStorage.setItem('userType',user.userType)
+      localStorage.setItem('bonusPoints',user.bonusPoints)
+      localStorage.setItem('age',user.age)
+    },
+    changeAvatar(state,newAvatar){
+      state.userAvatar=newAvatar
+      localStorage.setItem('userAvatar',newAvatar)
     },
     delLogin(){
       localStorage.clear();
