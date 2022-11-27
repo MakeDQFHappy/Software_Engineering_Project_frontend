@@ -55,6 +55,7 @@ service.interceptors.response.use(
           //清除当前token信息
           store.commit('delLogin');
           //前往登录页
+          
           return Promise.reject(new Error('您尚未登录'||'Error'))
         }
 
@@ -66,6 +67,7 @@ service.interceptors.response.use(
     error => {
         if(error.response.status==500){
             store.commit('delLogin');
+            startLogin();
         }
       console.log(error) // for debug
       return Promise.reject(error)
