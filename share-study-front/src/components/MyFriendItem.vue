@@ -1,6 +1,18 @@
 <template>
-    <div>
+    <div class="innerContent">
         <div class="nearly-pepls">
+            <a-popconfirm placement="topRight" ok-text="确定" cancel-text="取消" @confirm="deleteRequest">
+                <template slot="title">
+                    你确定要删除这条请求记录吗
+                </template>
+                <a-button v-if="type!='1'&&item.status!=0"  type="link" shape="circle" icon="close" size="small" style="color:red;" class="right-top-button" />
+            </a-popconfirm>
+            <a-popconfirm placement="topRight" ok-text="确定" cancel-text="取消" @confirm="deleteRequest">
+                <template slot="title">
+                    你确定要撤回这条请求记录吗
+                </template>
+                <a-button v-if="type!='1'&&item.status==0" type="link" shape="circle" icon="rollback" size="small" style="color:brown;" class="right-top-button" />
+            </a-popconfirm>
             <figure>
                 <a href="">
                     <img :src="item.friendAvatar" alt="">
@@ -9,41 +21,47 @@
             <div class="pepl-info" v-if="type=='1'">
                 <h4 style="font-weight: 1000;">{{item.friendName}}</h4>
                 <span style="color: #8d8d8d;">{{item.sex}} {{item.age}}</span>
-                <a href="#" class="add-butn more-action" style="background: rgb(230, 28, 75);" @click="remove">删除好友</a>
-                <a href="#" class="add-butn" style="background: #088dcd;">发送私信</a>
+                <a href="#" class="add-butn more-action" style="background: rgb(230, 28, 75);" @click="showDeleteConfirm">删除好友</a>
+                <a href="#" class="add-butn" style="background: #088dcd;" @click="gotoMessage">发送私信</a>
             </div>
             <div class="pepl-info" v-if="type=='2'">
                 <h4 style="font-weight: 1000;">{{item.friendName}}</h4>
                 <span style="color: #8d8d8d;">{{item.sex}} {{item.age}}</span>
-                <a href="#" class="add-butn info" @click="openModal">申请信息</a>
+                <a-tooltip placement="topLeft">
+                    <template slot="title">
+                    <span>{{item.introduction}}</span>
+                    </template>
+                    <a href="#" class="add-butn info" >申请信息</a>
+                </a-tooltip>
                 <a href="#" class="add-butn more-action" style="background: rgb(41, 113, 34);" @click="agree">同意请求</a>
                 <a href="#" class="add-butn" style="background: rgb(230, 28, 75);" @click="reject">拒绝请求</a>
             </div>
             <div class="pepl-info" v-if="type=='3'">
                 <h4 style="font-weight: 1000;">{{item.friendName}}</h4>
                 <span style="color: #8d8d8d;">{{item.sex}} {{item.age}}</span>
-                <a href="#" class="add-butn" style="background: rgb(230, 28, 75);right: 178px;" @click="openModal">撤回请求</a>
-                <a href="#" class="add-butn more-action" style="background:rgb(63, 63, 79);right:81px"  @click="openModal">申请信息</a>
+                <a-tooltip placement="topLeft">
+                    <template slot="title">
+                    <span>{{item.introduction}}</span>
+                    </template>
+                <a href="#" class="add-butn more-action" style="background:rgb(63, 63, 79);right:81px">申请信息</a>
+                </a-tooltip>
                 <a-tag v-if="item.status==1" color="green" style="width:auto;position:absolute;right:0;line-height:200%;top:10px " >
                     已通过
                 </a-tag>
-                <a-tag v-if="item.status==0" color="green" style="width:auto;position:absolute;right:0;line-height:200%;top:10px " >
+                <a-tag v-if="item.status==0" color="blue" style="width:auto;position:absolute;right:0;line-height:200%;top:10px " >
                     待通过
                 </a-tag>
-                <a-tag v-if="item.status==2" color="green" style="width:auto;position:absolute;right:0;line-height:200%;top:10px " >
+                <a-tag v-if="item.status==2" color="red" style="width:auto;position:absolute;right:0;line-height:200%;top:10px " >
                     已拒绝
                 </a-tag>
                 <!-- <a href="#" class="add-butn" style="background: rgb(230, 28, 75);" @click="reject">拒绝请求</a> -->
             </div>
-            <a-modal v-model="visible" title="请求信息" @ok="handleOk">
-                <p>{{item.introduction}}</p>
-            </a-modal>
         </div>
     </div>
 </template>
 
 <script>
-import { agreeReq,rejectReq,removeFriend } from '@/api/friend'
+import { agreeReq,rejectReq,removeFriend,deleteReq } from '@/api/friend'
 export default {
   props:["item","type"],
   data(){
@@ -52,13 +70,28 @@ export default {
     }
   },
   methods:{
-    openModal(){
-        this.visible=true;
+    gotoMessage(){
+        this.$router.push({name:'message',params:{friendId:this.item.friendId}})
+    },
+    deleteRequest(){
+        deleteReq(this.item.applicationId).then(response=>{
+            if(response.status==200){
+                this.$message.success("删除成功");
+                this.$emit("deleteItem",this.item.friendId)
+            }
+            else{
+                this.$message.error("删除失败")
+            }
+        }).catch(e=>{
+            console.log(e)
+            this.$message.error("删除失败");
+        })
     },
     agree(){
         agreeReq(this.item.applicationId).then(response=>{
             if(response.status==200){
                 this.$message.success("添加好友成功")
+                this.$emit("deleteItem",this.item.friendId)
             }
             else{
                 this.$message.error("添加好友失败")
@@ -68,10 +101,26 @@ export default {
             this.$message.error("添加好友失败")
         })
     },
+    showDeleteConfirm() {
+      var that=this;
+      this.$confirm({
+        content: '确定要删除好友吗',
+        okText: '确定',
+        okType: 'danger',
+        cancelText: '取消',
+        onOk() {
+            that.remove()
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+    },
     remove(){
         removeFriend(this.item.friendKey).then(response=>{
             if(response.status==200){
                 this.$message.success("删除好友成功")
+                this.$emit("deleteItem",this.item.friendId)
             }
             else{
                 this.$message.error("删除好友失败")
@@ -85,6 +134,7 @@ export default {
         rejectReq(this.item.applicationId).then(response=>{
             if(response.status==200){
                 this.$message.success("拒绝请求成功")
+                this.$emit("deleteItem",this.item.friendId)
             }
             else{
                 this.$message.error("拒绝请求失败")
@@ -99,6 +149,19 @@ export default {
 </script>
 
 <style scoped>
+.innerContent:hover .right-top-button{
+    opacity: 1;
+}
+.right-top-button{
+    position:absolute;
+    right:-22px;
+    top:-22px;
+    opacity: 0;
+}
+.innerContent{
+    padding: 20px;
+}
+
 li:hover {
     box-shadow: 10px 5px 5px rgb(82, 79, 79);
 }
@@ -175,6 +238,7 @@ img {
 .nearly-pepls {
     display: inline-block;
     width: 100%;
+    position: relative;
 }
 
 ul {
@@ -193,7 +257,7 @@ dl, ol, ul {
 }
 
 .nearby-contct > li {
-    background: #fff none repeat scroll 0 0;
+    background: #ffffff none repeat scroll 0 0;
     border: 2px solid #d2d5d7;
     display: inline-block;
     margin-bottom: 20px;

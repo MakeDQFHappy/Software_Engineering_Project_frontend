@@ -54,6 +54,14 @@ export function rejectReq(applicationId) {
     })
 }
 
+export function deleteReq(applicationId) {
+    return request({
+        url: 'friend/deleteReq',
+        method: 'post',
+        params: {"applicationId":applicationId}
+    })
+}
+
 export function removeFriend(friendKey) {
     return request({
         url: 'friend/removeFriend',

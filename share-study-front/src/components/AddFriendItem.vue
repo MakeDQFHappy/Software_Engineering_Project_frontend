@@ -94,8 +94,8 @@ export default {
     width: auto;
 }
 img {
-    height: 60px;
-    width: 100%;
+    height: 45px;
+    width: 45px;
     vertical-align: middle;
     object-fit: cover;
     border-style: none;

@@ -1,5 +1,25 @@
 <template>
     <div>
+        <vue-particles
+      color="#fff"
+      :particleOpacity="0.9"
+      :particlesNumber="100"
+      shapeType="circle"
+      :particleSize="3"
+      linesColor="#8EB5C9"
+      :linesWidth="1"
+      :lineLinked="true"
+      :lineOpacity="0.6"
+      :linesDistance="150"
+      :moveSpeed="3"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="false"
+      clickMode="push"
+      class="partical"
+    >
+    </vue-particles>
+
         <div class="SignFlowHomepage">
             <div class="SignFlowHomepage-content">
                 <div class="SignFlowHomepage-logo">
@@ -219,6 +239,7 @@
 <script>
 import { academicLogin } from "@/api/login";
 import { mapMutations } from "vuex";
+import { updateBonusPoints } from "@/api/personalInfo"
 export default {
   name: "login",
   data() {
@@ -242,13 +263,27 @@ export default {
       },
       isRegister:false,
       registerCurrent:0,
-      loginUrl:require("../assets/success.png")
+      loginUrl:require("../assets/success.png"),
+      addNum:10
     }
   },
   methods:{
     ...mapMutations(["changeLogin"]),
     clickNext(){
         this.registerCurrent++;
+    },
+    addBonus(){
+        updateBonusPoints(this.addNum).then(response=>{
+            if(response.status==200){
+                this.$message.success("每日登陆成功，获得10积分奖励")
+            }
+            else{
+                this.$message.error("获得积分失败")
+            }
+        }).catch(e=>{
+            console.log(e)
+            this.$message.error("获得积分失败")
+        })
     },
     handleSubmit(e) {
       e.preventDefault();
@@ -259,6 +294,9 @@ export default {
                 if(response.status==200){
                     this.$message.success("登录成功");
                     this.changeLogin(response.data);
+                    if(response.data.isFirst){
+                        this.addBonus()
+                    }
                     this.$router.push("/");
                 }
                 else if(response.status==403){
@@ -271,13 +309,22 @@ export default {
           }
         }
       });
-
     },
   }
 };
 </script>
 
 <style scoped>
+.partical {
+  background-size: cover;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 
 .css-regtitle{
     font-size: 20px;
@@ -349,7 +396,8 @@ export default {
 }
 .signQr-container {
     background-color: #fff;
-    border-radius:20px
+    border-radius:20px;
+    z-index: 10;
 }
 .SignFlowHomepage-logo {
     height: 81px;
