@@ -113,9 +113,9 @@
                   <a-input
                     placeholder="写下你的问题"
                     v-model="inputHeader"
-                    @input="check_question"
+                    @change="check_question"
                   />
-                  <a-alert v-show="flag" message="你还没有输入问号" banner />
+                  <a-alert v-if="flag" message="你还没有输入问号" banner />
                   <a-textarea
                     v-model="inputText"
                     placeholder="请写下问题的具体描述"
@@ -233,13 +233,12 @@ export default {
       this.inputText = "";
     },
     check_question(e) {
-      let a = e.target.value.replace(/[^?]/g, "");
-      console.log(a);
-      console.log(e.target.value);
-      if (a != e.target.value) {
-        this.flag = true;
-      } else {
+      // let a = e.target.value.replace(/[^?]/g, "");
+      let a = e.target.value;
+      if (a.includes("?") || a.includes("？")) {
         this.flag = false;
+      } else {
+        this.flag = true;
       }
     },
   },

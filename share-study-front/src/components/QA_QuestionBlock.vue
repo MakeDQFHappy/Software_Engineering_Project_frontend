@@ -44,18 +44,30 @@
         />
       </a-modal>
     </div>
-    <br>--------------------------------------------------------------------------------------------------------------------</br>
+    <div class="RichContent-inner">
+      <div class="css-79elbk">
+        <span
+          class="RichText ztext CopyrightRichText-richText css-4em6pe"
+          options="[object Object]"
+          itemprop="text"
+          >{{ QAQuestion.questioncontent }}
+        </span>
+      </div>
+    </div>
+    <p>
+      --------------------------------------------------------------------------------------------------------------------
+    </p>
     <div class="AuthorInfo" v-if="!QAQuestion.hasanswerer">
       <div class="AuthorInfo-content">
         <div class="AuthorInfo-head">
           <span class="UserLink AuthorInfo-name"
-            ><div class="css-1gomreu">唔...看来还没有人回答你的问题</div></span
+            ><div class="css-1gomreu">唔...看来还没有人回答这个问题</div></span
           >
         </div>
       </div>
     </div>
     <div v-if="QAQuestion.hasanswerer">
-      <div v-for="(item, index) in QuestionAnswers.slice(0, 1)" :key="index">
+      <div v-for="(item, index) in QuestionAnswers.slice(0, 2)" :key="index">
         <div class="FeedSource">
           <div class="AuthorInfo FeedSource-byline AuthorInfo--plain">
             <div class="AuthorInfo">
@@ -193,24 +205,24 @@
           ></a-button> -->
 
               <a-button
-                v-if="!QAQuestion.isLiked"
+                v-if="!item.isliked"
                 type="link"
                 style="color: black"
-                @click="clickLike"
-                v-show="!QAQuestion.isLiked"
+                @click="click_Like(item.answerid)"
+                v-show="!item.isliked"
               >
                 <a-icon type="like" />
-                <span>{{ QAQuestion.likeNum }}</span>
+                <span>{{ item.likenum }}</span>
               </a-button>
               <a-button
-                v-if="QAQuestion.isLiked"
+                v-if="item.isliked"
                 type="link"
                 style="color: red"
-                @click="clickLike"
-                v-show="QAQuestion.isLiked"
+                @click="undo_Like(item.answerid)"
+                v-show="item.isliked"
               >
                 <a-icon type="like" theme="filled" />
-                <span>{{ QAQuestion.likeNum }}</span> </a-button
+                <span>{{ item.likenum }}</span> </a-button
               ><a-button
                 v-if="!QAQuestion.isStared"
                 type="link"
@@ -258,7 +270,7 @@
 </template>
 
 <script>
-import { getAnswer, answerQuestion } from "@/api/QA";
+import { getAnswer, answerQuestion, clickLike, undoLike } from "@/api/QA";
 export default {
   data() {
     return {
@@ -266,6 +278,8 @@ export default {
       Inputanswer: "",
       QuestionAnswers: [],
       message: [],
+      message1: [],
+      message2: [],
     };
   },
   inject: ["reload"],
@@ -351,9 +365,38 @@ export default {
     //     this.QAQuestion.agreenum -= 1;
     //   }
     // },
-    clickLike() {
-      this.QAQuestion.likeNum += this.QAQuestion.isLiked ? -1 : 1;
-      this.QAQuestion.isLiked = !this.QAQuestion.isLiked;
+    click_Like(answerid) {
+      clickLike(answerid)
+        .then((response) => {
+          if (response.status == 200) {
+            this.reload();
+            // this.QuestionAnswers = response.data;
+            this.message1.push(response.data);
+            this.$message.success("点赞成功");
+          } else {
+            this.$message.error("点赞失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("点赞失败");
+        });
+    },
+    undo_Like(answerid) {
+      undoLike(answerid)
+        .then((response) => {
+          if (response.status == 200) {
+            this.reload();
+            this.message2.push(response.data);
+            this.$message.success("取消点赞成功");
+          } else {
+            this.$message.error("取消点赞失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("取消点赞失败");
+        });
     },
     clickStar() {
       this.QAQuestion.starNum += this.QAQuestion.isStared ? -1 : 1;
