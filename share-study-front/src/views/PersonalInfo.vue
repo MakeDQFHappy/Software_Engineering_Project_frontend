@@ -185,12 +185,13 @@
     </script>
 
     <style scoped>
-    .edit-item:hover .edit-button{
-        opacity: 1;
-    }
     .edit-button{
         margin-left:20px;
         opacity: 0;
+    }
+
+    .edit-item:hover .edit-button{
+        opacity: 1 !important;
     }
     .edit-item {
         line-height:40px;

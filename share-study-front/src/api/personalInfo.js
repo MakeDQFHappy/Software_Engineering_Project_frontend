@@ -8,3 +8,11 @@ export function updateAvatar(oldAvatar,file) {
         data:file
     })
 }
+
+export function updateBonusPoints(num) {
+    return request({
+        url: 'personalInfo/updateBonusPoints',
+        method: 'post',
+        params: {"changeNum":num},
+    })
+}

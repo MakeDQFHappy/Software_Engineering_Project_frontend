@@ -11,7 +11,7 @@
                 <span class="userName">
                     <span class="userName-nameArea"> {{item.friendName}}</span>
                 </span>
-                <time>21小时前</time>
+                <time>{{item.lastTime}}</time>
             </div>
             <div class="ChatUserListItem-Snippet">{{item.lastMessage}}</div>
         </div>
@@ -22,21 +22,12 @@
 export default {
     props:["item"],
     mounted() {
-        for (let i in appData) {
-            this.faceList.push(appData[i].char);
-        }
     },
     data() {
         return {
-            faceList: [],
-            emojiItem: null,
         };
     },
     methods: {
-        getEmo(index) {
-            this.emojiItem = index;
-            this.$emit("changeText")
-        }
     }
 }
 </script>
