@@ -81,7 +81,7 @@
 <script>
 import QA_QuestionBlock from "@/components/QA_QuestionBlock.vue";
 import QA_Manager from "@/components/QA_Manager.vue";
-import { get_myQuestion } from "@/api/QA";
+import { get_myQuestion, searchByQuestion } from "@/api/QA";
 export default {
   name: "QA_myQuestionView",
   data() {
@@ -125,7 +125,22 @@ export default {
       this.$router.push("/QA_Recommend");
     },
     onSearch(value) {
-      console.log(value);
+      this.QAQuestionItems = [];
+      let a = value.toString();
+      console.log(a);
+      searchByQuestion(a)
+        .then((response) => {
+          if (response.status == 200) {
+            this.QAQuestionItems = response.data;
+            this.$message.success("搜索成功");
+          } else {
+            this.$message.error("搜索失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("搜索失败");
+        });
     },
   },
   components: { QA_QuestionBlock, QA_Manager },

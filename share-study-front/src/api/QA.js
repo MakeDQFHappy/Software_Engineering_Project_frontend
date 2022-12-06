@@ -5,6 +5,12 @@ export function get_myQuestion() {
         method: 'get'
     })
 }
+export function get_myAnswer() {
+    return request({
+        url: 'QA/getMyAnswer',
+        method: 'get'
+    })
+}
 export function askQuestion(content,header,rewardpoints) {
     return request({
         url: 'QA/askQuestion',
@@ -28,5 +34,37 @@ export function answerQuestion(questionid,content)
         method: 'post',
         params: { "questionid": questionid },
         data:content
+    })
+}
+export function searchByQuestion(keyword)
+{
+        return request({
+        url: 'QA/searchByQuestion',
+        method: 'get',
+        params:{"keyword":keyword}
+    })
+}
+export function searchByUser(keyword)
+{
+        return request({
+        url: 'QA/searchByUser',
+        method: 'get',
+        params:{"keyword":keyword}
+    })
+}
+export function clickLike(answerid)
+{
+        return request({
+        url: 'QA/clickLike',
+        method: 'post',
+        params:{"answerid":answerid}
+    })
+}
+export function undoLike(answerid)
+{
+        return request({
+        url: 'QA/undoLike',
+        method: 'post',
+        params:{"answerid":answerid}
     })
 }
