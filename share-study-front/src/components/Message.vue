@@ -66,7 +66,7 @@
                             </div>
                             <audio :src="item.message" v-if="item.type==2" id="aud" ref="audio" controls="controls" ></audio>
                             <a href="#" @click="previewImg">
-                                <img v-if="item.type==3" :src="item.message" alt=""></img>
+                                <img v-if="item.type==3" :src="item.message" alt="">
                             </a>
                             <div v-if="item.type>3">
                                 <a href="#" @click="preview">

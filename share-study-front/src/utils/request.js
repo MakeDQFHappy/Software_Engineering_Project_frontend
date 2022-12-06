@@ -11,7 +11,7 @@ export function getDomainUrl() {
 
 
 export function getCurrentUrl() {
-    return 'http://localhost:8081'
+    return 'http://localhost:8080'
 }
 
 // create an axios instance

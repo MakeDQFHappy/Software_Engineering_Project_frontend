@@ -16,3 +16,11 @@ export function updateBonusPoints(num) {
         params: {"changeNum":num},
     })
 }
+
+export function getUserInfo(userId) {
+    return request({
+        url: 'personalInfo/getUserInfo',
+        method: 'get',
+        params: {"userId":userId},
+    })
+}

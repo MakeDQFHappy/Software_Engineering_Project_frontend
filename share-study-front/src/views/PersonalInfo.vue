@@ -139,14 +139,16 @@
                 this.userAvatar=localStorage.getItem('userAvatar')
                 this.userName=localStorage.getItem('userName')
                 this.sex=localStorage.getItem('sex')
-                this.age=localStorage.getItem('age')
+                let now=new Date()
+                let year=now.getFullYear()
+                this.age=year-localStorage.getItem('age')
                 this.bonusPoints=localStorage.getItem('bonusPoints')
             }
             
         },
         methods:{
             beforeUpload(file) {
-                console.log(file.type);
+                console.log(file);
                 this.uploadFile = file;
                 this.submit();
                 return false;

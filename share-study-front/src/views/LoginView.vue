@@ -119,114 +119,122 @@
                             </div>
                             <a-steps :current="registerCurrent" size="small" progress-dot>
                                 <a-step title="学生认证" description="验证学号" ></a-step>
-                                <a-step title="手机号" description="绑定手机号" ></a-step>
+                                <a-step title="邮箱" description="绑定邮箱" ></a-step>
                                 <a-step title="基本信息" description="填写基本信息"></a-step>
                             </a-steps>
                             <a-form
                                 id="components-form-demo-normal-register"
                                 :form="form"
                                 class="login-form"
-                                @submit="handleSubmit"
                                 style="margin:24px 15px 24px 15px"
                             >
                                 <a-form-item>
-                                <a-input
-                                    v-if="registerCurrent==0"
-                                    v-decorator="[
-                                    'academic',
-                                    { rules: [{ required: true, message: '请输入学号!' }] },
-                                    ]"
-                                    placeholder="Academic Number"
-                                >
-                                    <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
-                                </a-input>
-                                <a-input
-                                    v-if="registerCurrent==1"
-                                    v-decorator="[
-                                    'phone',
-                                    { rules: [{ required: true, message: '请输入手机号!' }] },
-                                    ]"
-                                    placeholder="phone number"
-                                >
-                                    <a-icon slot="prefix" type="phone" style="color: rgba(0,0,0,.25)" />
-                                </a-input>
-                                <a-row :gutter="8" v-if="registerCurrent==2">
-                                    <a-col :span="12">
-                                        <a-select default-value="男" @change="handleChange">
-                                            <a-select-option value="男">
-                                                男
-                                            </a-select-option>
-                                            <a-select-option value="女">
-                                                女
-                                            </a-select-option>
-                                        </a-select>
-                                    </a-col>
-                                    <a-col :span="12">
-                                        <a-input
-                                            v-decorator="[
-                                            'age',
-                                            { rules: [{ required: true, message: '请输入年龄!' }] },
-                                            ]"
-                                            placeholder="age"
-                                        />
-                                    </a-col>
-                                </a-row>
-                                </a-form-item>
-                                <a-form-item>
-                                <a-input
-                                    v-if="registerCurrent==0"
-                                    v-decorator="[
-                                    'RealName',
-                                    validatorRules.userName ]"
-                                    placeholder="RealName"
-                                >
-                                    <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
-                                </a-input>
-                                <a-row :gutter="8" v-if="registerCurrent==1">
-                                    <a-col :span="12">
-                                        <a-input
-                                            v-decorator="[
-                                            'captcha',
-                                            { rules: [{ required: true, message: '请输入验证码!' }] },
-                                            ]"
-                                            placeholder="captcha"
-                                        />
+                                    <a-input
+                                        v-if="registerCurrent==0"
+                                        v-decorator="[
+                                        'academic',
+                                        { rules: [{ required: true, message: '请输入学号!' }] },
+                                        ]"
+                                        placeholder="Academic Number"
+                                    >
+                                        <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
+                                    </a-input>
+                                    <a-input
+                                        v-if="registerCurrent==1"
+                                        v-decorator="[
+                                        'email',
+                                        { rules: [{  required: true, message: '请输入邮箱!' },{type:'email',message:'请输入正确的邮箱格式！'}] },
+                                        ]"
+                                        placeholder="email"
+                                    >
+                                        <a-icon slot="prefix" type="mail" style="color: rgba(0,0,0,.25)" />
+                                    </a-input>
+                                    <a-row :gutter="8" v-if="registerCurrent==2">
+                                        <a-col :span="12">
+                                            <a-select v-decorator="['sex']" default-value="男" @change="handleChange">
+                                                <a-select-option value="男">
+                                                    男
+                                                </a-select-option>
+                                                <a-select-option value="女">
+                                                    女
+                                                </a-select-option>
+                                            </a-select>
                                         </a-col>
-                                    <a-col :span="12">
-                                        <a-button style="width:100px">获取验证码</a-button>
-                                    </a-col>
-                                </a-row>
-                                <a-input
-                                    v-if="registerCurrent==2"
-                                    v-decorator="[
-                                    'password',
-                                    validatorRules.password ]"
-                                    placeholder="password"
-                                    type="password"
-                                >
-                                    <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
-                                </a-input>
-                                <div v-show="registerCurrent==3"  >
-                                    <div style="width:100%;margin:auto;display: flex;align-items: center; justify-content: center;">
-                                        <img :src="loginUrl" alt="" >
-                                    </div>
-                                    <div style="text-align:center;font-size:13px;font-weight:bold">
-                                        注册成功，即将跳转登录界面
-                                    </div>
-                                </div>
-                                
+                                        <a-col :span="12">
+                                            <a-input-number v-decorator="[
+                                                'birthYear',
+                                                { rules: [{ required: true, message: '请输入出生年份!' }] },
+                                                ]" placeholder="birth year" :min="1900" :max="2022" style="width:100%" />
+                                        </a-col>
+                                    </a-row>
+                                </a-form-item>
+                                <a-form-item v-if="registerCurrent==2">
+                                    <a-input
+                                        v-decorator="[
+                                        'nickName',
+                                        validatorRules.nickName ]"
+                                        placeholder="nick name"
+                                        type="nickName"
+                                    >
+                                        <a-icon slot="prefix" type="idcard" style="color: rgba(0,0,0,.25)" />
+                                    </a-input>
                                 </a-form-item>
                                 <a-form-item>
-                                <a-button type="primary" html-type="submit" style="width:100%" @click="clickNext" v-if="registerCurrent<3">
-                                    <div v-show="registerCurrent<2">
-                                        Next Step
-                                    </div >
-                                    <div v-show="registerCurrent==2">
-                                        Finish
+                                    <a-input
+                                        v-if="registerCurrent==0"
+                                        v-decorator="[
+                                        'RealName',
+                                        validatorRules.userName ]"
+                                        placeholder="RealName"
+                                    >
+                                        <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+                                    </a-input>
+                                    <a-row :gutter="8" v-if="registerCurrent==1">
+                                        <a-col :span="12">
+                                            <a-input
+                                                v-decorator="[
+                                                'captcha',
+                                                { rules: [{ required: true, message: '请输入验证码!' }] },
+                                                ]"
+                                                placeholder="captcha"
+                                            />
+                                            </a-col>
+                                        <a-col :span="12">
+                                            <a-button style="width:100px" @click="getCaptcha" :disabled="(cooling>0)" >{{captchaMsg}}</a-button>
+                                        </a-col>
+                                    </a-row>
+                                    <a-input
+                                        v-if="registerCurrent==2"
+                                        v-decorator="[
+                                        'password',
+                                        validatorRules.password ]"
+                                        placeholder="password"
+                                        type="password"
+                                    >
+                                        <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+                                    </a-input>
+                                    <div v-show="registerCurrent==3"  >
+                                        <div style="width:100%;margin:auto;display: flex;align-items: center; justify-content: center;">
+                                            <img :src="loginUrl" alt="" >
+                                        </div>
+                                        <div style="text-align:center;font-size:13px;font-weight:bold">
+                                            注册成功，即将跳转登录界面
+                                        </div>
                                     </div>
-                                </a-button>
-                                
+                                    
+                                    </a-form-item>
+                                    <a-form-item>
+                                    <a-button type="primary" html-type="submit" style="width:100%" @click="clickNext" v-if="registerCurrent<3">
+                                        <div v-show="registerCurrent<2" >
+                                            Next Step
+                                        </div >
+                                        <div v-show="registerCurrent==2">
+                                            Finish
+                                        </div>
+                                    </a-button>
+                                    <div style="font-size:8px;font-family:'仿宋'">已有账号？<a href="#" style="font-size:12px;color:blue" @click="(isRegister=!isRegister)" >马上登录</a></div>
                                 </a-form-item>
+                                
                             </a-form>
                         </div>
                     </div>
@@ -238,10 +246,12 @@
 
 <script>
 import { academicLogin } from "@/api/login";
+import { getCode,register,varifyAcademic } from "@/api/register"
 import { mapMutations } from "vuex";
 import { updateBonusPoints } from "@/api/personalInfo"
 export default {
   name: "login",
+
   data() {
     return {
       current:'academic',
@@ -259,18 +269,114 @@ export default {
             rules: [
               { required: true, message: '请输入姓名!'},//此处开启校验必填
             ],
+          },
+          nickName:{
+            rules:[
+                {required:true,message:"请输入用户名"},
+                {max:20,message:'长度不超过20个字符'}
+            ]
+          },
+          birthYear:{
+            rules:[
+                {require:true,message:"请输入出生年份"},
+                {  }
+            ]
           }
       },
       isRegister:false,
       registerCurrent:0,
       loginUrl:require("../assets/success.png"),
-      addNum:10
+      addNum:10,
+      code:null,
+      cooling:0,
+      captchaMsg:"获取验证码",
+      registerData:{
+        academicNumber:null,
+        userName:null,
+        realName:null,
+        password:null,
+        birthYear:null,
+        email:null,
+        sex:null
+      }
     }
   },
   methods:{
-    ...mapMutations(["changeLogin"]),
     clickNext(){
-        this.registerCurrent++;
+        if(this.registerCurrent==0){
+            this.academicVerify()
+        }   
+        if(this.registerCurrent==1){
+            this.checkcode()
+        }
+        if(this.registerCurrent==2){
+            this.finalRegister()
+        }
+    },
+    finalRegister(){
+        this.form.validateFields((err, values) => {
+            if(!err){
+                console.log(values)
+                this.registerData.sex=values.sex
+                this.registerData.birthYear=values.birthYear
+                this.registerData.password=values.password
+                this.registerData.userName=values.nickName
+                register(this.registerData).then(response=>{
+                    if(response.status==200){
+                        this.$message.success("注册成功")
+                        this.registerCurrent++;
+                        setTimeout(()=>{
+                            this.isRegister=false
+                        },3000)
+                    }
+                    else{
+                        this.$message.error("注册失败")
+                    }
+                }).catch(e=>{
+                    console.log(e)
+                    this.$message.error("注册失败")
+                })
+            }
+        })
+    },
+    academicVerify(){
+        this.form.validateFields((err, values) => {
+            if(!err){
+                console.log(values)
+                varifyAcademic(values.academic,values.RealName).then(response=>{
+                    if(response.status==200){
+                        this.$message.success("验证学号成功");
+                        this.registerData.academicNumber=values.academic
+                        this.registerData.realName=values.RealName
+                        this.registerCurrent++;
+                    }
+                    else{
+                        this.$message.success("验证学号未通过");
+                    }
+                }).catch(e=>{
+                    console.log(e)
+                    this.$message.error("验证学号未通过")
+                })
+            }
+        });
+        
+    },
+    checkcode(){
+        this.form.validateFields((err, values) => {
+            if(!err){
+                console.log(this.code)
+                console.log(values.captcha)
+                if(values.captcha==this.code){
+                    this.registerData.email=values.email
+                    this.registerCurrent++;
+                    return true;
+                }
+                else{
+                    this.$message.error("输入验证码有误")
+                }
+            }
+            return false;
+        });
     },
     addBonus(){
         updateBonusPoints(this.addNum).then(response=>{
@@ -285,6 +391,39 @@ export default {
             this.$message.error("获得积分失败")
         })
     },
+    startcount(){
+      if(this.cooling==0){
+        this.captchaMsg="获取验证码"
+        return;
+      }
+      setTimeout(()=>{
+        this.cooling-=1;
+        this.captchaMsg=this.cooling+"秒后重试"
+        this.startcount();
+      },1000)
+    },
+    getCaptcha(){
+        this.form.validateFields((err, values) => {
+            if (!err.email) {
+                this.cooling=60;
+                this.startcount();
+                getCode(values.email).then(response=>{
+                    if(response.status==200){
+                        this.$message.success("发送验证码成功")
+                        this.code=response.data
+                    }
+                    else{
+                        this.$message.error("发送验证码失败")
+                    }
+                }).catch(e=>{
+                    console.log(e)
+                    this.$message.error("发送验证码失败")
+                })
+            }
+        });
+        // getCode().then()
+    },
+    ...mapMutations(["changeLogin"]),
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
