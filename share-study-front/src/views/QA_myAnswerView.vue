@@ -29,7 +29,7 @@
               > -->
               <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
               <a-input-search
-                placeholder="在'我的提问'中搜索"
+                placeholder="搜索"
                 style="
                   width: 200px;
                   -webkit-box-align: center;
