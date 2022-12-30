@@ -6251,7 +6251,7 @@
 
 "vue-particles@^1.0.9":
   "integrity" "sha512-9MUkX6Sq1x7guUHoN4Br4Dwtb+gY1t+uJMg0wxJtKKOURe/zS+8PsKwMhspCfl4ch3EM5nrwhASVX2UizKb41w=="
-  "resolved" "https://registry.npmmirror.com/vue-particles/-/vue-particles-1.0.9.tgz"
+  "resolved" "https://registry.npmjs.org/vue-particles/-/vue-particles-1.0.9.tgz"
   "version" "1.0.9"
   dependencies:
     "particles.js" "^2.0.0"

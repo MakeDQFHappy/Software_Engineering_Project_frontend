@@ -116,6 +116,41 @@
                     @change="check_question"
                   />
                   <a-alert v-if="flag" message="你还没有输入问号" banner />
+                  <a-input-group>
+                    <a-row :gutter="8">
+                      <a-col :span="6">
+                        <a-input
+                          placeholder="问题标签"
+                          :maxLength="5"
+                          v-model="inputtag1"
+                        />
+                      </a-col>
+                    </a-row>
+                  </a-input-group>
+                  <a-input-group>
+                    <a-row :gutter="8">
+                      <a-col :span="6">
+                        <a-input
+                          placeholder="问题标签"
+                          :maxLength="5"
+                          v-model="inputtag2"
+                        />
+                      </a-col>
+                    </a-row>
+                  </a-input-group>
+
+                  <a-input-group>
+                    <a-row :gutter="8">
+                      <a-col :span="6">
+                        <a-input
+                          placeholder="问题标签"
+                          :maxLength="5"
+                          v-model="inputtag3"
+                        />
+                      </a-col>
+                    </a-row>
+                  </a-input-group>
+
                   <a-textarea
                     v-model="inputText"
                     placeholder="请写下问题的具体描述"
@@ -207,6 +242,9 @@ export default {
       modal1Visible: false,
       inputText: "",
       inputHeader: "",
+      inputtag1: "",
+      inputtag2: "",
+      inputtag3: "",
       rewardpoints: 0,
       flag: false,
     };
@@ -215,7 +253,14 @@ export default {
   methods: {
     clickask() {
       this.modalVisible = false;
-      askQuestion(this.inputText, this.inputHeader, this.rewardpoints)
+      askQuestion(
+        this.inputText,
+        this.inputHeader,
+        this.rewardpoints,
+        this.inputtag1,
+        this.inputtag2,
+        this.inputtag3
+      )
         .then((response) => {
           if (response.status == 200) {
             this.reload();
@@ -228,8 +273,7 @@ export default {
         .catch((e) => {
           console.log(e);
           this.$message.error("提问失败");
-        }); // this.message.push({ // senderId:1,
-      // type:1, // message:this.inputText, // createTime:new Date() // })
+        });
       this.inputText = "";
     },
     check_question(e) {
