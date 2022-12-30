@@ -8,11 +8,16 @@
               <p>Content</p>
               <p>Content</p>
             </template>
-            <a-avatar :size="22" icon="user" style="margin-right: 10px" />
+            <a-avatar
+              :size="22"
+              :src="note.userAvatar"
+              icon="user"
+              style="margin-right: 10px"
+            />
           </a-popover>
-          <a class="css-1l949x6-Title" @click="chargePoints">{{
-            note.title
-          }}</a>
+          <a class="css-1l949x6-Title" @click="chargePoints"
+            >{{ note.title }}
+          </a>
         </div>
         <div>
           <div class="css-go5ofn-TagsContainer-StyledTags">
@@ -125,15 +130,33 @@ export default {
     },
     clickComment() {},
     chargePoints() {
-      if (this.note.needPoints > 0) {
+      console.log(this.note.isPaid)
+      if (this.note.needPoints > 0 && !this.note.isPaid) {
         let self = this;
         this.$confirm({
           title: "该笔记需要积分",
-          content: "是否支付"+this.note.needPoints+"积分来打开笔记",
+          content: "是否支付" + this.note.needPoints + "积分来打开笔记",
           onOk() {
-            self.openStudyNote()
+
+
+
+
+            let formData = new FormData();
+            formData.append("buyerID", 1);
+            formData.append("sellerID", 5);
+            formData.append("noteID", self.note.noteID);
+            formData.append("points", self.note.needPoints);
+            axios.post("/charge_points", formData).then((res) => {
+              console.log("数据：", res);
+
+            self.openStudyNote();              
+            });
+
+
+
           },
-          onCancel() {},
+          onCancel() {
+          },
         });
       } else {
         this.openStudyNote();
@@ -266,7 +289,7 @@ a:focus {
 .css-wpffuk-layer1-RowWrapper-QuestionRowWrapper {
   background: rgba(var(--dsw-layer-1-rgb), 1);
   padding: 16px;
-  box-shadow: 0 1px 2px rgb(102, 100, 100), 0 2px 8px rgb(97, 94, 94);
+  box-shadow: 0 1px 2px rgb(160, 157, 157), 0 2px 2px rgb(141, 137, 137);
   transition: box-shadow 0.3s ease-in-out 0s;
   margin-bottom: 10px;
   border-radius: 8px;

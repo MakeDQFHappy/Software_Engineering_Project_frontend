@@ -25,7 +25,7 @@
           v-if="!isLogin"
           key="5"
           style="float: right"
-          @click="openLogin"
+          @click="showModal"
         >
           登录
         </a-menu-item>

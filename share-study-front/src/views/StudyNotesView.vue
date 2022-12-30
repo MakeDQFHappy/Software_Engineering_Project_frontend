@@ -92,9 +92,6 @@
                     <div v-html="content"></div>
 
 
-                    <v-html-panel :url.asyc="'https://tj-software-engineer.oss-cn-shanghai.aliyuncs.com/note123123.html'"></v-html-panel>
-
-
 
                     <p><br /></p>
                   </div>

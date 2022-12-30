@@ -1,12 +1,60 @@
 <template>
-  <div class="tinymce-editor">
-    <editor
-      v-model="myValue"
-      :init="init"
-      :disabled="disabled"
-      @onClick="onClick"
-    >
-    </editor>
+  <div v-if="show">
+    <a-icon type="close" @click="closeEditor"/>
+    <a-input v-model:value="title" placeholder="TITLE" />
+    <div>
+      <template v-for="(tag, index) in tags">
+        <a-tooltip v-if="tag.length > 20" :key="tag-1+1" :title="tag">
+          <a-tag
+            :key="tag"
+            :closable="true"
+            @close="() => handleClose(tag)"
+          >
+            {{ `${tag.slice(0, 20)}...` }}
+          </a-tag>
+        </a-tooltip>
+        <a-tag
+          v-else
+          :key="tag"
+          :closable="true"
+          @close="() => handleClose(tag)"
+        >
+          {{ tag }}
+        </a-tag>
+      </template>
+      <a-input
+        v-if="inputVisible"
+        ref="input"
+        type="text"
+        size="small"
+        :style="{ width: '78px' }"
+        :value="inputValue"
+        @change="handleInputChange"
+        @blur="handleInputConfirm"
+        @keyup.enter="handleInputConfirm"
+      />
+      <a-tag
+        v-else
+        style="background: #fff; borderstyle: dashed"
+        @click="showInput"
+      >
+        <a-icon type="plus" /> 添加Tag
+      </a-tag>
+    </div>
+
+    <div class="tinymce-editor">
+      <editor
+        v-model="content"
+        :init="init"
+        :disabled="disabled"
+        @onClick="onClick"
+      >
+      </editor>
+
+      <a-button type="primary" @click="publishNotes" shape="round" size="large">
+        发布
+      </a-button>
+    </div>
   </div>
 </template>
 
@@ -54,6 +102,9 @@ export default {
         "undo redo |  formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists image media table | removeformat hr",
     },
   },
+
+  props: ["show"],
+
   data() {
     return {
       //初始化配置
@@ -76,6 +127,7 @@ export default {
               const img = "data:image/jpeg;base64," + blobInfo.base64();
               success(img);
             } else {
+              this.$message.warning("疑艳丁真 鉴定为：黄");
               success("");
             }
           });
@@ -83,6 +135,13 @@ export default {
         resize: false,
       },
       myValue: this.value,
+
+      title: "",
+      content: "",
+
+      tags: ["软件工程", "间谍过家家"],
+      inputVisible: false,
+      inputValue: "",
     };
   },
   mounted() {
@@ -98,6 +157,64 @@ export default {
     clear() {
       this.myValue = "";
     },
+
+    publishNotes() {
+      // form-data 请求
+      let formData = new FormData();
+      formData.append("title", this.title);
+      formData.append("content", this.content);
+      formData.append("sharerID", "1");
+      formData.append("points", "128");
+
+
+      for (var index in this.tags){
+        formData.append("tags", this.tags[index]);
+      }
+
+      console.log(formData);
+
+      axios.post("/upload", formData).then((res) => {
+        console.log("数据：", res);
+      });
+    },
+
+    closeEditor(){
+      this.$emit("update:show",false);
+    },
+
+
+
+
+    handleClose(removedTag) {
+      const tags = this.tags.filter((tag) => tag !== removedTag);
+      console.log(tags);
+      this.tags = tags;
+    },
+
+    showInput() {
+      this.inputVisible = true;
+      this.$nextTick(function () {
+        this.$refs.input.focus();
+      });
+    },
+
+    handleInputChange(e) {
+      this.inputValue = e.target.value;
+    },
+
+    handleInputConfirm() {
+      const inputValue = this.inputValue;
+      let tags = this.tags;
+      if (inputValue && tags.indexOf(inputValue) === -1) {
+        tags = [...tags, inputValue];
+      }
+      console.log(tags);
+      Object.assign(this, {
+        tags,
+        inputVisible: false,
+        inputValue: "",
+      });
+    },
   },
 
   watch: {
@@ -110,4 +227,7 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+
+
+</style>
