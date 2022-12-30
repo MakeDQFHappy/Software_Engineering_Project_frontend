@@ -260,115 +260,115 @@ export default {
 };
 </script>
 
-<style scoped>
-.edit-item:hover .edit-button {
-  opacity: 1;
-}
-.edit-button {
-  margin-left: 20px;
-  opacity: 0;
-}
-.edit-item {
-  line-height: 40px;
-  font-size: 15px;
-  font-weight: bold;
-  border-bottom: 2px solid #a8a1a1;
-}
-.css-9cqq7d {
-  height: 98px;
-  margin-bottom: 16px;
-  border-radius: 4px;
-}
-.css-rzelnn {
-  box-sizing: border-box;
-  margin: 0px;
-  min-width: 0px;
-  width: 100%;
-  padding-left: 17px;
-  padding-right: 17px;
-}
-.css-zkfaav {
-  box-sizing: border-box;
-  margin: 0px;
-  min-width: 0px;
-  -webkit-box-align: center;
-  align-items: center;
-  display: flex;
-}
-.CreatorEntrance-title {
-  font-size: 14px;
-  font-synthesis: style;
-  font-weight: 600;
-  color: #121212;
-}
-.CreatorEntrance-text {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-box-flex: 1;
-  -ms-flex-positive: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  flex-grow: 1;
-  line-height: 16px;
-  margin-left: 10px;
-}
-.CreatorEntrance-hint {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  height: 56px;
-}
-.ProfileSideCreator-creatorEntranceHint {
-  padding: 0 20px 0 4px;
-}
-.css-19idom {
-  margin-bottom: 8px;
-}
-.Card {
-  background: #fff;
-  border-radius: 2px;
-  -webkit-box-shadow: 0 1px 3px hsl(0deg 0% 7% / 10%);
-  box-shadow: 0 1px 3pxhsla (0, 0%, 7%, 0.1);
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-  overflow: hidden;
-}
-.Profile-sideColumn {
-  color: #646464;
-  margin-left: 10px;
-  width: 296px;
-}
-.css-1qyytj7 {
-  max-width: 296px;
-  -webkit-align-self: normal;
-  -ms-flex-item-align: normal;
-  align-self: normal;
-}
-.Profile-main {
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: flex-start;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  justify-content: space-between;
-  margin: 10px auto;
-  min-height: 100vh;
-  /* padding: 0 16px; */
-  width: 1000px;
-}
-.ant-carousel >>> .slick-slide {
-  text-align: center;
-  height: 250px;
-  line-height: 160px;
-  background: #364d79;
-  overflow: hidden;
-}
+    <style scoped>
+    .edit-item:hover .edit-button{
+        opacity: 1;
+    }
+    .edit-button{
+        margin-left:20px;
+        opacity: 0;
+    }
+    .edit-item {
+        line-height:40px;
+        font-size: 15px;
+        font-weight: bold;
+        border-bottom:2px solid #a8a1a1;
+    }
+    .css-9cqq7d {
+        height: 98px;
+        margin-bottom: 16px;
+        border-radius: 4px;
+    }
+    .css-rzelnn {
+        box-sizing: border-box;
+        margin: 0px;
+        min-width: 0px;
+        width: 100%;
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+    .css-zkfaav {
+        box-sizing: border-box;
+        margin: 0px;
+        min-width: 0px;
+        -webkit-box-align: center;
+        align-items: center;
+        display: flex;
+    }
+    .CreatorEntrance-title {
+        font-size: 14px;
+        font-synthesis: style;
+        font-weight: 600;
+        color: #121212;
+    }
+    .CreatorEntrance-text {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        flex-grow: 1;
+        line-height: 16px;
+        margin-left: 10px;
+    }
+    .CreatorEntrance-hint {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        height: 56px;
+    }
+    .ProfileSideCreator-creatorEntranceHint {
+        padding: 0 20px 0 4px;
+    }
+    .css-19idom {
+        margin-bottom: 8px;
+    }
+    .Card {
+        background: #fff;
+        border-radius: 2px;
+        -webkit-box-shadow: 0 1px 3px hsl(0deg 0% 7% / 10%);
+        box-shadow: 0 1px 3pxhsla(0,0%,7%,.1);
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+    .Profile-sideColumn {
+        color: #646464;
+        margin-left: 10px;
+        width: 296px;
+    }
+    .css-1qyytj7 {
+        max-width: 296px;
+        -webkit-align-self: normal;
+        -ms-flex-item-align: normal;
+        align-self: normal;
+    }
+    .Profile-main {
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: space-between;
+        margin: 10px auto;
+        min-height: 100vh;
+        /* padding: 0 16px; */
+        width: 1000px;
+    }
+    .ant-carousel >>> .slick-slide {
+        text-align: center;
+        height: 250px;
+        line-height: 160px;
+        background: #364d79;
+        overflow: hidden;
+    }
 
 .ant-carousel >>> .slick-slide h3 {
   color: #fff;

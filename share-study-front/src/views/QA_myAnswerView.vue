@@ -48,7 +48,11 @@
               <div class="ListShortcut">
                 <div class="Topstory-follow">
                   <div class="" role="list">
-                    <div v-for="(item, index) in QAQuestionItems" :key="index">
+                    <div
+                      v-for="(item, index) in QAQuestionItems"
+                      :key="index"
+                      :QAQuestion="item"
+                    >
                       <QA_QuestionBlock :QAQuestion="item"></QA_QuestionBlock>
                     </div>
                   </div>
@@ -77,38 +81,35 @@
 <script>
 import QA_QuestionBlock from "@/components/QA_QuestionBlock.vue";
 import QA_Manager from "@/components/QA_Manager.vue";
+import { get_myAnswer } from "@/api/QA";
 export default {
-  name: "QA_myQuestionView",
+  name: "QA_myAmswerView",
   data() {
     return {
-      form: { content: "" },
-      QAQuestionItems: [
-        {
-          username: "杜庆峰",
-          agreenum: 10000,
-          title: "为什么现在的大学生越来越不自律",
-          userlink: "https://sse.tongji.edu.cn/info/1206/3148.htm",
-          questionlink:
-            "https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4",
-
-          tags: ["自律", "大学生"],
-          content:
-            "大学生越来越不自律，关键在于手机的问题，现在的大学生每天只会捧着个手机玩，把自己的时间浪费掉。",
-          likeNum: 1000,
-          starNum: 1000,
-          commentNum: 1000,
-          wanted: 10,
-          isadopted: false,
-          isLiked: false,
-          isStared: false,
-          isDenied: false,
-          isAgreed: false,
-        },
-      ],
+      QAQuestionItems: [],
     };
   },
-
+  mounted() {
+    this.get_myAnswerReq();
+  },
   methods: {
+    get_myAnswerReq() {
+      this.QAQuestionItems = [];
+      get_myAnswer()
+        .then((response) => {
+          if (response.status == 200) {
+            this.QAQuestionItems = response.data;
+            this.$message.success("获取我的回答请求成功");
+          } else {
+            this.$message.error("获取我的回答请求失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("获取我的回答请求失败");
+        });
+    },
+
     openQA_myQuestion() {
       this.$router.push("/QA_myQuestion");
     },

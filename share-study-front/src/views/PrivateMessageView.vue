@@ -9,8 +9,8 @@
             placeholder="搜索联系人"
             @change="handleChange"
           >
-            <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">
-              {{ (i + 9).toString(36) + i }}
+            <a-select-option v-for=" item in userItem" :key="item.friendName">
+              <ChatUserItem :item="item"></ChatUserItem>
             </a-select-option>
           </a-select>
         </div>
@@ -27,7 +27,7 @@
               >
               <a-menu-item
                 style="height: 60px"
-                v-for="(item, index) in userItem"
+                v-for="(item, index) in frequentContactUserItem"
                 :key="index"
                 @click="changeChat(item)"
               >
@@ -58,10 +58,12 @@
               <Message :item="item" :avatar="personAvatar" />
             </div>
           </div>
-          <RecordingAnim
-            v-show="recordData.showAnima"
-            style="position: absolute; bottom: 30px; left: 0; right: 0"
-          ></RecordingAnim>
+          <div style="position: absolute; bottom: 30px; left: 0; right: 0">
+              <RecordingAnim
+              v-show="recordData.showAnima"
+            ></RecordingAnim>
+            <div class="countdown" v-show="recordData.showAnima">{{countdown}}</div>
+          </div>
         </div>
         <div class="InputBox">
           <ul class="ToolBar">
@@ -127,23 +129,12 @@ export default {
   data() {
     return {
       rootSubmenuKeys: ["sub1", "sub2", "sub4"],
-      openKeys: ["sub1"],
+      openKeys: [],
       personAvatar:
         "https://wc-project.oss-cn-shanghai.aliyuncs.com/2022/09/15/f32998ad64ff43a4a2a77af9c9cae32av2-0ca202b31685b55bb7a7bf091cceee97_r.jpg",
       message: [],
-      userItem: [
-        {
-          friendAvatar: "",
-          friendName: "史迪奇",
-          lastMessage: "巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴拉拔萝卜",
-        },
-        {
-          friendAvatar: "",
-          friendName: "史莱姆",
-          lastMessage:
-            "啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊",
-        },
-      ],
+      userItem: [],
+      frequentContactUserItem:[],
       inputText: "",
       uploadFile: null,
       recordData: {
@@ -154,6 +145,8 @@ export default {
       userId: "",
       contactId: "",
       socket: null,
+      countdown:0,
+      audioLock:true,
     };
   },
   methods: {
@@ -162,6 +155,10 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.userItem = response.data;
+            this.splitFriendsList()
+            if(this.$route.params.friendId!=null){
+              this.findAndChoose(this.$route.params.friendId)
+            }
             this.$message.success("获得好友列表成功");
           } else {
             this.$message.error("获得好友失败");
@@ -171,6 +168,51 @@ export default {
           console.log(e);
           this.$message.error("获得好友失败");
         });
+    },
+    findAndChoose(friendId){
+      for(let i=0;i<this.userItem.length;++i){
+        if(this.userItem[i].friendId==friendId){
+          this.changeChat(this.userItem[i])
+          return
+        }
+      }
+    },
+    //根据上次聊天时间拆分好友列表
+    splitFriendsList(){
+      for(let i=0;i<this.userItem.length;++i){
+        this.userItem[i]["lastTime"]=this.dealTime(this.userItem[i])
+      }
+    },
+    dealTime(item){
+      var curDate=new Date();
+      var oldDate=new Date(item.lastChatTime)
+      var difftime = (curDate - oldDate)/1000; //计算时间差,并把毫秒转换成秒
+      console.log(difftime)
+      var days = parseInt(difftime/86400); // 天  24*60*60*1000 
+      var hours = parseInt(difftime/3600)-24*days;    // 小时 60*60 总小时数-过去的小时数=现在的小时数 
+      var minutes = parseInt(difftime%3600/60); // 分钟 -(day*24) 以60秒为一整份 取余 剩下秒数 秒数/60 就是分钟数
+      var seconds = parseInt(difftime%60);  // 以60秒为一整份 取余 剩下秒数
+      if(days>10000){
+        return ""
+      }
+      if(days>0){
+          return  days.toString()+"天前"
+      }
+      if(hours>0){
+          item["lastTime"]=hours.toString()+"小时前"
+          this.frequentContactUserItem.push(item)
+          return hours.toString()+"小时前"
+      }
+      if(minutes>0){
+          item["lastTime"]=minutes.toString()+"分钟前"
+          this.frequentContactUserItem.push(item)
+          return minutes.toString()+"分钟前"
+      }
+      else if(seconds>=0){
+          item["lastTime"]="刚刚"
+          this.frequentContactUserItem.push(item)
+          return lastTime="刚刚"
+      }
     },
     getMsg() {
       getMessage(this.contactId)
@@ -324,14 +366,24 @@ export default {
     },
     //录音
     clickRecord() {
+      if(!this.audioLock)
+        return;
+      this.audioLock=false;
       if (this.recordData.showAnima) {
         this.recordData.recorder.pause(); // 暂停录音
+        if(this.countdown<1){
+          this.$message.error("录音时间太短，请重新录制")
+          this.recordData.showAnima=false;
+          this.audioLock=true;
+          return
+        }
         var blob = this.recordData.recorder.getWAVBlob(); //获取wav格式音频数据
         let file = new window.File([blob], new Date().getTime() + ".wav", {
           type: "wav",
         }); // 转成file类型
         let formData = new FormData();
         formData.append("file", file);
+        this.recordData.showAnima=false;
         sendAudioMessage(this.contactId, formData)
           .then((response) => {
             if (response.status == 200) {
@@ -363,15 +415,34 @@ export default {
           () => {
             console.log("开始录音");
             this.recordData.recorder.start(); // 开始录音
+            this.recordData.showAnima=true;
+            this.startcount(); //开始计时
           },
           (error) => {
             console.log(`${error.name} : ${error.message}`);
           }
         );
+        
       }
-      this.recordData.showAnima = !this.recordData.showAnima;
+      this.audioLock=true;
     },
-
+    //录音计时
+    startcount(){
+      if(!this.recordData.showAnima){
+        this.countdown=0;
+        return
+      }
+      if(this.countdown==60){
+        this.clickRecord();
+        this.countdown=0;
+        return;
+      }
+      setTimeout(()=>{
+        this.countdown=parseInt(this.recordData.recorder.duration)
+        this.startcount();
+      },100)
+      
+    },
     //websocket实时通讯
     openSocket() {
       if (typeof WebSocket == "undefined") {
@@ -446,6 +517,12 @@ export default {
 </script>
 
 <style scoped>
+.countdown{
+  font-size: 30px;
+  font-weight: bold;
+  color:#444;
+  text-align: center;
+}
 .ToolBar-item {
   display: inline-block;
 }

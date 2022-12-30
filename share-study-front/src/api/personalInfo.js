@@ -8,3 +8,19 @@ export function updateAvatar(oldAvatar,file) {
         data:file
     })
 }
+
+export function updateBonusPoints(num) {
+    return request({
+        url: 'personalInfo/updateBonusPoints',
+        method: 'post',
+        params: {"changeNum":num},
+    })
+}
+
+export function getUserInfo(userId) {
+    return request({
+        url: 'personalInfo/getUserInfo',
+        method: 'get',
+        params: {"userId":userId},
+    })
+}

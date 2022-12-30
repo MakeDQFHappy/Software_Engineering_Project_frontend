@@ -39,7 +39,7 @@
                                             <div class="tab-pane active fade show">
                                                 <ul class="nearby-contct">
                                                     <li v-for="item in friendItem">
-                                                        <MyFriendItem :item="item" :type="current"></MyFriendItem>
+                                                        <MyFriendItem :item="item" :type="current" @deleteItem="deleteItem" ></MyFriendItem>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -167,6 +167,14 @@ export default {
             this.$message.error("获取好友列表失败")
         })
     },
+    deleteItem(friendId){
+        for(let i=0;i<this.friendItem.length;++i){
+            if(this.friendItem[i].friendId==friendId){
+                this.friendItem.splice(i,1)
+                return
+            }
+        }
+    }
   }
 }
 
@@ -312,7 +320,7 @@ a.add-butn {
     border: 2px solid #d2d5d7;
     display: inline-block;
     margin-bottom: 20px;
-    padding: 20px;
+    /* padding: 20px; */
     width: 100%;
     transition: all 0.15s linear 0s;
 }
