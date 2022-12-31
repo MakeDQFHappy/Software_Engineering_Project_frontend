@@ -49,7 +49,7 @@
             <a-button
               v-if="note.isLiked"
               type="link"
-              style="color: red"
+              style="color: rgb(36, 169, 225)"
               @click="clickLike"
             >
               <a-icon type="like" theme="filled" />
@@ -67,7 +67,7 @@
             <a-button
               v-if="note.isStared"
               type="link"
-              style="color: yellow"
+              style="color: rgb(36, 169, 225)"
               @click="clickStar"
             >
               <a-icon type="star" theme="filled" />

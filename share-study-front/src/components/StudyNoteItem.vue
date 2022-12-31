@@ -49,12 +49,13 @@
           <a-button
             v-if="note.isLiked"
             type="link"
-            style="color: red"
+            style="color:  rgb(36, 169, 225)"
             @click="clickLike"
           >
             <a-icon type="like" theme="filled" />
             <span>{{ note.likeNum }}</span>
           </a-button>
+
           <a-button
             v-if="!note.isStared"
             type="link"
@@ -67,12 +68,13 @@
           <a-button
             v-if="note.isStared"
             type="link"
-            style="color: yellow"
+            style="color: rgb(36, 169, 225)"
             @click="clickStar"
           >
             <a-icon type="star" theme="filled" />
             <span>{{ note.starNum }}</span>
           </a-button>
+
           <a-button type="link" style="color: black">
             <a-icon type="message" />
             <span>{{ note.commentNum }}</span>
@@ -115,7 +117,31 @@ export default {
       this.note.isLiked = !this.note.isLiked;
     },
 
-    clickStar() {
+
+    collect() {
+      let formData = new FormData();
+      formData.append("userID", 1);
+      formData.append("targetID", this.note.noteID);
+      axios.post("/collect", formData).then((res) => {
+        console.log("数据：", res);
+      });
+    },
+    cancelCollect() {
+      let formData = new FormData();
+      formData.append("userID", 1);
+      formData.append("targetID", this.note.noteID);
+      console.log(this.note.noteID);
+      axios.post("/cancel_collect", formData).then((res) => {
+        console.log("数据：", res);
+      });
+    },
+
+    clickCollect() {
+      if (this.note.isStared) {
+        this.cancelCollect();
+      } else {
+        this.collect();
+      }
       this.note.starNum += this.note.isStared ? -1 : 1;
       this.note.isStared = !this.note.isStared;
     },
@@ -130,17 +156,13 @@ export default {
     },
     clickComment() {},
     chargePoints() {
-      console.log(this.note.isPaid)
+      console.log(this.note.isPaid);
       if (this.note.needPoints > 0 && !this.note.isPaid) {
         let self = this;
         this.$confirm({
           title: "该笔记需要积分",
           content: "是否支付" + this.note.needPoints + "积分来打开笔记",
           onOk() {
-
-
-
-
             let formData = new FormData();
             formData.append("buyerID", 1);
             formData.append("sellerID", 5);
@@ -149,14 +171,10 @@ export default {
             axios.post("/charge_points", formData).then((res) => {
               console.log("数据：", res);
 
-            self.openStudyNote();              
+              self.openStudyNote();
             });
-
-
-
           },
-          onCancel() {
-          },
+          onCancel() {},
         });
       } else {
         this.openStudyNote();
