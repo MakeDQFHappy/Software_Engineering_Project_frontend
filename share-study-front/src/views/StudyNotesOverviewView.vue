@@ -274,10 +274,11 @@ export default {
 
               content: text,
               likeNum: data.LikeNum,
-              starNum: 10,
-              commentNum: 10,
+              starNum: data.CollectNum,
+
+              commentNum: data.CommentNum,
               isLiked: data.IsLiked, //这个用户是否点赞和收藏
-              isStared: true,
+              isStared: data.IsCollected,
 
               isPaid: data.IsPaid,
             };

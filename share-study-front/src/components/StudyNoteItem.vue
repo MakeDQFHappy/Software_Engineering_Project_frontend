@@ -60,7 +60,7 @@
             v-if="!note.isStared"
             type="link"
             style="color: black"
-            @click="clickStar"
+            @click="clickCollect"
           >
             <a-icon type="star" />
             <span>{{ note.starNum }}</span>
@@ -69,7 +69,7 @@
             v-if="note.isStared"
             type="link"
             style="color: rgb(36, 169, 225)"
-            @click="clickStar"
+            @click="clickCollect"
           >
             <a-icon type="star" theme="filled" />
             <span>{{ note.starNum }}</span>
