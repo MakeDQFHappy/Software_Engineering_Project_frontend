@@ -180,12 +180,14 @@
       </div>
     </div>
     <div>
-      <Tinymce
-        class="editor"
-        :height="200"
-        v-model="noteContent"
-        :show.sync="showFlag"
-      ></Tinymce>
+      <a-modal v-model="showFlag" @ok="handleOk" width="1100px" :footer="null" bodyStyle="height:600px">
+        <Tinymce
+          class="editor"
+          v-model="noteContent"
+          :show.sync="showFlag"
+          style="margin-top:80px"
+        ></Tinymce>
+      </a-modal>
 
       <div v-for="(item, index) in notesList" :key="index">
         <div v-html="item"></div>
@@ -209,7 +211,7 @@ import Tinymce from "@/components/editor.vue";
 
 import StudyNoteItem from "@/components/StudyNoteItem.vue";
 import StudyNoteItemLoading from "@/components/StudyNoteItemLoading.vue";
-
+import { download,getAllNotes } from "@/api/studyNotes"
 import { unescape } from "html-escaper";
 import { htmlToText } from "html-to-text";
 
@@ -249,13 +251,10 @@ export default {
       if (this.isEnd) {
         return;
       }
-      axios
-        .get("/get_all_notes", {
-          params: { userID: 1, page: this.page++ },
-        })
-        .then((res) => {
+      getAllNotes(this.page++).then(res=>{
+        if(res.status==200){
+          this.$message.success("获取笔记成功")
           console.log("res", res.data);
-
           if (res.data.length == 0) {
             this.isEnd = true;
             return;
@@ -298,20 +297,91 @@ export default {
 
             this.noteItems.push(newNoteItem);
           }
-        });
-    },
+        }
+        else{
+          this.$message.error("获取笔记失败")
+        }
+      }).catch(e=>{
+        console.log(e)
+        this.$message.error("获取笔记失败")
+      })
+      // axios
+      //   .get("/get_all_notes", {
+      //     params: { userID: 1, page: this.page++ },
+      //   })
+      //   .then((res) => {
+      //     console.log("res", res.data);
 
+      //     if (res.data.length == 0) {
+      //       this.isEnd = true;
+      //       return;
+      //     }else{
+      //       this.isEnd = false
+      //     }
+      //     if (this.loading){
+      //       this.loading = false;
+      //     }
+      //     for (var index in res.data) {
+      //       var data = res.data[index];
+      //       var note = data.Note;
+
+      //       var text = note.note_content;
+
+      //       if (text) {
+      //         //let value = text.replaceAll(this.reg, "[图片]");
+      //         text = htmlToText(text);
+      //       }
+
+      //       var newNoteItem = {
+      //         noteID: note.study_note_id,
+      //         sharerID: note.sharer_id,
+
+      //         title: note.note_header,
+      //         tags: note.tags,
+      //         needPoints: note.points,
+      //         userAvatar: note.user_avatar,
+
+      //         content: text,
+      //         likeNum: data.LikeNum,
+      //         starNum: data.CollectNum,
+
+      //         commentNum: data.CommentNum,
+      //         isLiked: data.IsLiked, //这个用户是否点赞和收藏
+      //         isStared: data.IsCollected,
+
+      //         isPaid: data.IsPaid,
+      //       };
+
+      //       this.noteItems.push(newNoteItem);
+      //     }
+      //   });
+    },
+    
     getNotes() {
-      axios
-        .get("/download", {
-          params: { noteID: "1" },
-        })
-        .then((res) => {
-          console.log("数据：", res);
-          this.noteContent = res.data.content;
-          this.notesList.push(res.data.content);
-          console.log("数据：", this.notesList);
-        });
+      download(this.noteID).then(res=>{
+        if(res.status==200){
+          this.userName = res.data.userName;
+          this.title = res.data.title;
+          this.content = res.data.content;
+          console.log("数据：", this.content);
+        }
+        else{
+          this.$message.error("获取笔记失败")
+        }
+      }).catch(e=>{
+        console.log(e)
+        this.$message.error("出错")
+      })
+      // axios
+      //   .get("/download", {
+      //     params: { noteID: "1" },
+      //   })
+      //   .then((res) => {
+      //     console.log("数据：", res);
+      //     this.noteContent = res.data.content;
+      //     this.notesList.push(res.data.content);
+      //     console.log("数据：", this.notesList);
+      //   });
     },
     lazyLoading() {
       // 滚动到底部，再加载的处理事件

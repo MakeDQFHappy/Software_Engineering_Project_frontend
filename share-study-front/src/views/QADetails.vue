@@ -189,7 +189,7 @@ import StudyNoteItem from "@/components/StudyNoteItem.vue";
 import ReplyBox from "@/components/ReplyBox.vue";
 
 import axios from "axios";
-
+import { download,makeComment } from "@/api/studyNotes"
 import moment from "moment";
 
 export default {
@@ -198,16 +198,30 @@ export default {
     //Tinymce.init({});
     this.noteID = this.$route.query.noteID;
     console.log(this.noteID);
-    axios
-      .get("/download", {
-        params: { noteID: this.noteID },
-      })
-      .then((res) => {
+    download(this.noteID).then(res=>{
+      if(res.status==200){
         this.userName = res.data.userName;
         this.title = res.data.title;
         this.content = res.data.content;
         console.log("数据：", this.content);
-      });
+      }
+      else{
+        this.$message.error("获取笔记失败")
+      }
+    }).catch(e=>{
+      console.log(e)
+      this.$message.error("出错")
+    })
+    // axios
+    //   .get("/download", {
+    //     params: { noteID: this.noteID },
+    //   })
+    //   .then((res) => {
+    //     this.userName = res.data.userName;
+    //     this.title = res.data.title;
+    //     this.content = res.data.content;
+    //     console.log("数据：", this.content);
+    //   });
 
     axios
       .get("/get_comments", {
@@ -269,10 +283,20 @@ export default {
       formData.append("userID", 1);
       formData.append("targetID", this.noteID);
       formData.append("content", this.comment);
-
-      axios.post("/make_comment", formData).then((res) => {
-        console.log("数据：", res);
-      });
+      makeComment(this.noteID,this.content).then(res=>{
+        if(res.status==200){
+          this.$message.success("回复成功")
+        }
+        else{
+          this.$message.error("回复失败")
+        }
+      }).catch(e=>{
+        console.log(e)
+        this.$message.error("回复失败")
+      })
+      // axios.post("/make_comment", formData).then((res) => {
+      //   console.log("数据：", res);
+      // });
     },
   },
   components: {
