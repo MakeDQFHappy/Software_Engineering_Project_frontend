@@ -128,18 +128,20 @@
               </div>
             </div>
 
-            <div class="article-list" v-if="loading">
-              <div class="article-list-holder">
-                <div v-for="index in 10">
-                  <StudyNoteItemLoading></StudyNoteItemLoading>
-                </div>
-              </div>
-            </div>
+
 
             <div class="article-list">
               <div class="article-list-holder">
                 <div v-for="item in noteItems">
                   <StudyNoteItem :note="item"></StudyNoteItem>
+                </div>
+              </div>
+            </div>
+
+            <div class="article-list" v-if="loading && !isEnd">
+              <div class="article-list-holder">
+                <div v-for="index in 10">
+                  <StudyNoteItemLoading></StudyNoteItemLoading>
                 </div>
               </div>
             </div>
@@ -249,6 +251,7 @@ export default {
       if (this.isEnd) {
         return;
       }
+      this.loading=true
       axios
         .get("/get_all_notes", {
           params: { userID: 1, page: this.page++ },
@@ -298,6 +301,7 @@ export default {
 
             this.noteItems.push(newNoteItem);
           }
+          this.loading=false
         });
     },
 
@@ -314,6 +318,9 @@ export default {
         });
     },
     lazyLoading() {
+      if (this.loading){
+        return
+      }
       // 滚动到底部，再加载的处理事件
       // 获取 可视区高度`、`滚动高度`、`页面高度`
       let scrollTop =
