@@ -82,7 +82,7 @@ export default {
   props: {
     //传入一个value，使组件支持v-model绑定
     show:{
-      type:String,
+      type:Boolean,
       default: false,
     },
     value: {

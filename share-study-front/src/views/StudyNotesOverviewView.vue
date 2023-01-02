@@ -10,82 +10,91 @@
           >
           </a>
           <a
-            href="https://www.bilibili.com/read/home?from=category_17"
             target="_self"
             class="tab-item on"
             data-tab-id="0"
+
+
           >
             <span>推荐</span>
           </a>
 
           <a
-            href="https://www.bilibili.com/read/douga?from=category_17"
             target="_self"
             class="tab-item"
             data-tab-id="2"
+            @click="onSearch('软件工程')"
           >
-            <span>数学</span>
+            <span>软件工程</span>
           </a>
 
           <a
-            href="https://www.bilibili.com/read/game?from=category_17"
             target="_self"
             class="tab-item"
             data-tab-id="1"
+
+            @click="onSearch('原神')"
           >
             <span>机械</span>
           </a>
 
           <a
-            href="https://www.bilibili.com/read/cinephile?from=category_17"
             target="_self"
             class="tab-item"
             data-tab-id="28"
+
+            @click="onSearch('考研')"
           >
             <span>艺术传媒</span>
           </a>
 
           <a
-            href="https://www.bilibili.com/read/life?from=category_17"
             target="_self"
             class="tab-item"
             data-tab-id="3"
+
+            @click="onSearch('医学')"
           >
             <span>医学</span>
           </a>
 
           <a
-            href="https://www.bilibili.com/read/interest?from=category_17"
             target="_self"
             class="tab-item"
             data-tab-id="29"
+
+            @click="onSearch('计算机')"
           >
             <span>计算机</span>
           </a>
 
           <a
-            href="https://www.bilibili.com/read/lightnovel?from=category_17"
             target="_self"
             class="tab-item"
             data-tab-id="16"
+
+            @click="onSearch('土木工程')"
           >
             <span>土木工程</span>
           </a>
 
           <a
-            href="https://www.bilibili.com/read/technology?from=category_17"
             target="_self"
             class="tab-item"
             data-tab-id="17"
+
+            @click="onSearch('土木工程')"
           >
             <span>物理</span>
           </a>
 
           <a
-            href="https://www.bilibili.com/read/note?from=category_17"
             target="_self"
             class="tab-item"
             data-tab-id="41"
+
+            
+            @click="onSearch('其他')"
           >
             <span>其他</span>
           </a>
@@ -234,6 +243,8 @@ export default {
     };
   },
   methods: {
+
+
     getNotesInPage() {
       if (this.isEnd) {
         return;
@@ -248,6 +259,8 @@ export default {
           if (res.data.length == 0) {
             this.isEnd = true;
             return;
+          }else{
+            this.isEnd = false
           }
           if (this.loading){
             this.loading = false;
@@ -320,6 +333,7 @@ export default {
     },
 
     onSearch(value) {
+      this.isEnd = true
       axios
         .get("/search_notes", {
           params: { userID: 1, pattern: value },
@@ -330,30 +344,34 @@ export default {
           this.noteItems = [];
 
           for (var index in res.data) {
-            var text = res.data[index].note_content;
-            if (text) {
-              let value = text.replaceAll(this.reg, "[图片]");
-              text = htmlToText(value);
-            }
-
             var data = res.data[index];
             var note = data.Note;
+
+            var text = note.note_content;
+
+            if (text) {
+              //let value = text.replaceAll(this.reg, "[图片]");
+              text = htmlToText(text);
+            }
+
             var newNoteItem = {
               noteID: note.study_note_id,
               sharerID: note.sharer_id,
 
               title: note.note_header,
               tags: note.tags,
-              content: text,
-              likeNum: data.LikeNum,
-              starNum: 10,
-              commentNum: 10,
-              isLiked: data.IsLiked, //这个用户是否点赞和收藏
-              isStared: true,
-
-              isPaid: data.IsPaid,
               needPoints: note.points,
               userAvatar: note.user_avatar,
+
+              content: text,
+              likeNum: data.LikeNum,
+              starNum: data.CollectNum,
+
+              commentNum: data.CommentNum,
+              isLiked: data.IsLiked, //这个用户是否点赞和收藏
+              isStared: data.IsCollected,
+
+              isPaid: data.IsPaid,
             };
 
             this.noteItems.push(newNoteItem);
