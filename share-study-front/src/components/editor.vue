@@ -43,13 +43,13 @@
     </div>
 
     <div class="tinymce-editor">
-      <editor
+      <Editor
         v-model="content"
         :init="init"
         :disabled="disabled"
         @onClick="onClick"
       >
-      </editor>
+      </Editor>
 
       <a-button type="primary" @click="publishNotes" shape="round" size="large">
         发布
@@ -81,6 +81,10 @@ export default {
   },
   props: {
     //传入一个value，使组件支持v-model绑定
+    show:{
+      type:String,
+      default: false,
+    },
     value: {
       type: String,
       default: "",
@@ -103,14 +107,13 @@ export default {
     },
   },
 
-  props: ["show"],
 
   data() {
     return {
       //初始化配置
       init: {
         skin_url: "/tinymce/skins/ui/oxide",
-        height: 300,
+        height: 700,
         plugins: this.plugins,
         toolbar: this.toolbar,
         branding: false,

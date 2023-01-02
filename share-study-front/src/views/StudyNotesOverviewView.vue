@@ -24,7 +24,7 @@
             class="tab-item"
             data-tab-id="2"
           >
-            <span>动画</span>
+            <span>数学</span>
           </a>
 
           <a
@@ -33,7 +33,7 @@
             class="tab-item"
             data-tab-id="1"
           >
-            <span>游戏</span>
+            <span>机械</span>
           </a>
 
           <a
@@ -42,7 +42,7 @@
             class="tab-item"
             data-tab-id="28"
           >
-            <span>影视</span>
+            <span>艺术传媒</span>
           </a>
 
           <a
@@ -51,7 +51,7 @@
             class="tab-item"
             data-tab-id="3"
           >
-            <span>生活</span>
+            <span>医学</span>
           </a>
 
           <a
@@ -60,7 +60,7 @@
             class="tab-item"
             data-tab-id="29"
           >
-            <span>兴趣</span>
+            <span>计算机</span>
           </a>
 
           <a
@@ -69,7 +69,7 @@
             class="tab-item"
             data-tab-id="16"
           >
-            <span>轻小说</span>
+            <span>土木工程</span>
           </a>
 
           <a
@@ -78,7 +78,7 @@
             class="tab-item"
             data-tab-id="17"
           >
-            <span>科技</span>
+            <span>物理</span>
           </a>
 
           <a
@@ -87,7 +87,7 @@
             class="tab-item"
             data-tab-id="41"
           >
-            <span>笔记</span>
+            <span>其他</span>
           </a>
         </div>
       </div>
@@ -443,7 +443,7 @@ export default {
   width: 70%;
   border-radius: 0.25rem;
   left: 50%;
-  top: 50%;
+  top: 45%;
   transform: translate(-50%, -50%);
   z-index: 1000;
 }
