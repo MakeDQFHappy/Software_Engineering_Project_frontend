@@ -21,12 +21,12 @@
                 @click="openQA_Recommend"
                 >推荐</a
               >
-              <!-- <a
+              <a
                 tabindex="3"
                 class="TopstoryTabs-link Topstory-tabsLink"
                 @click="openQA_myCollection"
                 >我的收藏</a
-              > -->
+              >
               <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
               <a-input-search
                 placeholder="搜索"
@@ -81,9 +81,9 @@
 <script>
 import QA_QuestionBlock from "@/components/QA_QuestionBlock.vue";
 import QA_Manager from "@/components/QA_Manager.vue";
-import { get_myAnswer } from "@/api/QA";
+import { get_myAnswer, searchByQuestion } from "@/api/QA";
 export default {
-  name: "QA_myAmswerView",
+  name: "QA_myQuestionView",
   data() {
     return {
       QAQuestionItems: [],
@@ -124,8 +124,31 @@ export default {
     openQA_Recommend() {
       this.$router.push("/QA_Recommend");
     },
+    // onSearch(value) {
+    //   this.$router.push({
+    //     name: "QA_Search",
+    //     params: { searchcontent: value },
+    //   });
+    // },
     onSearch(value) {
-      console.log(value);
+      console.log("这是搜索函数");
+      this.QAQuestionItems = [];
+      let a = value.toString();
+      console.log(a);
+      searchByQuestion(a)
+        .then((response) => {
+          if (response.status == 200) {
+            console.log(response.data);
+            this.QAQuestionItems = response.data;
+            this.$message.success("搜索成功");
+          } else {
+            this.$message.error("搜索失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("搜索失败");
+        });
     },
   },
   components: { QA_QuestionBlock, QA_Manager },

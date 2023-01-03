@@ -21,12 +21,12 @@
                 @click="openQA_Recommend"
                 >推荐</a
               >
-              <!-- <a
+              <a
                 tabindex="3"
                 class="TopstoryTabs-link Topstory-tabsLink is-active"
                 @click="openQA_myCollection"
                 >我的收藏</a
-              > -->
+              >
               <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
               <a-input-search
                 placeholder="搜索"
@@ -48,7 +48,11 @@
               <div class="ListShortcut">
                 <div class="Topstory-follow">
                   <div class="" role="list">
-                    <div v-for="(item, index) in QAQuestionItems" :key="index">
+                    <div
+                      v-for="(item, index) in QAQuestionItems"
+                      :key="index"
+                      :QAQuestion="item"
+                    >
                       <QA_QuestionBlock :QAQuestion="item"></QA_QuestionBlock>
                     </div>
                   </div>
@@ -77,38 +81,36 @@
 <script>
 import QA_QuestionBlock from "@/components/QA_QuestionBlock.vue";
 import QA_Manager from "@/components/QA_Manager.vue";
+import { getMyCollection, searchByQuestion } from "@/api/QA";
 export default {
   name: "QA_myQuestionView",
   data() {
     return {
-      form: { content: "" },
-      QAQuestionItems: [
-        {
-          username: "张颖",
-          agreenum: 1000,
-          title: "什么是元宇宙",
-          userlink: "https://sse.tongji.edu.cn/info/1206/3148.htm",
-          questionlink:
-            "https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4",
-
-          tags: ["元宇宙"],
-          content:
-            "原神是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「神之眼」，导引元素之力。你将扮演一位名为「旅行者」的神秘角色，在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲人——同时，逐步发掘「原神」的真相.",
-          likeNum: 10,
-          starNum: 10,
-          commentNum: 10,
-          wanted: 10,
-          isadopted: false,
-          isLiked: false,
-          isStared: false,
-          isDenied: false,
-          isAgreed: false,
-        },
-      ],
+      QAQuestionItems: [],
     };
   },
-
+  mounted() {
+    this.getMyCollectionReq();
+  },
   methods: {
+    getMyCollectionReq() {
+      console.log("这是请求问题函数");
+      this.QAQuestionItems = [];
+      getMyCollection()
+        .then((response) => {
+          if (response.status == 200) {
+            this.QAQuestionItems = response.data;
+            this.$message.success("获取我的问题请求成功");
+          } else {
+            this.$message.error("获取我的问题请求失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("获取我的问题请求失败");
+        });
+    },
+
     openQA_myQuestion() {
       this.$router.push("/QA_myQuestion");
     },
@@ -123,8 +125,31 @@ export default {
     openQA_Recommend() {
       this.$router.push("/QA_Recommend");
     },
+    // onSearch(value) {
+    //   this.$router.push({
+    //     name: "QA_Search",
+    //     params: { searchcontent: value },
+    //   });
+    // },
     onSearch(value) {
-      console.log(value);
+      console.log("这是搜索函数");
+      this.QAQuestionItems = [];
+      let a = value.toString();
+      console.log(a);
+      searchByQuestion(a)
+        .then((response) => {
+          if (response.status == 200) {
+            console.log(response.data);
+            this.QAQuestionItems = response.data;
+            this.$message.success("搜索成功");
+          } else {
+            this.$message.error("搜索失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("搜索失败");
+        });
     },
   },
   components: { QA_QuestionBlock, QA_Manager },
