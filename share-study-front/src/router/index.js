@@ -6,7 +6,8 @@ import QA_myAnswerView from '../views/QA_myAnswerView.vue'
 import QA_myCollectionView from '../views/QA_myCollectionView.vue'
 import QA_myQuestionView from '../views/QA_myQuestionView.vue'
 import QA_RecommendView from '../views/QA_RecommendView.vue'
-import QA_SearchView  from '../views/QA_SearchView.vue'
+import QA_SearchView from '../views/QA_SearchView.vue'
+import QA_DetailView  from '../views/QA_DetailView.vue'
 import StudyNotesOverview  from '../views/StudyNotesOverviewView.vue'
 import StudyNotes  from '../views/StudyNotesView.vue'
 import FriendManage from '../views/FriendManage.vue'
@@ -57,6 +58,11 @@ const routes = [
       path: '/QA_Search',
       name: 'QA_Search',
       component: QA_SearchView
+      },
+      {
+      path: '/QA_Details',
+      name: 'QA_Details',
+      component: QA_DetailView
     },
     {
       path: '/studyNotes',

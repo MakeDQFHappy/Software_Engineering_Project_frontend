@@ -33,7 +33,7 @@
       </a-button>
       <a-modal
         v-model="modal2Visible"
-        title="Vertically centered modal dialog"
+        title="回答问题"
         centered
         @ok="() => answer()"
       >
@@ -108,8 +108,8 @@ export default {
   inject: ["reload"],
   props: ["QAQuestion"],
   mounted() {
-    this.getAnswersReq();
     this.getTagsReq();
+    this.getAnswersReq();
     this.has_adoptedanswer = this.QAQuestion.hasadoptedanswer;
     this.question_askerid = this.QAQuestion.questionaskerid;
   },
@@ -133,24 +133,22 @@ export default {
         });
       this.Inputanswer = "";
     },
-    getAnswersReq() {
-      console.log("这是请求答案函数");
-      this.Tags = [];
+    getTagsReq() {
       getTags(this.QAQuestion.questionid)
         .then((response) => {
           if (response.status == 200) {
             this.Tags = response.data;
-            this.$message.success("获取回答成功");
+            this.$message.success("获取标签成功");
           } else {
-            this.$message.error("获取回答失败");
+            this.$message.error("获取标签失败");
           }
         })
         .catch((e) => {
           console.log(e);
-          this.$message.error("获取回答失败");
+          this.$message.error("获取标签失败");
         });
     },
-    getTagsReq() {
+    getAnswersReq() {
       getAnswer(this.QAQuestion.questionid)
         .then((response) => {
           if (response.status == 200) {
@@ -165,17 +163,17 @@ export default {
           this.$message.error("获取回答失败");
         });
     },
-    openuserlink(src) {
-      window.open(src, "_blank");
-      // window.location.href = src;
-    },
-    openquestion() {
-      let routeUrl = this.$router.resolve({
-        path: "/QADetails",
-        // query: { akserid: },
-      });
-      window.open(routeUrl.href, "_blank");
-    },
+    // openuserlink(src) {
+    //   window.open(src, "_blank");
+    //   // window.location.href = src;
+    // },
+    // openquestion() {
+    //   let routeUrl = this.$router.resolve({
+    //     path: "/QA_Details",
+    //     query: { questionid: this.QAQuestion.questionid },
+    //   });
+    //   window.open(routeUrl.href, "_blank");
+    // },
   },
 };
 </script>

@@ -11,6 +11,25 @@ export function get_myAnswer() {
         method: 'get'
     })
 }
+export function getRecommend() {
+    return request({
+        url: 'QA/getRecommend',
+        method: 'get'
+    })
+}
+export function getMyCollection() {
+    return request({
+        url: 'QA/getMyCollection',
+        method: 'get'
+    })
+}
+export function getQuestionById(questionid) {
+    return request({
+        url: 'QA/getQuestionById',
+        method: 'get',
+        params:{"questionid":questionid}
+    })
+}
 export function askQuestion(content,header,rewardpoints,inputtag1,inputtag2,inputtag3) {
     return request({
         url: 'QA/askQuestion',
@@ -25,6 +44,14 @@ export function getAnswer(questionid)
         url: 'QA/getAnswer',
         method: 'get',
         params:{"questionid":questionid}
+    })
+}
+export function getAnswerById(answerid)
+{
+    return request({
+        url: 'QA/getAnswerById',
+        method: 'get',
+        params:{"answerid":answerid}
     })
 }
 export function getTags(questionid)
@@ -76,11 +103,44 @@ export function undoLike(answerid)
         params:{"answerid":answerid}
     })
 }
+export function clickStar(answerid)
+{
+        return request({
+        url: 'QA/clickStar',
+        method: 'post',
+        params:{"answerid":answerid}
+    })
+}
+export function undoStar(answerid)
+{
+        return request({
+        url: 'QA/undoStar',
+        method: 'post',
+        params:{"answerid":answerid}
+    })
+}
 export function adoptanswer(answerid)
 {
         return request({
         url: 'QA/adoptanswer',
         method: 'post',
         params:{"answerid":answerid}
+    })
+}
+export function getAnswerComments(answerid)
+{
+        return request({
+        url: 'QA/getAnswerComments',
+        method: 'get',
+        params:{"answerid":answerid}
+    })
+}
+export function makeComment(answerid,content)
+{
+        return request({
+        url: 'QA/makeComment',
+        method: 'post',
+        params: { "answerid": answerid },
+        data:content
     })
 }

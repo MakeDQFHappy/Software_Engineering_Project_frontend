@@ -128,18 +128,20 @@
               </div>
             </div>
 
-            <div class="article-list" v-if="loading">
-              <div class="article-list-holder">
-                <div v-for="index in 10">
-                  <StudyNoteItemLoading></StudyNoteItemLoading>
-                </div>
-              </div>
-            </div>
+
 
             <div class="article-list">
               <div class="article-list-holder">
                 <div v-for="item in noteItems">
                   <StudyNoteItem :note="item"></StudyNoteItem>
+                </div>
+              </div>
+            </div>
+
+            <div class="article-list" v-if="loading && !isEnd">
+              <div class="article-list-holder">
+                <div v-for="index in 10">
+                  <StudyNoteItemLoading></StudyNoteItemLoading>
                 </div>
               </div>
             </div>
@@ -312,6 +314,7 @@ export default {
       //   .then((res) => {
       //     console.log("res", res.data);
 
+
       //     if (res.data.length == 0) {
       //       this.isEnd = true;
       //       return;
@@ -384,6 +387,9 @@ export default {
       //   });
     },
     lazyLoading() {
+      if (this.loading){
+        return
+      }
       // 滚动到底部，再加载的处理事件
       // 获取 可视区高度`、`滚动高度`、`页面高度`
       let scrollTop =

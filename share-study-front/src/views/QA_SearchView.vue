@@ -125,12 +125,12 @@ export default {
     openQA_Recommend() {
       this.$router.push("/QA_Recommend");
     },
-    onSearch(value) {
-      this.$router.push({
-        name: "QA_Search",
-        params: { searchcontent: value },
-      });
-    },
+    // onSearch(value) {
+    //   this.$router.push({
+    //     name: "QA_Search",
+    //     params: { searchcontent: value },
+    //   });
+    // },
     // onSearch_(value) {
     //   console.log("这是搜索函数");
     //   this.QAQuestionItems = [];
