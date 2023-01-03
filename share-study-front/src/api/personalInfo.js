@@ -24,3 +24,5 @@ export function getUserInfo(userId) {
         params: {"userId":userId},
     })
 }
+
+

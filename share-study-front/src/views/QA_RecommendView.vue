@@ -21,12 +21,12 @@
                 @click="openQA_Recommend"
                 >推荐</a
               >
-              <!-- <a
+              <a
                 tabindex="3"
                 class="TopstoryTabs-link Topstory-tabsLink"
                 @click="openQA_myCollection"
                 >我的收藏</a
-              > -->
+              >
               <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
               <a-input-search
                 placeholder="搜索"
@@ -48,7 +48,11 @@
               <div class="ListShortcut">
                 <div class="Topstory-follow">
                   <div class="" role="list">
-                    <div v-for="(item, index) in QAQuestionItems" :key="index">
+                    <div
+                      v-for="(item, index) in QAQuestionItems"
+                      :key="index"
+                      :QAQuestion="item"
+                    >
                       <QA_QuestionBlock :QAQuestion="item"></QA_QuestionBlock>
                     </div>
                   </div>
@@ -77,36 +81,35 @@
 <script>
 import QA_QuestionBlock from "@/components/QA_QuestionBlock.vue";
 import QA_Manager from "@/components/QA_Manager.vue";
+import { getRecommend, searchByQuestion } from "@/api/QA";
 export default {
   name: "QA_myQuestionView",
   data() {
     return {
-      form: { content: "" },
-      QAQuestionItems: [
-        {
-          username: "杜庆峰",
-          agreenum: 1000,
-          title: "看手机的危害",
-          userlink: "https://sse.tongji.edu.cn/info/1206/3148.htm",
-          questionlink:
-            "https://www.bing.com/search?q=%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E5%AE%87%E5%AE%99&form=ANNTH1&refig=0cbf2ccc0c27492f84095e3da143bda4",
-          content:
-            "每天早上我出去跑步的时候都看到我隔壁那个女的一边看手机一边走路，终于今天早上看到她走台阶的时候摔了一跤，我早就知道会有这一天了，所以同学们不要老是看手机。",
-          likeNum: 10,
-          starNum: 10,
-          commentNum: 10,
-          wanted: 10,
-          isadopted: false,
-          isLiked: false,
-          isStared: false,
-          isDenied: false,
-          isAgreed: false,
-        },
-      ],
+      QAQuestionItems: [],
     };
   },
-
+  mounted() {
+    this.getRecommendReq();
+  },
   methods: {
+    getRecommendReq() {
+      console.log("这是请求问题函数");
+      this.QAQuestionItems = [];
+      getRecommend()
+        .then((response) => {
+          if (response.status == 200) {
+            this.QAQuestionItems = response.data;
+          } else {
+            this.$message.error("获取我的问题请求失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("获取我的问题请求失败");
+        });
+    },
+
     openQA_myQuestion() {
       this.$router.push("/QA_myQuestion");
     },
@@ -121,8 +124,31 @@ export default {
     openQA_Recommend() {
       this.$router.push("/QA_Recommend");
     },
+    // onSearch(value) {
+    //   this.$router.push({
+    //     name: "QA_Search",
+    //     params: { searchcontent: value },
+    //   });
+    // },
     onSearch(value) {
-      console.log(value);
+      console.log("这是搜索函数");
+      this.QAQuestionItems = [];
+      let a = value.toString();
+      console.log(a);
+      searchByQuestion(a)
+        .then((response) => {
+          if (response.status == 200) {
+            console.log(response.data);
+            this.QAQuestionItems = response.data;
+            this.$message.success("搜索成功");
+          } else {
+            this.$message.error("搜索失败");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$message.error("搜索失败");
+        });
     },
   },
   components: { QA_QuestionBlock, QA_Manager },

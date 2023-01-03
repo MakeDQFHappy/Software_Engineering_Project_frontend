@@ -29,11 +29,11 @@
             <div class="GlobalWriteV2-navTop">
               <a-button
                 class="GlobalWriteV2-topItem"
-                title="回答"
+                title="发布笔记"
                 type="link"
-                @click="() => (modal1Visible = true)"
+                @click="openStudyNotesOverview"
               >
-                <a-modal
+                <!-- <a-modal
                   v-model="modal1Visible"
                   title="写下你的问题"
                   centered
@@ -42,8 +42,7 @@
                   <p>some contents...</p>
                   <p>some contents...</p>
                   <p>some contents...</p>
-                </a-modal>
-
+                </a-modal> -->
                 <svg
                   width="40"
                   height="40"
@@ -59,7 +58,7 @@
                     ></path>
                   </g>
                 </svg>
-                <div class="GlobalWriteV2-topTitle">回答问题</div>
+                <div class="GlobalWriteV2-topTitle">发布笔记</div>
               </a-button>
               <!-- <button class="GlobalWriteV2-topItem">
                 <svg
@@ -109,60 +108,59 @@
                 type="link"
                 @click="() => (modalVisible = true)"
               >
-                <a-modal v-model="modalVisible" centered @ok="() => clickask()">
+                <a-modal
+                  v-model="modalVisible"
+                  centered
+                  @ok="() => clickask()"
+                  ok-text="确认"
+                  cancel-text="取消"
+                  title="提问"
+                >
                   <a-input
                     placeholder="写下你的问题"
                     v-model="inputHeader"
                     @change="check_question"
                   />
                   <a-alert v-if="flag" message="你还没有输入问号" banner />
-                  <a-input-group>
-                    <a-row :gutter="8">
-                      <a-col :span="6">
-                        <a-input
-                          placeholder="问题标签"
-                          :maxLength="5"
-                          v-model="inputtag1"
-                        />
-                      </a-col>
-                    </a-row>
-                  </a-input-group>
-                  <a-input-group>
-                    <a-row :gutter="8">
-                      <a-col :span="6">
-                        <a-input
-                          placeholder="问题标签"
-                          :maxLength="5"
-                          v-model="inputtag2"
-                        />
-                      </a-col>
-                    </a-row>
-                  </a-input-group>
-
-                  <a-input-group>
-                    <a-row :gutter="8">
-                      <a-col :span="6">
-                        <a-input
-                          placeholder="问题标签"
-                          :maxLength="5"
-                          v-model="inputtag3"
-                        />
-                      </a-col>
-                    </a-row>
-                  </a-input-group>
-
-                  <a-textarea
-                    v-model="inputText"
-                    placeholder="请写下问题的具体描述"
-                    :auto-size="{ minRows: 3, maxRows: 8 }"
-                  />
-                  <a-input-number
-                    id="inputNumber"
-                    v-model="rewardpoints"
-                    :min="0"
-                    :max="10"
-                  />
-                  积分悬赏:{{ rewardpoints }}比特币
+                  <div style="display: flex; margin-top: 10px">
+                    <div style="width: 120px">
+                      <a-input
+                        placeholder="问题标签"
+                        :maxLength="8"
+                        v-model="inputtag1"
+                      />
+                    </div>
+                    <div style="width: 120px; margin-left: 10px">
+                      <a-input
+                        placeholder="问题标签"
+                        :maxLength="8"
+                        v-model="inputtag2"
+                      />
+                    </div>
+                    <div style="width: 120px; margin-left: 10px">
+                      <a-input
+                        placeholder="问题标签"
+                        :maxLength="8"
+                        v-model="inputtag3"
+                      />
+                    </div>
+                  </div>
+                  <div style="margin-top: 10px">
+                    <a-textarea
+                      v-model="inputText"
+                      placeholder="请写下问题的具体描述"
+                      :auto-size="{ minRows: 3, maxRows: 8 }"
+                    />
+                  </div>
+                  <div style="margin-top: 10px">
+                    <a-input-number
+                      id="inputNumber"
+                      v-model="rewardpoints"
+                      :min="0"
+                      :max="50"
+                    />
+                    积分悬赏:{{ rewardpoints }}比特币
+                  </div>
                 </a-modal>
                 <svg
                   width="40"
@@ -186,7 +184,7 @@
         </div>
       </div>
     </div>
-    <div class="Card" role="complementary" aria-label="更多分类入口">
+    <!-- <div class="Card" role="complementary" aria-label="更多分类入口">
       <ul class="GlobalSideBar-navList">
         <a
           target="_blank"
@@ -227,7 +225,7 @@
           </a>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -251,6 +249,9 @@ export default {
   },
   inject: ["reload"],
   methods: {
+    openStudyNotesOverview() {
+      this.$router.push("/studyNotesOverview");
+    },
     clickask() {
       this.modalVisible = false;
       askQuestion(

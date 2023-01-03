@@ -1,11 +1,12 @@
 <template>
-  <div>
-    <div v-for="item in noteItems">
-      <StudyNoteItem :note="item"></StudyNoteItem>
+    <div>
+      <div v-for="item in noteItems">
+              <StudyNoteItem :note="item"></StudyNoteItem>
+      </div>
     </div>
-  </div>
+    
 </template>
-
+    
 <script>
 import "../css/bilibiliCSS/article-web.0.632594b47daaf024f9a5e1d008068dd42772be3f.css";
 import "../css/bilibiliCSS/article-web.1.632594b47daaf024f9a5e1d008068dd42772be3f.css";
@@ -23,7 +24,7 @@ import StudyNoteItem from "@/components/StudyNoteItemWhite.vue";
 
 import { unescape } from "html-escaper";
 import { htmlToText } from "html-to-text";
-
+import { searchNotes,getUserCollections } from "@/api/studyNotes"
 import axios from "axios";
 export default {
   name: "StudyNotes-view",
@@ -48,25 +49,19 @@ export default {
       page: 1,
 
       showFlag: false,
-      loading: false,
     };
   },
   methods: {
     getNotesInPage() {
-      if (this.isEnd || this.loading) {
+      if (this.isEnd) {
         return;
       }
-      this.loading = true;
-      axios
-        .get("/get_user_collections", {
-          params: { userID: 1, page: this.page++ },
-        })
-        .then((res) => {
-          console.log("res", res.data);
-
+      getUserCollections(this.page++).then(res=>{
+        if(res.status==200){
+          this.$message.success("获取收藏成功")
           if (res.data.length < 10) {
             this.isEnd = true;
-            //return;
+            return;
           }
 
           for (var index in res.data) {
@@ -76,8 +71,8 @@ export default {
             var text = note.note_content;
 
             if (text) {
-              let value = text.replaceAll(this.reg, "[图片]");
-              text = htmlToText(value);
+              //let value = text.replaceAll(this.reg, "[图片]");
+              text = htmlToText(text);
             }
 
             var newNoteItem = {
@@ -102,8 +97,59 @@ export default {
 
             this.noteItems.push(newNoteItem);
           }
-          this.loading = false;
-        });
+        }
+        else{
+          this.$message.error("获取收藏失败")
+        }
+      }).catch(e=>{
+        console.log(e)
+        this.$message.error("获取收藏失败")
+      })
+      // axios
+      //   .get("/get_user_collections", {
+      //     params: { userID: 1, page: this.page++ },
+      //   })
+      //   .then((res) => {
+      //     console.log("res", res.data);
+
+      //     if (res.data.length == 0) {
+      //       this.isEnd = true;
+      //       return;
+      //     }
+
+      //     for (var index in res.data) {
+      //       var data = res.data[index];
+      //       var note = data.Note;
+
+      //       var text = note.note_content;
+
+      //       if (text) {
+      //         let value = text.replaceAll(this.reg, "[图片]");
+      //         text = htmlToText(value);
+      //       }
+
+      //       var newNoteItem = {
+      //         noteID: note.study_note_id,
+      //         sharerID: note.sharer_id,
+
+      //         title: note.note_header,
+      //         tags: note.tags,
+      //         needPoints: note.points,
+      //         userAvatar: note.user_avatar,
+
+      //         content: text,
+      //         likeNum: data.LikeNum,
+      //         starNum: 10,
+      //         commentNum: 10,
+      //         isLiked: data.IsLiked, //这个用户是否点赞和收藏
+      //         isStared: true,
+
+      //         isPaid: data.IsPaid,
+      //       };
+
+      //       this.noteItems.push(newNoteItem);
+      //     }
+      //   });
     },
 
     getNotes() {
@@ -119,9 +165,6 @@ export default {
         });
     },
     lazyLoading() {
-      if ((this.loading = true)) {
-        return;
-      }
       // 滚动到底部，再加载的处理事件
       // 获取 可视区高度`、`滚动高度`、`页面高度`
       let scrollTop =
@@ -140,49 +183,6 @@ export default {
       this.showFlag = true;
     },
 
-    onSearch(value) {
-      axios
-        .get("/search_notes", {
-          params: { userID: 1, pattern: value },
-        })
-        .then((res) => {
-          console.log("res", res.data);
-
-          this.noteItems = [];
-
-          for (var index in res.data) {
-            var text = res.data[index].note_content;
-            if (text) {
-              let value = text.replaceAll(this.reg, "[图片]");
-              text = htmlToText(value);
-            }
-
-            var data = res.data[index];
-            var note = data.Note;
-            var newNoteItem = {
-              noteID: note.study_note_id,
-              sharerID: note.sharer_id,
-
-              title: note.note_header,
-              tags: note.tags,
-              needPoints: note.points,
-              userAvatar: note.user_avatar,
-
-              content: text,
-              likeNum: data.LikeNum,
-              starNum: data.CollectNum,
-
-              commentNum: data.CommentNum,
-              isLiked: data.IsLiked, //这个用户是否点赞和收藏
-              isStared: data.IsCollected,
-
-              isPaid: data.IsPaid,
-            };
-
-            this.noteItems.push(newNoteItem);
-          }
-        });
-    },
   },
   created() {
     window.addEventListener("scroll", this.lazyLoading); // 滚动到底部，再加载的处理事件
@@ -197,5 +197,10 @@ export default {
     Tinymce,
     StudyNoteItem,
   },
+  noteItems: [],
+  page: 1,
+
+  showFlag: false,
+  loading: false,
 };
 </script>

@@ -9,6 +9,15 @@ export function academicLogin(academicNum,passowrd) {
     })
 }
 
+export function emailLogin(email,passowrd) {
+    return request({
+        url: 'login/email',
+        method: 'get',
+        params: {"email":email,
+                "password":passowrd}
+    })
+}
+
 export function userLogout(id) {
     return request({
         url: '/login/logout',
