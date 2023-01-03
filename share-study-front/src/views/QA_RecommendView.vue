@@ -100,7 +100,6 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.QAQuestionItems = response.data;
-            this.$message.success("获取我的问题请求成功");
           } else {
             this.$message.error("获取我的问题请求失败");
           }

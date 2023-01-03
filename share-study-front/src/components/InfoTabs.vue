@@ -31,9 +31,11 @@
 import QA_myQuestionView from "@/views/QA_myQuestionView.vue";
 import QA_myAnswerView from "@/views/QA_myAnswerView.vue";
 import QA_myCollectionView from "@/views/QA_myCollectionView.vue";
+import MyNotes from "@/components/MyNotes.vue";
+import MyCollections from "@/components/MyCollections.vue";
 export default {
-  components: { QA_myQuestionView, QA_myAnswerView, QA_myCollectionView },
-};
+  components: { QA_myQuestionView, QA_myAnswerView, QA_myCollectionView, MyNotes,
+    MyCollections},
 </script>
 <style scoped>
 .demo-tabs > .el-tabs__content {

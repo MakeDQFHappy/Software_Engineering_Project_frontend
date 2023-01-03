@@ -91,11 +91,6 @@
                   >
                     <div v-html="content"></div>
 
-
-                    <v-html-panel :url.asyc="'https://tj-software-engineer.oss-cn-shanghai.aliyuncs.com/note123123.html'"></v-html-panel>
-
-
-
                     <p><br /></p>
                   </div>
                   <div
@@ -192,7 +187,7 @@ import "../css/bilibiliCSS/map.css";
 
 import StudyNoteItem from "@/components/StudyNoteItem.vue";
 import ReplyBox from "@/components/ReplyBox.vue";
-
+import { download,makeComment,getComments,getLikesInfo } from "@/api/studyNotes"
 import axios from "axios";
 
 import moment from "moment";
@@ -203,56 +198,109 @@ export default {
     //Tinymce.init({});
     this.noteID = this.$route.query.noteID;
     console.log(this.noteID);
-    axios
-      .get("/download", {
-        params: { noteID: this.noteID },
-      })
-      .then((res) => {
+    // axios
+    //   .get("/download", {
+    //     params: { noteID: this.noteID },
+    //   })
+    //   .then((res) => {
+    //     this.userName = res.data.userName;
+    //     this.title = res.data.title;
+    //     this.content = res.data.content;
+    //     console.log("数据：", this.content);
+    //   });
+    download(this.noteID).then(res=>{
+      if(res.status==200){
         this.userName = res.data.userName;
         this.title = res.data.title;
         this.content = res.data.content;
         console.log("数据：", this.content);
-      });
-
-    axios
-      .get("/get_comments", {
-        params: { noteID: this.noteID },
-      })
-      .then((res) => {
+      }
+      else{
+        this.$message.error("获取笔记失败")
+      }
+    }).catch(e=>{
+      console.log(e)
+      this.$message.error("出错")
+    })
+    getComments(this.noteID).then(res=>{
+      if(res.status==200){
         console.log("数据：", res.data);
         for (var index in res.data) {
           var note = res.data[index];
           var newNoteItem = {
             noteID: note.study_note_id,
             content: note.CommentContent,
-            likeNum: 10,
-            starNum: 10,
-            commentNum: 10,
-            isLiked: false, //这个用户是否点赞和收藏
-            isStared: true,
 
             author: note.UserName,
-            avatar:
-              "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+            avatar: note.UserAvatar,
+
+
             datetime: moment().subtract(1, "days"),
           };
-        
+
           this.comments.push(newNoteItem);
         }
-      });
-      axios
-      .get("/get_likes_info", {
-        params: { noteID: this.noteID,
-                  userID: 1,
-                  targetID: this.noteID
-        },
+      }
+      else{
+        this.$message.error("获取评论失败")
+      }
+    }).catch(e=>{
+      console.log(e)
+      this.$message.error("获取评论失败")
+    })
+    // axios
+    //   .get("/get_comments", {
+    //     params: { noteID: this.noteID },
+    //   })
+    //   .then((res) => {
+    //     console.log("数据：", res.data);
+    //     for (var index in res.data) {
+    //       var note = res.data[index];
+    //       var newNoteItem = {
+    //         noteID: note.study_note_id,
+    //         content: note.CommentContent,
+    //         likeNum: 10,
+    //         starNum: 10,
+    //         commentNum: 10,
+    //         isLiked: false, //这个用户是否点赞和收藏
+    //         isStared: true,
+
+    //         author: note.UserName,
+    //         avatar:
+    //           "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+    //         datetime: moment().subtract(1, "days"),
+    //       };
+        
+    //       this.comments.push(newNoteItem);
+    //     }
+    //   });
+      getLikesInfo(this.noteID,this.noteID).then(res=>{
+        if(res.status==200){
+          this.userName = res.data.userName;
+          this.title = res.data.title;
+          this.content = res.data.content;
+          console.log("数据：", res);
+        }
+        else{
+          this.$message.error("获取点赞信息失败")
+        }
+      }).catch(e=>{
+        console.log(e)
+        this.$message.error("获取点赞信息失败")
       })
-      .then((res) => {
-        this.userName = res.data.userName;
-        this.title = res.data.title;
-        this.content = res.data.content;
-        console.log("数据：", res);
-      });
+      // axios
+      // .get("/get_likes_info", {
+      //   params: { noteID: this.noteID,
+      //             userID: 1,
+      //             targetID: this.noteID
+      //   },
+      // })
+      // .then((res) => {
+      //   this.userName = res.data.userName;
+      //   this.title = res.data.title;
+      //   this.content = res.data.content;
+      //   console.log("数据：", res);
+      // });
   },
 
   data() {
@@ -278,10 +326,20 @@ export default {
       formData.append("userID", 1);
       formData.append("targetID", this.noteID);
       formData.append("content", this.comment);
-
-      axios.post("/make_comment", formData).then((res) => {
-        console.log("数据：", res);
-      });
+      makeComment(this.noteID,this.content).then(res=>{
+        if(res.status==200){
+          this.$message.success("回复成功")
+        }
+        else{
+          this.$message.error("回复失败")
+        }
+      }).catch(e=>{
+        console.log(e)
+        this.$message.error("回复失败")
+      })
+      // axios.post("/make_comment", formData).then((res) => {
+      //   console.log("数据：", res);
+      // });
     },
   },
   components: {
@@ -290,7 +348,7 @@ export default {
     StudyNoteItem,
     CommentList,
     moment,
-    ReplyBox
+    ReplyBox,
   },
 };
 </script>

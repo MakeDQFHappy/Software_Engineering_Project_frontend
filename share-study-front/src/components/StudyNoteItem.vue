@@ -8,11 +8,16 @@
               <p>Content</p>
               <p>Content</p>
             </template>
-            <a-avatar :size="22" icon="user" style="margin-right: 10px" />
+            <a-avatar
+              :size="22"
+              :src="note.userAvatar"
+              icon="user"
+              style="margin-right: 10px"
+            />
           </a-popover>
-          <a class="css-1l949x6-Title" @click="chargePoints">{{
-            note.title
-          }}</a>
+          <a class="css-1l949x6-Title" @click="chargePoints"
+            >{{ note.title }}
+          </a>
         </div>
         <div>
           <div class="css-go5ofn-TagsContainer-StyledTags">
@@ -44,17 +49,18 @@
           <a-button
             v-if="note.isLiked"
             type="link"
-            style="color: red"
+            style="color:  rgb(36, 169, 225)"
             @click="clickLike"
           >
             <a-icon type="like" theme="filled" />
             <span>{{ note.likeNum }}</span>
           </a-button>
+
           <a-button
             v-if="!note.isStared"
             type="link"
             style="color: black"
-            @click="clickStar"
+            @click="clickCollect"
           >
             <a-icon type="star" />
             <span>{{ note.starNum }}</span>
@@ -62,12 +68,13 @@
           <a-button
             v-if="note.isStared"
             type="link"
-            style="color: yellow"
-            @click="clickStar"
+            style="color: rgb(36, 169, 225)"
+            @click="clickCollect"
           >
             <a-icon type="star" theme="filled" />
             <span>{{ note.starNum }}</span>
           </a-button>
+
           <a-button type="link" style="color: black">
             <a-icon type="message" />
             <span>{{ note.commentNum }}</span>
@@ -80,6 +87,7 @@
 
 <script>
 import axios from "axios";
+import { chargePoints,like,cancelLike,collect,cancelCollect } from "@/api/studyNotes"
 export default {
   props: ["note"],
   methods: {
@@ -87,18 +95,42 @@ export default {
       let formData = new FormData();
       formData.append("userID", 1);
       formData.append("targetID", this.note.noteID);
-      axios.post("/like", formData).then((res) => {
-        console.log("数据：", res);
-      });
+      like(this.note.noteID).then(res=>{
+        if(res.status==200){
+          this.$message.success("点赞成功")
+          this.note.likeNum += 1;
+          this.note.isLiked = !this.note.isLiked;
+        }
+        else{
+          this.$message.error("点赞失败")
+        }
+      }).catch(e=>{
+        this.$message.error("点赞失败")
+      })
+      // axios.post("/like", formData).then((res) => {
+      //   console.log("数据：", res);
+      // });
     },
     cancelLike() {
       let formData = new FormData();
       formData.append("userID", 1);
       formData.append("targetID", this.note.noteID);
       console.log(this.note.noteID);
-      axios.post("/cancel_like", formData).then((res) => {
-        console.log("数据：", res);
-      });
+      cancelLike(this.note.noteID).then(res=>{
+        if(res.status==200){
+          this.$message.success("取消点赞成功")
+          this.note.likeNum += -1;
+          this.note.isLiked = !this.note.isLiked;
+        }
+        else{
+          this.$message.error("取消点赞失败")
+        }
+      }).catch(e=>{
+        this.$message.error("取消点赞失败")
+      })
+      // axios.post("/cancel_like", formData).then((res) => {
+      //   console.log("数据：", res);
+      // });
     },
     clickLike() {
       if (this.note.isLiked) {
@@ -106,11 +138,56 @@ export default {
       } else {
         this.like();
       }
-      this.note.likeNum += this.note.isLiked ? -1 : 1;
-      this.note.isLiked = !this.note.isLiked;
+      // this.note.likeNum += this.note.isLiked ? -1 : 1;
+      // this.note.isLiked = !this.note.isLiked;
     },
 
-    clickStar() {
+    collect() {
+      let formData = new FormData();
+      formData.append("userID", 1);
+      formData.append("targetID", this.note.noteID);
+      collect(this.note.noteID).then(res=>{
+        if(res.status==200){
+          this.$message.success("收藏成功")
+        }
+        else{
+          this.$message.error("收藏失败")
+        }
+      }).catch(e=>{
+        console.log(e)
+        this.$message.error("收藏失败")
+      })
+      // axios.post("/collect", formData).then((res) => {
+      //   console.log("数据：", res);
+      // });
+    },
+    cancelCollect() {
+      let formData = new FormData();
+      formData.append("userID", 1);
+      formData.append("targetID", this.note.noteID);
+      console.log(this.note.noteID);
+      cancelCollect(this.note.noteID).then(res=>{
+        if(res.status==200){
+          this.$message.success("取消收藏成功")
+        }
+        else{
+          this.$message.error("取消收藏失败")
+        }
+      }).catch(e=>{
+        console.log(e)
+        this.$message.error("取消收藏失败")
+      })
+      // axios.post("/cancel_collect", formData).then((res) => {
+      //   console.log("数据：", res);
+      // });
+    },
+
+    clickCollect() {
+      if (this.note.isStared) {
+        this.cancelCollect();
+      } else {
+        this.collect();
+      }
       this.note.starNum += this.note.isStared ? -1 : 1;
       this.note.isStared = !this.note.isStared;
     },
@@ -125,13 +202,36 @@ export default {
     },
     clickComment() {},
     chargePoints() {
-      if (this.note.needPoints > 0) {
+      console.log(this.note)
+      console.log(this.note.isPaid);
+      if (this.note.needPoints > 0 && !this.note.isPaid) {
         let self = this;
         this.$confirm({
           title: "该笔记需要积分",
-          content: "是否支付"+this.note.needPoints+"积分来打开笔记",
+          content: "是否支付" + this.note.needPoints + "积分来打开笔记",
           onOk() {
-            self.openStudyNote()
+            chargePoints(self.note.sharerID,self.note.noteID,self.note.needPoints).then(res=>{
+                if(res.status==200){
+                  self.$message.success("支付成功")
+                  self.openStudyNote();  
+                }
+                else{
+                  self.$message.error("支付失败")
+                }
+              }).catch(e=>{
+                console.log(e)
+                self.$message.error("支付失败")
+              })
+            let formData = new FormData();
+            formData.append("buyerID", 1);
+            formData.append("sellerID", 5);
+            formData.append("noteID", self.note.noteID);
+            formData.append("points", self.note.needPoints);
+            // axios.post("/charge_points", formData).then((res) => {
+            //   console.log("数据：", res);
+
+            //   self.openStudyNote();
+            // });
           },
           onCancel() {},
         });
@@ -266,7 +366,7 @@ a:focus {
 .css-wpffuk-layer1-RowWrapper-QuestionRowWrapper {
   background: rgba(var(--dsw-layer-1-rgb), 1);
   padding: 16px;
-  box-shadow: 0 1px 2px rgb(102, 100, 100), 0 2px 8px rgb(97, 94, 94);
+  box-shadow: 0 1px 2px rgb(160, 157, 157), 0 2px 2px rgb(141, 137, 137);
   transition: box-shadow 0.3s ease-in-out 0s;
   margin-bottom: 10px;
   border-radius: 8px;

@@ -8,6 +8,14 @@ export function searchUser(info) {
     })
 }
 
+export function recommandFriends(page,size) {
+    return request({
+        url: 'friend/recommandFriends',
+        method: 'get',
+        params: {"page":page,"size":size}
+    })
+}
+
 export function getReq() {
     return request({
         url: 'friend/getReq',

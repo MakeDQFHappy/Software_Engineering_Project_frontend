@@ -27,7 +27,7 @@
 <script>
 import moment from "moment";
 import axios from "axios";
-
+import { makeComment } from "@/api/studyNotes"
 export default {
   props: ["noteID"],
 
@@ -43,12 +43,22 @@ export default {
     makeComment() {
       let formData = new FormData();
       formData.append("userID", 1);
-      formData.append("targetID", this.noteID);
-      formData.append("content", this.value);
-
-      axios.post("/make_comment", formData).then((res) => {
-        console.log("数据：", res);
-      });
+      // formData.append("targetID", this.noteID);
+      // formData.append("content", this.value);
+      makeComment(this.noteID,this.value).then(res=>{
+        if(res.status==200){
+          this.$message.success("评论成功")
+        }
+        else{
+          this.$message.error("评论失败")
+        }
+      }).catch(e=>{
+        console.log(e)
+        this.$message.error("评论失败")
+      })
+      // axios.post("/make_comment", formData).then((res) => {
+      //   console.log("数据：", res);
+      // });
     },
     handleSubmit() {
       if (!this.value) {

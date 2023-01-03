@@ -13,8 +13,8 @@
                                             <h4 class="widget-title">推荐好友</h4>
 
                                             <ul class="ps-container followers">
-                                                <li v-for="item in 5">
-                                                    <AddFriendItem></AddFriendItem>
+                                                <li v-for="item in recommandFriend">
+                                                    <AddFriendItem :item="item"></AddFriendItem>
                                                 </li>
                                             </ul>
                                             <div class="lodmore">
@@ -32,7 +32,7 @@
                                             <a-menu-item key="2" @click="getFriendReq" > 好友请求</a-menu-item>
                                             <a-menu-item key="3" @click="getMineReq" > 我的请求</a-menu-item>
                                         </a-menu>
-                                        <div class="tab-content"> 
+                                        <div class="tab-content222"> 
                                             <div v-show="current=='1'" style="width:100%;padding-bottom: 20px;">
                                                 <a-input-search placeholder="输入好友名搜索" style="width: 100%" @search="onFriendSearch" />
                                             </div>
@@ -53,7 +53,7 @@
                                         <div class="widget">
                                             <h4 class="widget-title">用户搜索</h4>
                                             <div class="search">
-                                                <a-input-search placeholder="输入用户名或用户手机号搜索" style="width: 100%" @search="onSearch" />
+                                                <a-input-search placeholder="输入用户名或用户邮箱搜索" style="width: 100%" @search="onSearch" />
                                             </div>
                                             <ul id="people-list" class="ps-container followers">
                                                 <li v-for="item in addFriendItem">
@@ -75,14 +75,17 @@
 <script>
 import MyFriendItem  from '@/components/MyFriendItem.vue'
 import AddFriendItem from '@/components/AddFriendItem.vue'
-import { searchUser,getReq,getFriends,getMyReq } from '@/api/friend'
+import { searchUser,getReq,getFriends,getMyReq,recommandFriends } from '@/api/friend'
 export default {
   data(){
     return {
         current:"1",
+        page:0,
+        size:5,
         addFriendItem:[],
         friendItem:[],
         allFriends:[],
+        recommandFriend:[]
     }
   },
   components: {
@@ -91,6 +94,8 @@ export default {
   },
   mounted(){
     this.getMyFriends()
+    console.log(111)
+    this.getRecommandFriends()
   },
   methods: {
     onSearch(Value){
@@ -134,6 +139,20 @@ export default {
         }).catch(e=>{
             console.log(e)
             this.$message.error("获取好友请求失败")
+        })
+    },
+    getRecommandFriends(){
+        console.log(111)
+        recommandFriends(this.page++,this.size).then(res=>{
+            if(res.status==200){
+                this.recommandFriend=res.data;
+            }
+            else{
+                this.$message.error("获取推荐好友失败")
+            }
+        }).catch(e=>{
+            console.log(e)
+            this.$message.error("获取推荐好友失败")
         })
     },
     getMineReq(){
@@ -311,7 +330,7 @@ a.add-butn {
 .fade.show {
     opacity: 1;
 }
-.tab-content>.active {
+.tab-content222>.active {
     display: block;
 }
 
