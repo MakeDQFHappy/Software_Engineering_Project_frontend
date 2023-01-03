@@ -15,13 +15,13 @@
         <div><QA_myAnswerView></QA_myAnswerView></div>
       </a-tab-pane>
       <a-tab-pane key="3" tab="笔记">
-        <div>放我的笔记</div>
+        <div><MyNotes></MyNotes></div>
       </a-tab-pane>
       <a-tab-pane key="4" tab="问答收藏">
         <div><QA_myCollectionView></QA_myCollectionView></div>
       </a-tab-pane>
       <a-tab-pane key="5" tab="笔记收藏">
-        <div>笔记收藏</div>
+        <div><MyCollections></MyCollections></div>
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -34,8 +34,14 @@ import QA_myCollectionView from "@/views/QA_myCollectionView.vue";
 import MyNotes from "@/components/MyNotes.vue";
 import MyCollections from "@/components/MyCollections.vue";
 export default {
-  components: { QA_myQuestionView, QA_myAnswerView, QA_myCollectionView, MyNotes,
-    MyCollections},
+  components: {
+    QA_myQuestionView,
+    QA_myAnswerView,
+    QA_myCollectionView,
+    MyNotes,
+    MyCollections,
+  },
+};
 </script>
 <style scoped>
 .demo-tabs > .el-tabs__content {
