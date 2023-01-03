@@ -248,21 +248,21 @@ export default {
           this.comments.push(newNoteItem);
         }
       });
-      getLikesInfo(this.noteID,this.noteID).then(res=>{
-        if(res.status==200){
-          this.$message.success("获取点赞信息成功")
-          this.userName = res.data.userName;
-          this.title = res.data.title;
-          this.content = res.data.content;
-          console.log("数据：", res);
-        }
-        else{
-          this.$message.error("获取点赞信息失败")
-        }
-      }).catch(e=>{
-        console.log(e)
-        this.$message.error("获取点赞信息失败")
-      })
+      // getLikesInfo(this.noteID,this.noteID).then(res=>{
+      //   if(res.status==200){
+      //     this.$message.success("获取点赞信息成功")
+      //     this.userName = res.data.userName;
+      //     this.title = res.data.title;
+      //     this.content = res.data.content;
+      //     console.log("数据：", res);
+      //   }
+      //   else{
+      //     this.$message.error("获取点赞信息失败")
+      //   }
+      // }).catch(e=>{
+      //   console.log(e)
+      //   this.$message.error("获取点赞信息失败")
+      // })
     // axios
     //   .get("/get_likes_info", {
     //     params: { noteID: this.noteID, userID: 1, targetID: this.noteID },
