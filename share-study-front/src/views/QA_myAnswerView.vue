@@ -72,7 +72,6 @@
           aria-keyshortcuts="Shift+S"
           class="css-h9cq7d"
         ></a>
-        <QA_Manager></QA_Manager>
       </div>
     </div>
   </div>
@@ -80,7 +79,6 @@
 
 <script>
 import QA_QuestionBlock from "@/components/QA_QuestionBlock.vue";
-import QA_Manager from "@/components/QA_Manager.vue";
 import { get_myAnswer, searchByQuestion } from "@/api/QA";
 export default {
   name: "QA_myQuestionView",
@@ -151,7 +149,7 @@ export default {
         });
     },
   },
-  components: { QA_QuestionBlock, QA_Manager },
+  components: { QA_QuestionBlock },
 };
 </script>
 
