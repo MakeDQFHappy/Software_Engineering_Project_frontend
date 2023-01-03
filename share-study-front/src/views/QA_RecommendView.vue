@@ -5,7 +5,7 @@
         <div class="Topstory-mainColumnCard">
           <div class="Card Topstory-noMarginCard Topstory-tabCard">
             <nav class="TopstoryTabs Topstory-tabs">
-              <a
+              <!-- <a
                 tabindex="0"
                 class="TopstoryTabs-link Topstory-tabsLink"
                 @click="openQA_myQuestion"
@@ -14,19 +14,19 @@
                 tabindex="1"
                 class="TopstoryTabs-link Topstory-tabsLink"
                 @click="openQA_myAnswer"
-                >我的回答</a
-              ><a
+                >我的回答</a> -->
+              <a
                 tabindex="2"
                 class="TopstoryTabs-link Topstory-tabsLink is-active"
                 @click="openQA_Recommend"
                 >推荐</a
               >
-              <a
+              <!-- <a
                 tabindex="3"
                 class="TopstoryTabs-link Topstory-tabsLink"
                 @click="openQA_myCollection"
                 >我的收藏</a
-              >
+              > -->
               <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
               <a-input-search
                 placeholder="搜索"

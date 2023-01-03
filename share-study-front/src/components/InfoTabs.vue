@@ -1,32 +1,39 @@
 <template>
   <div>
-    <a-tabs default-active-key="1" @change="callback" class="demo-tabs" style="width:100%">
-      <a-tab-pane key="1" tab="提问">
+    <a-tabs
+      default-active-key="1"
+      @change="callback"
+      class="demo-tabs"
+      style="width: 100%"
+    >
+      <a-tab-pane key="1" tab="我的提问">
         <div>
-          放我的提问
+          <QA_myQuestionView></QA_myQuestionView>
         </div>
       </a-tab-pane>
-      <a-tab-pane key="2" tab="回答">
-        <div>
-          放我的回答
-        </div>
+      <a-tab-pane key="2" tab="我的回答">
+        <div><QA_myAnswerView></QA_myAnswerView></div>
       </a-tab-pane>
       <a-tab-pane key="3" tab="笔记">
-        <div>
-          放我的笔记
-        </div>
+        <div>放我的笔记</div>
       </a-tab-pane>
-      <a-tab-pane key="4" tab="收藏">
-        <div>
-          放我的收藏
-        </div>
+      <a-tab-pane key="4" tab="问答收藏">
+        <div><QA_myCollectionView></QA_myCollectionView></div>
+      </a-tab-pane>
+      <a-tab-pane key="5" tab="笔记收藏">
+        <div>笔记收藏</div>
       </a-tab-pane>
     </a-tabs>
   </div>
-  
 </template>
 
 <script>
+import QA_myQuestionView from "@/views/QA_myQuestionView.vue";
+import QA_myAnswerView from "@/views/QA_myAnswerView.vue";
+import QA_myCollectionView from "@/views/QA_myCollectionView.vue";
+export default {
+  components: { QA_myQuestionView, QA_myAnswerView, QA_myCollectionView },
+};
 </script>
 <style scoped>
 .demo-tabs > .el-tabs__content {
@@ -43,12 +50,12 @@
   margin-left: 4px;
 }
 
-.el-tabs--border-card  {
-    border: 3px solid #9BE2E0;
+.el-tabs--border-card {
+  border: 3px solid #9be2e0;
 }
 
 .List-item {
-    position: relative;
-    padding: 16px 20px;
+  position: relative;
+  padding: 16px 20px;
 }
 </style>
