@@ -91,8 +91,6 @@
                   >
                     <div v-html="content"></div>
 
-
-
                     <p><br /></p>
                   </div>
                   <div
@@ -222,21 +220,17 @@ export default {
           var newNoteItem = {
             noteID: note.study_note_id,
             content: note.CommentContent,
-            likeNum: 10,
-            starNum: 10,
-            commentNum: 10,
-            isLiked: false, //这个用户是否点赞和收藏
-            isStared: true,
 
             author: note.UserName,
-            avatar:
-              "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+            avatar: note.UserAvatar,
+
             datetime: moment().subtract(1, "days"),
           };
-        
+
           this.comments.push(newNoteItem);
         }
       });
+    /*
       axios
       .get("/get_likes_info", {
         params: { noteID: this.noteID,
@@ -250,6 +244,7 @@ export default {
         this.content = res.data.content;
         console.log("数据：", res);
       });
+      */
   },
 
   data() {
@@ -287,7 +282,7 @@ export default {
     StudyNoteItem,
     CommentList,
     moment,
-    ReplyBox
+    ReplyBox,
   },
 };
 </script>
