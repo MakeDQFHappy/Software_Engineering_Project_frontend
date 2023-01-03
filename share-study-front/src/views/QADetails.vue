@@ -189,7 +189,7 @@ import StudyNoteItem from "@/components/StudyNoteItem.vue";
 import ReplyBox from "@/components/ReplyBox.vue";
 
 import axios from "axios";
-import { download,makeComment } from "@/api/studyNotes"
+import { download,makeComment,getLikesInfo } from "@/api/studyNotes"
 import moment from "moment";
 
 export default {
@@ -248,16 +248,31 @@ export default {
           this.comments.push(newNoteItem);
         }
       });
-    axios
-      .get("/get_likes_info", {
-        params: { noteID: this.noteID, userID: 1, targetID: this.noteID },
+      getLikesInfo(this.noteID,this.noteID).then(res=>{
+        if(res.status==200){
+          this.$message.success("获取点赞信息成功")
+          this.userName = res.data.userName;
+          this.title = res.data.title;
+          this.content = res.data.content;
+          console.log("数据：", res);
+        }
+        else{
+          this.$message.error("获取点赞信息失败")
+        }
+      }).catch(e=>{
+        console.log(e)
+        this.$message.error("获取点赞信息失败")
       })
-      .then((res) => {
-        this.userName = res.data.userName;
-        this.title = res.data.title;
-        this.content = res.data.content;
-        console.log("数据：", res);
-      });
+    // axios
+    //   .get("/get_likes_info", {
+    //     params: { noteID: this.noteID, userID: 1, targetID: this.noteID },
+    //   })
+    //   .then((res) => {
+    //     this.userName = res.data.userName;
+    //     this.title = res.data.title;
+    //     this.content = res.data.content;
+    //     console.log("数据：", res);
+    //   });
   },
 
   data() {

@@ -45,7 +45,7 @@
                         <div class="css-16h0l39" v-if="!isRegister">
                             <a-menu v-model="current" mode="horizontal" style="margin-top:20px">
                                 <a-menu-item key="academic" class="css-12345"> 学号登录 </a-menu-item>
-                                <a-menu-item key="phone" class="css-12345"> 手机号登录 </a-menu-item>
+                                <a-menu-item key="email" class="css-12345"> 邮箱登录 </a-menu-item>
                             </a-menu>
                             <a-form
                                 id="components-form-demo-normal-login"
@@ -66,14 +66,14 @@
                                     <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
                                 </a-input>
                                 <a-input
-                                    v-if="current=='phone'"
+                                    v-if="current=='email'"
                                     v-decorator="[
-                                    'phone',
-                                    { rules: [{ required: true, message: '请输入手机号!' }] },
+                                    'email',
+                                    { rules: [{ required: true, message: '请输入邮箱!' }] },
                                     ]"
-                                    placeholder="phone number"
+                                    placeholder="email"
                                 >
-                                    <a-icon slot="prefix" type="phone" style="color: rgba(0,0,0,.25)" />
+                                    <a-icon slot="prefix" type="mail" style="color: rgba(0,0,0,.25)" />
                                 </a-input>
 
                                 </a-form-item>
@@ -245,7 +245,7 @@
 </template>
 
 <script>
-import { academicLogin } from "@/api/login";
+import { academicLogin, emailLogin } from "@/api/login";
 import { getCode,register,varifyAcademic } from "@/api/register"
 import { mapMutations } from "vuex";
 import { updateBonusPoints } from "@/api/personalInfo"
@@ -430,6 +430,24 @@ export default {
         if (!err) {
           if(this.current=="academic"){
             academicLogin(values.academic,values.password).then(response=>{
+                if(response.status==200){
+                    this.$message.success("登录成功");
+                    this.changeLogin(response.data);
+                    if(response.data.isFirst){
+                        this.addBonus()
+                    }
+                    this.$router.push("/");
+                }
+                else if(response.status==403){
+                    this.$message.error("登录失败，账号不存在或密码错误");
+                }
+            }).catch(e=>{
+                console.log(e);
+                this.$message.error("登录失败，请稍后再试")
+            })
+          }
+          else if(this.current=="email"){
+            emailLogin(values.email,values.password).then(response=>{
                 if(response.status==200){
                     this.$message.success("登录成功");
                     this.changeLogin(response.data);

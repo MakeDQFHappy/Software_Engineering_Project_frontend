@@ -180,7 +180,7 @@
       </div>
     </div>
     <div>
-      <a-modal v-model="showFlag" @ok="handleOk" width="1100px" :footer="null" bodyStyle="height:600px">
+      <a-modal v-model="showFlag" @ok="handleOk" width="1300px" :footer="null" bodyStyle="height:600px">
         <Tinymce
           class="editor"
           v-model="noteContent"
@@ -211,7 +211,7 @@ import Tinymce from "@/components/editor.vue";
 
 import StudyNoteItem from "@/components/StudyNoteItem.vue";
 import StudyNoteItemLoading from "@/components/StudyNoteItemLoading.vue";
-import { download,getAllNotes } from "@/api/studyNotes"
+import { download,getAllNotes,searchNotes } from "@/api/studyNotes"
 import { unescape } from "html-escaper";
 import { htmlToText } from "html-to-text";
 
@@ -404,49 +404,91 @@ export default {
 
     onSearch(value) {
       this.isEnd = true
-      axios
-        .get("/search_notes", {
-          params: { userID: 1, pattern: value },
-        })
-        .then((res) => {
-          console.log("res", res.data);
-
-          this.noteItems = [];
-
-          for (var index in res.data) {
-            var data = res.data[index];
-            var note = data.Note;
-
-            var text = note.note_content;
-
-            if (text) {
-              //let value = text.replaceAll(this.reg, "[图片]");
-              text = htmlToText(text);
+      searchNotes(value).then(res=>{
+            if(res.status==200){
+              this.$message.success("搜索成功")
+              this.noteItems = [];
+    
+              for (var index in res.data) {
+                var text = res.data[index].note_content;
+                if (text) {
+                  let value = text.replaceAll(this.reg, "[图片]");
+                  text = htmlToText(value);
+                }
+    
+                var data = res.data[index];
+                var note = data.Note;
+                var newNoteItem = {
+                  noteID: note.study_note_id,
+                  sharerID: note.sharer_id,
+    
+                  title: note.note_header,
+                  tags: note.tags,
+                  content: text,
+                  likeNum: data.LikeNum,
+                  starNum: 10,
+                  commentNum: 10,
+                  isLiked: data.IsLiked, //这个用户是否点赞和收藏
+                  isStared: true,
+    
+                  isPaid: data.IsPaid,
+                  needPoints: note.points,
+                  userAvatar: note.user_avatar,
+                };
+    
+                this.noteItems.push(newNoteItem);
+              }
             }
+            else{
+              this.$message.error("搜索失败")
+            }
+          }).catch(e=>{
+            console.log(e)
+            this.$message.error("搜索失败")
+          })
+      // axios
+      //   .get("/search_notes", {
+      //     params: { userID: 1, pattern: value },
+      //   })
+      //   .then((res) => {
+      //     console.log("res", res.data);
 
-            var newNoteItem = {
-              noteID: note.study_note_id,
-              sharerID: note.sharer_id,
+      //     this.noteItems = [];
 
-              title: note.note_header,
-              tags: note.tags,
-              needPoints: note.points,
-              userAvatar: note.user_avatar,
+      //     for (var index in res.data) {
+      //       var data = res.data[index];
+      //       var note = data.Note;
 
-              content: text,
-              likeNum: data.LikeNum,
-              starNum: data.CollectNum,
+      //       var text = note.note_content;
 
-              commentNum: data.CommentNum,
-              isLiked: data.IsLiked, //这个用户是否点赞和收藏
-              isStared: data.IsCollected,
+      //       if (text) {
+      //         //let value = text.replaceAll(this.reg, "[图片]");
+      //         text = htmlToText(text);
+      //       }
 
-              isPaid: data.IsPaid,
-            };
+      //       var newNoteItem = {
+      //         noteID: note.study_note_id,
+      //         sharerID: note.sharer_id,
 
-            this.noteItems.push(newNoteItem);
-          }
-        });
+      //         title: note.note_header,
+      //         tags: note.tags,
+      //         needPoints: note.points,
+      //         userAvatar: note.user_avatar,
+
+      //         content: text,
+      //         likeNum: data.LikeNum,
+      //         starNum: data.CollectNum,
+
+      //         commentNum: data.CommentNum,
+      //         isLiked: data.IsLiked, //这个用户是否点赞和收藏
+      //         isStared: data.IsCollected,
+
+      //         isPaid: data.IsPaid,
+      //       };
+
+      //       this.noteItems.push(newNoteItem);
+      //     }
+      //   });
     },
   },
   created() {

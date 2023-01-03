@@ -85,6 +85,7 @@
   
   <script>
   import axios from "axios";
+  import {chargePoints,like,cancelLike} from "@/api/studyNotes"
   export default {
     props: ["note"],
     methods: {
@@ -92,18 +93,38 @@
         let formData = new FormData();
         formData.append("userID", 1);
         formData.append("targetID", this.note.noteID);
-        axios.post("/like", formData).then((res) => {
-          console.log("数据：", res);
-        });
+        like(this.note.noteID).then(res=>{
+          if(res.status==200){
+            this.$message.success("点赞成功")
+          }
+          else{
+            this.$message.error("点赞失败")
+          }
+        }).catch(e=>{
+          this.$message.error("点赞失败")
+        })
+        // axios.post("/like", formData).then((res) => {
+        //   console.log("数据：", res);
+        // });
       },
       cancelLike() {
         let formData = new FormData();
         formData.append("userID", 1);
         formData.append("targetID", this.note.noteID);
         console.log(this.note.noteID);
-        axios.post("/cancel_like", formData).then((res) => {
-          console.log("数据：", res);
-        });
+        cancelLike(this.note.noteID).then(res=>{
+          if(res.status==200){
+            this.$message.success("取消点赞成功")
+          }
+          else{
+            this.$message.error("取消点赞失败")
+          }
+        }).catch(e=>{
+          this.$message.error("取消点赞失败")
+        })
+        // axios.post("/cancel_like", formData).then((res) => {
+        //   console.log("数据：", res);
+        // });
       },
       clickLike() {
         if (this.note.isLiked) {
@@ -130,6 +151,7 @@
       },
       clickComment() {},
       chargePoints() {
+        console.log(this.note)
         console.log(this.note.isPaid)
         if (this.note.needPoints > 0 && !this.note.isPaid) {
           let self = this;
@@ -138,7 +160,18 @@
             content: "是否支付" + this.note.needPoints + "积分来打开笔记",
             onOk() {
   
-  
+              chargePoints(self.note.sharerID,self.note.noteID,self.note.needPoints).then(res=>{
+                if(res.status==200){
+                  self.$message.success("支付成功")
+                  self.openStudyNote();  
+                }
+                else{
+                  self.$message.error("支付失败")
+                }
+              }).catch(e=>{
+                console.log(e)
+                self.$message.error("支付失败")
+              })
   
   
               let formData = new FormData();
@@ -146,11 +179,11 @@
               formData.append("sellerID", 5);
               formData.append("noteID", self.note.noteID);
               formData.append("points", self.note.needPoints);
-              axios.post("/charge_points", formData).then((res) => {
-                console.log("数据：", res);
+              // axios.post("/charge_points", formData).then((res) => {
+              //   console.log("数据：", res);
   
-              self.openStudyNote();              
-              });
+              // self.openStudyNote();              
+              // });
   
   
   

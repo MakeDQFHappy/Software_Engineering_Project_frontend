@@ -8,6 +8,32 @@ export function getAllNotes(page) {
     })
 }
 
+export function getUserNotes(page) {
+    return request({
+        url: 'share/getUserNotes',
+        method: 'get',
+        params:{"page":page}
+    })
+}
+
+export function getUserCollections(page) {
+    return request({
+        url: 'share/getUserCollections',
+        method: 'get',
+        params:{"page":page}
+    })
+}
+
+
+export function searchNotes(pattern) {
+    return request({
+        url: 'share/searchNotes',
+        method: 'get',
+        params:{"pattern":pattern}
+    })
+}
+
+
 export function getComments(noteId) {
     return request({
         url: 'share/getComments',
@@ -57,9 +83,33 @@ export function makeComment(targetID,content) {
     })
 }
 
+export function chargePoints(sellerID,noteID,points) {
+    return request({
+        url: 'share/chargePoints',
+        method: 'post',
+        data:{"sellerID":sellerID,"noteID":noteID,"points":points}
+    })
+}
+
 export function like(targetID) {
     return request({
         url: 'share/like',
+        method: 'post',
+        data:{"targetID":targetID}
+    })
+}
+
+export function collect(targetID) {
+    return request({
+        url: 'share/collect',
+        method: 'post',
+        data:{"targetID":targetID}
+    })
+}
+
+export function cancelCollect(targetID) {
+    return request({
+        url: 'share/cancelCollect',
         method: 'post',
         data:{"targetID":targetID}
     })
