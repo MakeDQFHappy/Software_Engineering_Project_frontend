@@ -138,7 +138,6 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.Tags = response.data;
-            this.$message.success("获取标签成功");
           } else {
             this.$message.error("获取标签失败");
           }
@@ -153,7 +152,6 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.QuestionAnswers = response.data;
-            this.$message.success("获取回答成功");
           } else {
             this.$message.error("获取回答失败");
           }

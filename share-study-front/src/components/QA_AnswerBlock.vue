@@ -324,7 +324,6 @@ export default {
         .then((response) => {
           if (response.status == 200) {
             this.AnswerComments = response.data;
-            this.$message.success("获取评论成功");
           } else {
             this.$message.error("获取评论失败");
           }
