@@ -4,7 +4,7 @@
       <div class="Topstory-mainColumn">
         <div class="Topstory-mainColumnCard">
           <div class="Card Topstory-noMarginCard Topstory-tabCard">
-            <nav class="TopstoryTabs Topstory-tabs">
+            <!-- <nav class="TopstoryTabs Topstory-tabs">
               <a
                 tabindex="0"
                 class="TopstoryTabs-link Topstory-tabsLink is-active"
@@ -42,7 +42,7 @@
                 @search="onSearch"
                 class="TopstoryTabs-link Topstory-tabsLink"
               />
-            </nav>
+            </nav> -->
             <div><div class="Sticky" style=""></div></div>
             <div id="TopstoryContent" class="Topstory-content">
               <div class="ListShortcut">
