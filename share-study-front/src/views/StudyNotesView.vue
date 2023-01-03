@@ -232,15 +232,9 @@ export default {
           var newNoteItem = {
             noteID: note.study_note_id,
             content: note.CommentContent,
-            likeNum: 10,
-            starNum: 10,
-            commentNum: 10,
-            isLiked: false, //这个用户是否点赞和收藏
-            isStared: true,
 
             author: note.UserName,
-            avatar:
-              "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+            avatar:note.UserAvatar,
             datetime: moment().subtract(1, "days"),
           };
         

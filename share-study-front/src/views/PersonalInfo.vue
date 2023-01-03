@@ -173,12 +173,14 @@
       </div>
     </a-modal>
     <div>
-      <Tinymce
-        class="editor"
-        :height="200"
-        v-model="noteContent"
-        :show.sync="showFlag"
-      ></Tinymce>
+      <a-modal v-model="showFlag" @ok="handleOk" width="1300px" :footer="null" bodyStyle="height:660px">
+        <Tinymce
+          class="editor"
+          v-model="noteContent"
+          :show.sync="showFlag"
+          style="margin-top:80px"
+        ></Tinymce>
+      </a-modal>
     </div>
   </div>
 </template>

@@ -182,7 +182,7 @@
       </div>
     </div>
     <div>
-      <a-modal v-model="showFlag" @ok="handleOk" width="1300px" :footer="null" bodyStyle="height:600px">
+      <a-modal v-model="showFlag" @ok="handleOk" width="1300px" :footer="null" bodyStyle="height:660px">
         <Tinymce
           class="editor"
           v-model="noteContent"
