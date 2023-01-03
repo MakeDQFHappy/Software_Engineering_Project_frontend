@@ -29,8 +29,8 @@
         >
           登录
         </a-menu-item>
-        <a-dropdown :trigger="['click']" v-if="isLogin" >
-          <a-button type="link" style="float: right;">
+        <a-dropdown :trigger="['click']" v-if="isLogin">
+          <a-button type="link" style="float: right">
             <a-avatar
               :size="63"
               icon="user"
@@ -38,7 +38,7 @@
               :src="userAvatar"
             />
           </a-button>
-          <a-menu slot="overlay" style="margin-top:30px">
+          <a-menu slot="overlay" style="margin-top: 30px">
             <a-menu-item key="0" @click="openPersonalInfo">
               <a-icon type="user" />
               我的主页
@@ -76,7 +76,7 @@ export default {
       isLogin: false,
       visible: false,
       loginText: "",
-      userAvatar:"",
+      userAvatar: "",
     };
   },
   mounted() {
@@ -85,19 +85,18 @@ export default {
       localStorage.getItem("userToken") != null
     ) {
       this.isLogin = true;
-      this.userAvatar=localStorage.getItem("userAvatar");
+      this.userAvatar = localStorage.getItem("userAvatar");
     }
-    window['startLogin'] = () => {
-      this.openLogin()
+    window["startLogin"] = () => {
+      this.openLogin();
     };
   },
   methods: {
-    
-    openLogin(){
+    openLogin() {
       this.$router.push("/login");
     },
-    openPersonalInfo(){
-      this.$router.push("/personalInfo")
+    openPersonalInfo() {
+      this.$router.push("/personalInfo");
     },
     openMessage() {
       this.$router.push("/message");
@@ -106,11 +105,10 @@ export default {
       this.$router.push("/FriendManage");
     },
     openQA() {
-      this.$router.push("/QA_myQuestion");
+      this.$router.push("/QA_Recommend");
     },
     openStudyNotesOverview() {
       this.$router.push("/studyNotesOverview");
-
     },
     showModal() {
       this.visible = true;
@@ -118,10 +116,10 @@ export default {
     ...mapMutations(["changeLogin"]),
     ...mapMutations(["setId"]),
     submitLogin() {
-      this.setId({id:this.loginText})
+      this.setId({ id: this.loginText });
       userLogin(this.loginText)
-        .then(response => {
-          console.log(response)
+        .then((response) => {
+          console.log(response);
           if (response.status == 200) {
             this.isLogin = true;
             this.$message.success("登录成功");
@@ -136,12 +134,12 @@ export default {
         });
     },
     ...mapMutations(["delLogin"]),
-    logout(){
-      userLogout(localStorage.getItem('userId'));
+    logout() {
+      userLogout(localStorage.getItem("userId"));
       this.delLogin();
       this.$message.success("退出成功");
-      this.isLogin=false;
-    }
+      this.isLogin = false;
+    },
   },
 };
 </script>
