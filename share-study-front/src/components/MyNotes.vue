@@ -69,8 +69,8 @@ export default {
             var text = note.note_content;
 
             if (text) {
-              let value = text.replaceAll(this.reg, "[图片]");
-              text = htmlToText(value);
+              //let value = text.replaceAll(this.reg, "[图片]");
+              text = htmlToText(text);
             }
 
             var newNoteItem = {

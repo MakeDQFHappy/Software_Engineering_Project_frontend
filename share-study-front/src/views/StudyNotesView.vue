@@ -91,8 +91,6 @@
                   >
                     <div v-html="content"></div>
 
-
-
                     <p><br /></p>
                   </div>
                   <div
@@ -234,10 +232,12 @@ export default {
             content: note.CommentContent,
 
             author: note.UserName,
-            avatar:note.UserAvatar,
+            avatar: note.UserAvatar,
+
+
             datetime: moment().subtract(1, "days"),
           };
-        
+
           this.comments.push(newNoteItem);
         }
       }
@@ -348,7 +348,7 @@ export default {
     StudyNoteItem,
     CommentList,
     moment,
-    ReplyBox
+    ReplyBox,
   },
 };
 </script>

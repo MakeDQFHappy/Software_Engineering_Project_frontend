@@ -59,7 +59,7 @@ export default {
       getUserCollections(this.page++).then(res=>{
         if(res.status==200){
           this.$message.success("获取收藏成功")
-          if (res.data.length == 0) {
+          if (res.data.length < 10) {
             this.isEnd = true;
             return;
           }
@@ -71,8 +71,8 @@ export default {
             var text = note.note_content;
 
             if (text) {
-              let value = text.replaceAll(this.reg, "[图片]");
-              text = htmlToText(value);
+              //let value = text.replaceAll(this.reg, "[图片]");
+              text = htmlToText(text);
             }
 
             var newNoteItem = {
@@ -86,10 +86,11 @@ export default {
 
               content: text,
               likeNum: data.LikeNum,
-              starNum: 10,
-              commentNum: 10,
+              starNum: data.CollectNum,
+
+              commentNum: data.CommentNum,
               isLiked: data.IsLiked, //这个用户是否点赞和收藏
-              isStared: true,
+              isStared: data.IsCollected,
 
               isPaid: data.IsPaid,
             };
@@ -182,89 +183,6 @@ export default {
       this.showFlag = true;
     },
 
-    onSearch(value) {
-      searchNotes(value).then(res=>{
-        if(res.status==200){
-          this.$message.success("搜索成功")
-          this.noteItems = [];
-
-          for (var index in res.data) {
-            var text = res.data[index].note_content;
-            if (text) {
-              let value = text.replaceAll(this.reg, "[图片]");
-              text = htmlToText(value);
-            }
-
-            var data = res.data[index];
-            var note = data.Note;
-            var newNoteItem = {
-              noteID: note.study_note_id,
-              sharerID: note.sharer_id,
-
-              title: note.note_header,
-              tags: note.tags,
-              content: text,
-              likeNum: data.LikeNum,
-              starNum: 10,
-              commentNum: 10,
-              isLiked: data.IsLiked, //这个用户是否点赞和收藏
-              isStared: true,
-
-              isPaid: data.IsPaid,
-              needPoints: note.points,
-              userAvatar: note.user_avatar,
-            };
-
-            this.noteItems.push(newNoteItem);
-          }
-        }
-        else{
-          this.$message.error("搜索失败")
-        }
-      }).catch(e=>{
-        console.log(e)
-        this.$message.error("搜索失败")
-      })
-      // axios
-      //   .get("/search_notes", {
-      //     params: { userID: 1, pattern: value },
-      //   })
-      //   .then((res) => {
-      //     console.log("res", res.data);
-
-      //     this.noteItems = [];
-
-      //     for (var index in res.data) {
-      //       var text = res.data[index].note_content;
-      //       if (text) {
-      //         let value = text.replaceAll(this.reg, "[图片]");
-      //         text = htmlToText(value);
-      //       }
-
-      //       var data = res.data[index];
-      //       var note = data.Note;
-      //       var newNoteItem = {
-      //         noteID: note.study_note_id,
-      //         sharerID: note.sharer_id,
-
-      //         title: note.note_header,
-      //         tags: note.tags,
-      //         content: text,
-      //         likeNum: data.LikeNum,
-      //         starNum: 10,
-      //         commentNum: 10,
-      //         isLiked: data.IsLiked, //这个用户是否点赞和收藏
-      //         isStared: true,
-
-      //         isPaid: data.IsPaid,
-      //         needPoints: note.points,
-      //         userAvatar: note.user_avatar,
-      //       };
-
-      //       this.noteItems.push(newNoteItem);
-      //     }
-      //   });
-    },
   },
   created() {
     window.addEventListener("scroll", this.lazyLoading); // 滚动到底部，再加载的处理事件

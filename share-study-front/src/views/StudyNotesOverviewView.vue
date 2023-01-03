@@ -400,6 +400,8 @@ export default {
         // 滚动到底部，逻辑代码
         //事件处理
         console.log("滚动到底部，触发"); //此处可以添加数据请求
+
+        this.loading = true
         this.getNotesInPage();
       }
     },
@@ -418,29 +420,31 @@ export default {
               for (var index in res.data) {
                 var text = res.data[index].note_content;
                 if (text) {
-                  let value = text.replaceAll(this.reg, "[图片]");
-                  text = htmlToText(value);
+                  //let value = text.replaceAll(this.reg, "[图片]");
+                  text = htmlToText(text);
                 }
     
                 var data = res.data[index];
                 var note = data.Note;
                 var newNoteItem = {
-                  noteID: note.study_note_id,
-                  sharerID: note.sharer_id,
-    
-                  title: note.note_header,
-                  tags: note.tags,
-                  content: text,
-                  likeNum: data.LikeNum,
-                  starNum: 10,
-                  commentNum: 10,
-                  isLiked: data.IsLiked, //这个用户是否点赞和收藏
-                  isStared: true,
-    
-                  isPaid: data.IsPaid,
-                  needPoints: note.points,
-                  userAvatar: note.user_avatar,
-                };
+              noteID: note.study_note_id,
+              sharerID: note.sharer_id,
+
+              title: note.note_header,
+              tags: note.tags,
+              needPoints: note.points,
+              userAvatar: note.user_avatar,
+
+              content: text,
+              likeNum: data.LikeNum,
+              starNum: data.CollectNum,
+
+              commentNum: data.CommentNum,
+              isLiked: data.IsLiked, //这个用户是否点赞和收藏
+              isStared: data.IsCollected,
+
+              isPaid: data.IsPaid,
+            };
     
                 this.noteItems.push(newNoteItem);
               }
